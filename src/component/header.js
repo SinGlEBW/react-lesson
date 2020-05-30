@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import './../css/header.css';
 
 export default class Header extends Component {
   render() {
     return (
-		<header className='header'>
+		<header className='header' >
 			<div className="container">
 				<ul className="header__list">
 					<li className="header__item"><a href="#1" className="header__link">Страница 1</a></li>
@@ -19,3 +20,25 @@ export default class Header extends Component {
 		);
   }
 }
+
+
+/*
+ Из-за того что есть возможность css файлы подключать отдельно, существует и возможность 
+ в этих отдельных файлах писать одинаковые классы. Но для этого требуется префиксом дописать
+ в css файл module и подключить его как объект. В таком случае классы в css
+ файле будут играть в роле ключей.
+ Запись примерно такая:
+ import classHeader from './../css/header.module.css';
+
+ render(){
+	 return (
+		 <div className={classHeader.header}
+		 	<ul className={classHeader.list}
+
+		 	</ul>
+		 </div>
+	 )
+ }
+Вообщем если во всех css будет класс item, но ничего страшного именно при использовании module
+просто будет заменяться класс сгенерированным
+*/

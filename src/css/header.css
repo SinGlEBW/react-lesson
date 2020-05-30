@@ -1,0 +1,36 @@
+.header {
+   background-color: #282c34;
+   min-height: 100vh;
+   border: 2px solid #188;
+  
+ }
+ 
+ .header__list {
+   list-style-type: none;
+   width: 100%;
+   display: grid;
+   grid-template-columns: repeat(6,1fr);/*пока высота не будет задана, выравнивание не произойдёт*/
+   justify-content: space-between;
+ 
+   padding: 20px 0;
+   border: 1px solid yellow;
+   
+ }
+ 
+ .header__item {
+  
+   border: 1px solid #000;
+ }
+ 
+ .header__link {
+   display: grid;
+   justify-content: center;
+   align-items: center;
+   width: 200px;
+   height: 70px;
+   border: 1px solid #876;
+   text-decoration: none;
+   color: #61dafb;
+   font-size: 1.7rem;
+ }
+ 

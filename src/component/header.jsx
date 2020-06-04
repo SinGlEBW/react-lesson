@@ -14,6 +14,9 @@ export default class Header extends Component {
 					<li className="header__item"><a href="#5" className="header__link">Страница 5</a></li>
 					<li className="header__item"><a href="#6" className="header__link">Страница 6</a></li>
 				</ul>	
+				<ul className="header__fff">
+					
+				</ul>	
 			</div>
 										
 		</header>

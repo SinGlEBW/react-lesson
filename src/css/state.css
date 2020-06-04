@@ -1,0 +1,8 @@
+.cart{
+   display: grid;
+}
+.cart__form{
+   display: grid;
+   grid-gap: 20px;
+   margin: 20px;
+}

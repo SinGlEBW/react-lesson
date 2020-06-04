@@ -1,29 +1,31 @@
 import React, { Component } from "react";
-
+import './../css/form-test.css';
 export default class Test extends Component {
-   static count = 0
+   
    sh(props, index){
-  
       return (
       <div className='text-block__items' key={index}> 
-         <div className='text-block__item' >{props}</div>
-         <input className="text-block__item" type="checkbox" name="yes"/>
-         <input className="text-block__item" type="checkbox" name="no"/>
-         <input className="text-block__item" type="checkbox" name="neutral"/> 
+         <p className='text-block__item'>{props}</p>
+         <input className="text-block__item" type="radio" name={`radio${index}`} value="yes"/>
+         <input className="text-block__item" type="radio" name={`radio${index}`} value="no"/>
+         <input className="text-block__item" type="radio" name={`radio${index}`} value="neutral"/> 
       </div>
       )
    }
   render() {
     
     let block = this.props.textTest.map( (item, index) => this.sh(item,index) )
-    console.dir(block);
+    
     return (
       <section className='test-block'>
         <div className='container'> 
           <form className='test-block__form'>
               {block}
-              <button>Ответить</button>
+              <div className='text-block__items'>
+                <button className='text-block__item text-block__btn'>Ответить</button>
+              </div>   
           </form>
+         
         </div>
       </section>
 		);

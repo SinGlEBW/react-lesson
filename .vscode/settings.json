@@ -1,9 +1,20 @@
 {
     "cSpell.words": [
+        "component",
+        "component will unmount",
+        "component'",
+        "component'у",
         "href",
+        "unmount",
+        "will",
         "вообщем",
         "выравниет",
-        "отрендерится"
+        "отрендерится",
+        "перерендер",
+        "поднапрячся",
+        "рендер",
+        "рендеринг",
+        "шаблонизатором"
     ],
     "cSpell.ignoreWords": [
         "href"

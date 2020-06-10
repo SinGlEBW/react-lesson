@@ -1,0 +1,12 @@
+.info{
+   display: grid;
+   height: 70px;
+}
+.info__items{
+   display: grid;
+   grid-template-columns: 200px 200px;
+   grid-gap: 100px;
+   height: 70px;
+   align-items: center;
+   justify-items: center;
+}

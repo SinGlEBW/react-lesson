@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './../css/state.css';
+import './state.css';
 export default class LifeState extends Component{
    constructor(props){
       super(props)
@@ -7,30 +7,23 @@ export default class LifeState extends Component{
       this.state = {
          check: localStorage.getItem('checked') || false,
          date: new Date().toLocaleTimeString()//влияет только на первоначальную загрузку страницы
-      }
-       
+      }  
    }
    componentDidMount() {//запускается как отрендерится. типa события windows.onload
-      console.dir(this.props);
-      this.timerID = setInterval(()=>this.tick(),1000)
-      
+      this.timerID = setInterval(()=>this.tick(),1000) 
    }
    componentWillUnmount() {
-      console.dir(3);
       clearInterval(this.timerID);
    }
    tick() {
-      
       this.setState({
         date: new Date().toLocaleTimeString()
       });
     }
 
    checkEvent ({target}) {//такой способ checkEvent = () => {} создания метода не теряет this
-      console.dir(this);
       this.setState({})
       localStorage.setItem('checked', target.checked)
-      
    }
    render() {
       let check = JSON.parse(localStorage.getItem('checked'))

@@ -1,49 +1,56 @@
 .header {
-   background-color: #282c34;
-   min-height: 300px;
-   border: 2px solid #188;
-   margin-bottom: 50px;
-   display: grid;
-
- }
- .header__list {
-   list-style-type: none;
- 
-   height: 100px;
-   display: grid;
-   grid-template-columns: repeat(6,1fr);/*пока высота не будет задана, выравнивание не произойдёт*/
-   justify-items: center;
-   align-content: center;
-   border: 1px solid yellow;
-   margin-bottom: 0px;
-   align-self: end;/*работает относительно родителя*/
- }
-
- .header__fff{
-  height: 50px;
-  border: 2px solid #000;
+  background-color: #282c34;
+  min-height: 300px;
   display: grid;
-  margin-top: 50px;
-  align-self: start;
+  margin-bottom: 50px;
+ 
+ }
+.header__nav {
+  list-style-type: none;
   
+  height: 100px;
+  display: grid;
+  grid-template-columns: repeat(6,1fr);/*пока высота не будет задана, выравнивание не произойдёт*/
+  justify-items: center;
+  align-content: center;
+  border: 1px solid yellow;
+  margin-bottom: 20px;
+  align-self: end;/*работает относительно родителя*/
+}
+.header__navItem {
+  border: 10px solid #000;
+}
+
+.header__link {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 70px;
+  border: 1px solid #876;
+  text-decoration: none;
+  color: #61dafb;
+  font-size: 1.7rem;
+}
+
+.header__lk{
+  height: 50px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+ 
+  grid-gap: 20px;
+  border: 2px solid #000;
+  padding: 0 20px;
   
 }
- .header__item {
-   border: 1px solid #000;
- }
-
- .header__link {
-   display: grid;
-   justify-content: center;
-   align-items: center;
-   width: 200px;
-   height: 70px;
-   border: 1px solid #876;
-   text-decoration: none;
-   color: #61dafb;
-   font-size: 1.7rem;
- }
-
+.header__lkItem{
+  display: grid;
+  width: 100%;
+  height: 100%;
+  justify-items: center;
+  align-items: center;
+  
+}
  /*
   container имеет grid, дочерние элементы занимают равномерную площадь по высоте. При изменении
   размеров дочерних элементов остаётся так же невидимое поле равномерно распределяющее элементы.

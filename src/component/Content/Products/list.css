@@ -1,0 +1,14 @@
+.list{
+   display: grid;
+   height: 100px;
+}
+.list__items{
+   display: inherit;
+   border: 3px solid #000;
+   
+}
+.list__item{
+   margin-left: 20px;
+   list-style-type: none;
+   border: 1px solid #000;
+}

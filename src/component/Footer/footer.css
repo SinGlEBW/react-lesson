@@ -2,7 +2,9 @@
    height: 10vh;
    background-color: wheat;
    display: grid;
-  
+   width: 100%;
+   position: fixed;
+   bottom: 0;
    border: 2px solid green
  }
  .footer__wraps{

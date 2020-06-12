@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import './list.css';
+import './List.css';
 
 export default class List extends Component {
    
    render = () => {
-      console.dir(this);
-      let li = this.props.arrItem.map((item, index) => <li key={index} className="list__item">{item}</li>)
+     
+      let li = this.props.products.phone.map((item) => <li key={item.id} className="list__item">{item.name}</li>)
+      
       return (
          <section className="list">
             <div className="container">

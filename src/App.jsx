@@ -1,51 +1,46 @@
 import React, { Component } from "react";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import "./App.css";
-import arrayTexts from './component/Content/Home/Tests/text'
 
-import Header from "./component/Header/header";
+import Header from "./component/Header/Header";
+
+import Home from "./component/Content/Home/Home";
+import Products from './component/Content/Products/Products';
+import Chat from './component/Content/Chat/Chat';
+// import Contact from './component/Content/Contact/Contact';
+// import Info from './component/Content/Information/Info';
+// import Images from './component/Content/Images/Images';
+
 import Footer from "./component/Footer/footer";
-import Test from "./component/Content/Home/Tests/tests";
-import LifeState from './component/Content/state';
-import Radio from './component/Content/Home/radio';
-import Button from './component/Content/Images/Control/button';
-import Info from './component/Content/Information/info';
-import List from './component/Content/Products/list';
-import Routing from './component/Content/Information/Routing/routing';
-
 
 
 class App extends Component {
   
   render(){
-   
+    
     return (
       <BrowserRouter>
       
-        <div className="App">
           <Header />
           {/* *****Content****** */}
-          <Route path='/:admin?' component={(props) => <Test textTest={arrayTexts} {...props}/>}/>
-          <Route path='/' component={Radio}/>
-
-          <Route path='/products' component={LifeState}/>
-
-
-
-          <Route path='/contact' component={(props) => <List arrItem={[14,15,16]} {...props} />} />
-
-          <Route exact path='/info' component={Info}/>{/* exact наблюдает за точностью пути. */}
-          <Route path='/info' component={Routing}/>
           <Switch>
-          </Switch>
-          
-          
+            <Route exact path='/' render={(props) => <Home home={this.props.home} {...props}/>}/>
            
+            <Route path='/products' render={(props) => <Products products={this.props.products} {...props} />}/>
+            
+            <Route path='/chat' render={(props) => <Chat chat={this.props.chat} {...props} />} />
+          </Switch>
+            {/*<Route path='/contact' render={(props) => <Contact contact={this.props.contact} {...props} />}/>
+            
+            <Route path='/info' render={(props) => <Info info={this.props.info} {...props} />}/>
+            
+            <Route path='/images' render={(props) => <Images images={this.props.images} {...props} />}/>
+             */}
+         
            {/* ------------------------------------------------*/}
-
+          
           <Footer email="sbw@mail.ru" tel="417555" /> 
-        </div>
-       
+        
       </BrowserRouter>
     );
   }

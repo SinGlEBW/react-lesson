@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import  './routing.css';
-import {Route} from 'react-router-dom';
-import Info from '../info';
+import  './Routing.css';
+
+
 
 export default class Routing extends Component {
    constructor(props){
@@ -20,16 +20,9 @@ export default class Routing extends Component {
    render = () => {
       console.dir(this);
       return (  
-         <div>
-            <section className="routing">
-               <div className="container">
-                  <div className="routing__items">
-                     <button className='routing__item' onClick={this.eventAjax}>Перейти</button>
-                     <div className="routing__item routing__item--box" dangerouslySetInnerHTML={this.createMarkup()}></div>
-                  </div>
-               </div>
-            </section>    
-            <Route path='/info' component={Info}/> 
+         <div className="routing">
+            <button className='routing__item' onClick={this.eventAjax}>Перейти</button>
+            <div className="routing__item routing__item--box" dangerouslySetInnerHTML={this.createMarkup()}></div>
          </div>
       )
    }

@@ -1,44 +1,15 @@
 import React, { Component } from 'react';
-import './state.css';
-export default class LifeState extends Component{
-   constructor(props){
-      super(props)
-      this.checkEv = this.checkEvent.bind(this)
-      this.state = {
-         check: localStorage.getItem('checked') || false,
-         date: new Date().toLocaleTimeString()//влияет только на первоначальную загрузку страницы
-      }  
-   }
-   componentDidMount() {//запускается как отрендерится. типa события windows.onload
-      this.timerID = setInterval(()=>this.tick(),1000) 
-   }
-   componentWillUnmount() {
-      clearInterval(this.timerID);
-   }
-   tick() {
-      this.setState({
-        date: new Date().toLocaleTimeString()
-      });
-    }
+import './Products.css';
+import List from './List/List';
 
-   checkEvent ({target}) {//такой способ checkEvent = () => {} создания метода не теряет this
-      this.setState({})
-      localStorage.setItem('checked', target.checked)
-   }
-   render() {
-      let check = JSON.parse(localStorage.getItem('checked'))
-      
+export default class Products extends Component{
+
+   render = () => {
+     
       return (
-         <section className='cart'>
-            <div className='container'>
-               <form className='cart__form'>
-                  <input className='cart__item' onChange={this.checkEv} defaultChecked={check} type="checkbox"/>
-                  <div className='cart__item'>{check ? 'выбран' : 'не выбран'}</div> 
-                  <h1>{this.state.date}</h1>
-                 
-               </form>
-            </div>
-         </section>
+         <main className="products">
+            <List {...this.props}/>
+         </main>
       )
    }
 }

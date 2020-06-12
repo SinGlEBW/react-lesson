@@ -1,0 +1,13 @@
+.loginIn {
+   display: grid;
+   padding: 0 20px;
+}
+
+.loginIn__form {
+   display: grid;
+   grid-template-columns: repeat(12, 1fr);
+   grid-gap: 20px;
+
+}
+
+.loginIn__formItem {}

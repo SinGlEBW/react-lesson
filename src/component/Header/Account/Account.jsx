@@ -1,5 +1,5 @@
  import React, { Component } from 'react';
- import LoginIn from './LoginIn/loginIn';
+ import LoginIn from './Authorization/loginIn';
  export default class Account extends Component {
    constructor(props){
       super(props)

@@ -1,65 +1,101 @@
 import React, { Component } from "react";
-import {NavLink} from 'react-router-dom';
-import './header.css';
-import {Button} from '@material-ui/core';
-import { styled, makeStyles } from '@material-ui/core/styles';
+import { NavLink, Route, Switch } from "react-router-dom";
+import "./Header.css";
 
-const useStyles = makeStyles({
-	root: {
-	  background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-	  border: 0,
-	  borderRadius: 3,
-	  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-	  color: 'white',
-	  height: 48,
-	  padding: '0 30px',
-	},
- })
+import { Button } from "@material-ui/core";//тож есть Switch
+import { styled } from "@material-ui/core/styles";
+import LoginIn from "./Account/Authorization/LoginIn";
+import Registration from './Account/Registration/Registration';
+
 
 const MyButton = styled(Button)({
-	background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+	background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
 	border: 0,
-	borderRadius: 3,
-	boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-	color: 'white',
-	height: 48,
-	
- });
-console.dir(MyButton);
+	borderRadius: 4,
+	boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+	color: "white",
+	height: 'max-content'
+});
+
 export default class Header extends Component {
+	state = {
+		path: localStorage.getItem('path') || '',
+		formSwitch: JSON.parse(localStorage.getItem('formSwitch')) || false,
+		pathLogin: localStorage.getItem('pathLogin') || 'login'//1й пар. пустота тоже не рассматривается
+	}
 	
-  render() {
-	  
-    return (
+
+	navigation = async (ev) => {
 		
-			<header className='header' >
+		//  this.setState({ 
+		// 	path: ev.target.pathname,
+		// 	pathLogin: (ev.target.pathname + this.state.pathLogin)
+
+		// })
+		
+		// await localStorage.setItem('path', ev.target.pathname)
+	}
+	formOnOff = async ({target}) => {
+		let toggle = await !this.state.formSwitch;
+		
+		await this.setState({
+			formSwitch: toggle,
+			pathLogin: (toggle) ?  this.state.path + '/' : (`${this.state.path}/login`).replace(/^\/{2,}/, '/login')//true значит путь без login. При следующем клике(ВЫКЛ)
+		})
+		
+		await localStorage.setItem('formSwitch', toggle)
+		await localStorage.setItem('pathLogin', this.state.pathLogin)
+		
+	}
+	
+	render() {
+		 console.dir(this.state.path);
+		 console.dir(this.state.formSwitch);
+		 console.dir(this.state.pathLogin);
+		
+		return (
+			<header className="header" >
 				<div className="container">
-					<ul className="header__nav">
-						<li className="header__navItem"><NavLink to="/" className="header__link">Главная</NavLink></li>
-						<li className="header__navItem"><NavLink to="products" className="header__link">Товары</NavLink></li>
-						<li className="header__navItem"><NavLink to="chat" className="header__link">Чат</NavLink></li>
-						<li className="header__navItem"><NavLink to="contacts" className="header__link">Контакты</NavLink></li>
-						<li className="header__navItem"><NavLink to="info" className="header__link">Информация</NavLink></li>
-						<li className="header__navItem"><NavLink to="images" className="header__link">Картинки</NavLink></li>
-					</ul>	
-					<div className="header__lk">
-						<MyButton ><NavLink to='account' className='header__lkItem'>Авторизация</NavLink></MyButton>
-						<MyButton ><NavLink to='registration' className='header__lkItem'>Регистрация</NavLink></MyButton>
+					<div className="header__wrap">
+						<ul className="header__nav">
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="/" onClick={this.navigation}>Главная</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="products" onClick={this.navigation}>Товары</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="chat" onClick={this.navigation}>Чат</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="contacts" onClick={this.navigation}>Контакты</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="info" onClick={this.navigation}>Информация</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="images" onClick={this.navigation}>Картинки</NavLink></li>
+						</ul>
+						<div className="header__lkBtn">
+
+							<MyButton ><NavLink className="header__lkBtnItem" to={this.state.pathLogin} onClick={this.formOnOff}>Авторизация</NavLink></MyButton>
+							<MyButton ><NavLink className="header__lkBtnItem" to="/registration" >Регистрация</NavLink></MyButton>
+
+						</div>
+						<div className="header__loginIn">
+							<Switch>
+								<Route className="header__loginInItem" path={`${this.state.path}/login`} component={(props) => <LoginIn {...props} />} />
+								<Route className="header__loginInItem" path="/registration" component={(props) => <Registration {...props} />} />
+							</Switch>
+						</div>
 					</div>
-				</div>							
-			</header>	
+				</div>
+			</header>
 		);
-  }
+	}
 }
 
+/*
+	NavLink определяет то что будет показывать в url, а Router определяет что должно быть обычным путём,
+	а что параметром
+*/
 
 /*
- Из-за того что есть возможность css файлы подключать отдельно, существует и возможность 
+ Из-за того что есть возможность css файлы подключать отдельно, существует и возможность
  в этих отдельных файлах писать одинаковые классы. Но для этого требуется префиксом дописать
  в css файл module и подключить его как объект. В таком случае классы в css
  файле будут играть в роле ключей.
  Запись примерно такая:
- import classHeader from './../css/header.module.css';
+ import classHeader from "./../css/header.module.css";
 
  render(){
 	 return (

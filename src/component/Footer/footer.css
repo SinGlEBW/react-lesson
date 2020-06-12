@@ -1,24 +1,27 @@
-.footer{
-   height: 10vh;
-   background-color: wheat;
-   display: grid;
-   width: 100%;
-   position: fixed;
-   bottom: 0;
-   border: 2px solid green
- }
- .footer__wraps{
-   display: grid;
-   grid-template-columns: repeat(3,300px);
-   justify-content: center;
-   align-content: center;
-   justify-items: center;
-   /*установив в container display: grid избавляемся везде указывать дочернему элементу после container
+.footer {
+  
+  background-color: wheat;
+  display: grid;
+  width: 100%;
+  position: absolute;
+  height: 100px;
+  bottom: 0;
+  border: 2px solid green
+}
+
+.footer__wraps {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  /*установив в container display: grid избавляемся везде указывать дочернему элементу после container
      высоту в 100%*/
-   border: 1px solid #000;
- 
- }
- .footer__contact{
-   
-   border: 4px solid #00F;
- }
+  border: 1px solid #000;
+
+}
+
+.footer__contact {
+
+  border: 4px solid #00F;
+}

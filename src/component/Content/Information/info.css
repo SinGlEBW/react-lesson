@@ -1,12 +1,29 @@
-.info{
+.info {
    display: grid;
-   height: 70px;
 }
-.info__items{
+
+.info__form {
    display: grid;
-   grid-template-columns: 200px 200px;
-   grid-gap: 100px;
-   height: 70px;
-   align-items: center;
+   grid-template-columns: repeat(12, 1fr);
+   grid-template-rows: repeat(2, 1fr);
    justify-items: center;
+   align-items: center;
+   margin-bottom: 30px;
+}
+
+.info__formItem {
+   color: lightseagreen;
+}
+
+.time {
+   grid-row: 2;
+}
+
+.info__list {
+   list-style-type: none;
+   margin-left: 20px;
+}
+
+.info__listItem {
+   padding-bottom: 10px;
 }

@@ -1,0 +1,23 @@
+.chat{
+   display: grid; 
+}
+.chat__box{
+   display: grid;
+   grid-template-columns: 400px 1fr; 
+}
+.chat__input--but{
+   grid-row: 2;
+   height: 50px;
+}
+.chat__output{
+   border: 1px solid red;
+   overflow: scroll;
+   overflow-x: hidden;
+   height: 52px;
+}
+/*
+ .chat__list-message-item{
+  
+} 
+*/
+

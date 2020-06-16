@@ -7,9 +7,9 @@ import Header from "./component/Header/Header";
 import Home from "./component/Content/Home/Home";
 import Products from './component/Content/Products/Products';
 import Chat from './component/Content/Chat/Chat';
-// import Contact from './component/Content/Contact/Contact';
-// import Info from './component/Content/Information/Info';
-// import Images from './component/Content/Images/Images';
+import Contact from './component/Content/Contact/Contact';
+import Info from './component/Content/Information/Info';
+import Images from './component/Content/Images/Images';
 
 import Footer from "./component/Footer/footer";
 
@@ -29,14 +29,14 @@ class App extends Component {
             <Route path='/products' render={(props) => <Products products={this.props.products} {...props} />}/>
             
             <Route path='/chat' render={(props) => <Chat chat={this.props.chat} {...props} />} />
-          </Switch>
-            {/*<Route path='/contact' render={(props) => <Contact contact={this.props.contact} {...props} />}/>
+          
+            <Route path='/contact' render={(props) => <Contact contact={this.props.contact} {...props} />}/>
             
             <Route path='/info' render={(props) => <Info info={this.props.info} {...props} />}/>
             
             <Route path='/images' render={(props) => <Images images={this.props.images} {...props} />}/>
-             */}
-         
+            
+          </Switch>
            {/* ------------------------------------------------*/}
           
           <Footer email="sbw@mail.ru" tel="417555" /> 

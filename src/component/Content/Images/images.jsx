@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import './Images.css';
 
 export default class Images extends Component {
+
+   response = () => {
+      return this.props.images.animal.map((objImage) => {
+         return <img key={objImage.id} className='image__item' src={objImage.src} alt={objImage.alt}/>
+      })
+   }
    render = () => {
       console.dir(this);
       return(
@@ -9,10 +15,11 @@ export default class Images extends Component {
          <div className="image">
             <div className="container">
                <div className="image__items">
-                  
-                  <img className="image__item" src="./../../image/18.jpg" alt="бобр1"/>
-                  <img className="image__item" src='/../../image/19.jpg' alt="бобр2"/>
-                  <img className="image__item" src='/../../image/20.jpg' alt="бобр3"/>
+                  {this.response()}
+                  <form method='POST' >
+                     <input type="file" name="image"/>
+                     <input type="submit" name="sub" onClick={this.props.images.add}/>
+                  </form>
                </div>
             </div>
          </div>   

@@ -12,14 +12,14 @@ export default class Test extends Component {
   }
   eventSettings = (ev) => {
     ev.preventDefault();
-    this.setState({settings: !this.state.settings})
+    this.setState({ settings: !this.state.settings })
   }
   eventEdit = (ev) => {
     ev.preventDefault();
-    if(this.state.edit === Number(ev.target.id))
-      this.setState({ edit: this.state.edit - Number(ev.target.id)})
+    if (this.state.edit === Number(ev.target.id))
+      this.setState({ edit: this.state.edit - Number(ev.target.id) })
     else
-      this.setState({ edit: Number(ev.target.id)})
+      this.setState({ edit: Number(ev.target.id) })
 
   }
   text = (item, id) => {
@@ -38,7 +38,7 @@ export default class Test extends Component {
     )
   }
   blocksTest() {
-    
+
     let id = 0;
     let block = this.props.home.arrTexts.map((item) => {
 

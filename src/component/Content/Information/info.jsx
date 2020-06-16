@@ -6,9 +6,7 @@ export default class Info extends Component{
 
    constructor(props){
       super(props)
-      this.checkEv = this.checkEvent.bind(this)
       this.state = {
-         check: localStorage.getItem('checked') || false,
          date: new Date().toLocaleTimeString()//влияет только на первоначальную загрузку страницы
       }  
    }
@@ -24,22 +22,21 @@ export default class Info extends Component{
       });
     }
 
-   checkEvent ({target}) {//такой способ checkEvent = () => {} создания метода не теряет this
-      this.setState({})
-      localStorage.setItem('checked', target.checked)
+   listInfo = () => {
+     return this.props.info.text.map((value) => <li className='info__listItem'>{value}</li>  )
    }
    render() {
-      let check = JSON.parse(localStorage.getItem('checked'))
+      
       
       return (
          <main className='info'>
             <div className='container'>
                <form className='info__form'>
-                  <input className='info__formItem' onChange={this.checkEv} defaultChecked={check} type="checkbox"/>
-                  <div className='info__formItem'>{check ? 'выбран' : 'не выбран'}</div> 
-                  <h1>{this.state.date}</h1>
-                 
+                  <h1 className='info__formItem time'>{this.state.date}</h1>
                </form>
+               <ul className="info__list">
+                  {this.listInfo()}
+               </ul>
                <Routing />
             </div>
          </main>

@@ -2,32 +2,35 @@ import React, { Component } from 'react';
 import './Info.css';
 import Routing from './Routing/Routing';
 
-export default class Info extends Component{
+export default class Info extends Component {
 
-   constructor(props){
+   constructor(props) {
       super(props)
       this.state = {
          date: new Date().toLocaleTimeString()//влияет только на первоначальную загрузку страницы
-      }  
+      }
    }
    componentDidMount() {//запускается как отрендерится. типa события windows.onload
-      this.timerID = setInterval(()=>this.tick(),1000) 
+      this.timerID = setInterval(() => this.tick(), 1000)
    }
    componentWillUnmount() {
       clearInterval(this.timerID);
    }
    tick() {
       this.setState({
-        date: new Date().toLocaleTimeString()
+         date: new Date().toLocaleTimeString()
       });
-    }
+   }
 
    listInfo = () => {
-     return this.props.info.text.map((value) => <li className='info__listItem'>{value}</li>  )
+      let id = 0;
+      return this.props.info.text.map((value) => {
+         id++
+         return <li key={id} className='info__listItem'>{value}</li>
+      })
    }
    render() {
-      
-      
+console.dir(this);
       return (
          <main className='info'>
             <div className='container'>

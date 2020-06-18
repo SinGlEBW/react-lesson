@@ -49,9 +49,7 @@ export default class Header extends Component {
 	}
 	
 	render() {
-		 console.dir(this.state.path);
-		 console.dir(this.state.formSwitch);
-		 console.dir(this.state.pathLogin);
+console.dir(this);
 		
 		return (
 			<header className="header" >

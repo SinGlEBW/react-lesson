@@ -9,7 +9,7 @@ export default class Images extends Component {
       })
    }
    render = () => {
-      console.dir(this);
+console.dir(this);
       return(
          
          <div className="image">

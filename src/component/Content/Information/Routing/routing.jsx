@@ -18,7 +18,7 @@ export default class Routing extends Component {
    }
   
    render = () => {
-      console.dir(this);
+     
       return (  
          <div className="routing">
             <button className='routing__item' onClick={this.eventAjax}>Перейти</button>

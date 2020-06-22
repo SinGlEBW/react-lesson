@@ -49,8 +49,7 @@ export default class Header extends Component {
 	}
 	
 	render() {
-console.dir(this);
-		
+
 		return (
 			<header className="header" >
 				<div className="container">

@@ -17,7 +17,8 @@ import Footer from "./component/Footer/footer";
 class App extends Component {
   
   render(){
-    
+    console.dir(this);
+   
     return (
       <BrowserRouter>
       
@@ -28,7 +29,7 @@ class App extends Component {
            
             <Route path='/products' render={(props) => <Products products={this.props.products} {...props} />}/>
             
-            <Route path='/chat' render={(props) => <Chat chat={this.props.chat} {...props} />} />
+            <Route path='/chat' render={(props) => <Chat chat={this.props.chat} dispatch={this.props.dispatch} />} />
           
             <Route path='/contact' render={(props) => <Contact contact={this.props.contact} {...props} />}/>
             

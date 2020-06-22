@@ -2,30 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import stateData,{reloadState} from './redux/state';
 import * as serviceWorker from './serviceWorker';
+import { storeRedux } from './redux/reduxStore';
+
+import  { reloadState } from './redux/state';
+import { store } from './redux/storeForFunction';
 
 
-function reloadDOMfileIndex (stateData){
-  
-   //  console.dir(props);
-   
+let reloadDOMfileIndex = (stateData) => {
+   let b = stateData.getState()
+   console.dir(b);
+   ReactDOM.render(
+      <React.StrictMode>
+      <App dispatch={stateData.dispatch} {...stateData.getState()} />
+      </React.StrictMode>,
+      document.getElementById('root')
+   );
+    
 }
-ReactDOM.render(
-   <React.StrictMode>
-   <App  home={stateData.home} 
-         products={stateData.products}
-         chat={stateData.chat}
-         contact={stateData.contact}
-         info={stateData.info}
-         images={stateData.images}    
-   />
-   </React.StrictMode>,
-   document.getElementById('root')
- );
+let reloadDOM = reloadDOMfileIndex.bind(null, storeRedux);
+storeRedux.subscribe(reloadDOM);
+reloadDOMfileIndex(storeRedux);
 
-
-reloadState(reloadDOMfileIndex);//передаём функцию в state
+//1//reloadState(reloadDOMfileIndex);//передаём функцию в state
+//store.subscribe(reloadDOMfileIndex)//subscribe
 
 
 serviceWorker.unregister();
@@ -34,6 +34,4 @@ serviceWorker.unregister();
 /*
    Ставить index ниже state ничего не выйдет, последним обновляется тот файл в котором есть ReactDOM.render.
    Что бы вызвать тут функцию то нужно передать данные которой ей требуются, а это требует делать state ниже index
-
-
 */

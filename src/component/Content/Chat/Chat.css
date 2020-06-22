@@ -4,6 +4,7 @@
 .chat__box{
    display: grid;
    grid-template-columns: 400px 1fr; 
+   margin-bottom: 20px;
 }
 .chat__input--but{
    grid-row: 2;

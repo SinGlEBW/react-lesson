@@ -2,6 +2,10 @@
     "cSpell.words": [
         "ananas",
         "apelsine",
+        "callback",
+        "callback'",
+        "callback'ами",
+        "callback'ом",
         "component",
         "component will unmount",
         "component'",
@@ -13,20 +17,30 @@
         "index",
         "itemlink",
         "mfile",
+        "mfor",
         "moto",
         "nav",
+        "react",
         "reload",
         "reload do mfile index",
+        "set",
+        "set react do mfor state",
+        "state",
         "unmount",
         "will",
         "xiaomi",
         "вообщем",
         "выравниет",
         "димыч",
+        "димычем",
+        "кстате",
         "методав",
         "отрендерится",
         "отрисовки",
+        "отрисовкой",
         "отрисовку",
+        "отрисовывает",
+        "отрисовывать",
         "перерендер",
         "поднапрячся",
         "рендер",
@@ -37,6 +51,7 @@
         "href"
     ],
     "editor.tabSize": 3,
-    
+   
+
 
 }

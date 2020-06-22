@@ -1,64 +1,51 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useRef, useState } from 'react';
 import './Chat.css';
+import { inMessAction, sendAction } from '../../../redux/reducer/chat-reducer';
+
+
 
 export default class Chat extends Component {
-   // sendState = this.props.chat.send.bind(this)
-   // inMessState = this.props.chat.inMess.bind(this)
-   refTextarea = React.createRef();
-   refLi = React.createRef();
-   refBoxMessage = React.createRef();
+   myRef = {
+      refTextarea: React.createRef(),
+      rrr: (ref) => ref//можно и функцию отдать, получается что-то типа события onload
+       
+   }
+  
    state = { value: '' }
-
-
-   responseMessage = (id) => {
-      return this.props.chat.message.map((message) => {
-         id++
-
-         return <li ref={this.refLi} key={id} className='chat__list-message-item'>{message}</li>
-      })
-   }
-   //####---1 вариант
-   inMess = ({ target }) => {
-      this.setState({ value: target.value })
-   }
-   send = () => {
-
-      let valueTextarea = this.refTextarea.current.value;
-
-      this.props.chat.message.push(valueTextarea)//массив с сервера
-
-      this.setState({ value: '' })
-
-   }
-   //####---3 вариант
-   inMess2 = ({ target }) => {
-
-      this.props.chat.addMess.call(this, target.value)
+   
+   responseMessage = () => {
+      let id = 0;
+      return this.props.chat.message.map((message) => 
+                  <li key={id++} className='chat__list-message-item'>{message}</li>)
    }
 
-   send2 = () => {
+   inMess = ({ target }) => this.props.chat.inMess(this, target.value)
 
-      let valueTextarea = this.refTextarea.current.value;
+   send = () => this.props.chat.send(this, this.refTextarea.current.value)
+ 
 
-      this.props.chat.addPost.call(this, valueTextarea)
-   }
+   /*
+      Удобно тем что при обращении у  методам state контекст в том объекте остаётся своим
+      и обращение через this можно проводить локально внутри объекта chat
+   */
+
 
    render = () => {
-      let idMessage = 0;
+      
       console.dir(this);
       return (
          <main className="chat">
             <div className="container">
                <div className="chat__box">
-                  <textarea className="chat__input" value={this.state.value} onChange={this.inMess2} ref={this.refTextarea} id="message" cols="30" rows="10"></textarea>
-                  <button className="chat__input--but" onClick={this.send2}>Отправить</button>
-                  <div className="chat__output" ref={this.refBoxMessage}>
+                  <textarea className="chat__input" value={this.state.value} onChange={this.inMess} ref={this.myRef.refTextarea} id="message" cols="30" rows="10"></textarea>
+                  <button className="chat__input--but" onClick={this.send}>Отправить</button>
+                  <div className="chat__output">
                      <ul className='chat__list-message'>
-                        {this.responseMessage(idMessage)}
-
+                        {this.responseMessage()}
                      </ul>
                   </div>
                </div>
+               <MyComponent {...this.props}/>
             </div>
 
          </main>
@@ -66,6 +53,69 @@ export default class Chat extends Component {
    }
 };
 
+/* ************************************************************************ */
+let MyComponent = (props) => {
+   let refTextarea2 = useRef(null);
+   // useEffect(()=>{console.dir(3);})
+   let [count, setCount] = useState(1)
+
+
+   let async = () => {
+      setCount(count + 1)
+      setCount(count + 1)
+   }
+   let sync = () => {
+      setCount((count) => count + 1)
+      setCount((count) => count + 1)
+   }
+
+   let idMessage = 0;
+   let responseMessage = (id) => props.chat.message.map((message) => 
+            <li key={id++} className='chat__list-message-item'>{message}</li>)
+      
+   
+   let inMess = ({ target }) => props.dispatch(inMessAction(target.value))
+
+   let send = () => props.dispatch(sendAction(refTextarea2.current.value))
+
+   console.dir(props);
+   return (
+      <div className="chat__box">
+         <textarea className="chat__input" value={props.chat.setText} onChange={inMess} ref={refTextarea2} id="message" cols="30" rows="10"></textarea>
+         <button className="chat__input--but" onClick={send}>Отправить</button>
+         <div className="chat__output">
+            <ul className='chat__list-message'>
+               {responseMessage(idMessage)}
+            </ul>
+         </div>
+      </div>
+   )
+
+}
+/*
+Кстате говоря useState это тот же setState только предназначен для компонентов в виде
+функций и требует вызова в import. useState принимает начальное значение и возвращает
+массив где 1й элемент это текущее значение, 2й эл. это функция изменения. Она принимает
+
+setCount синхронный способ получения это указать callback
+
+Разница setState и useState в том что setState изменяет лишь часть state, то есть объединяет
+данные с объектом,  в то время как useState обновляет весь объект state, то есть как я
+понимаю перезаписывает, то есть в разных местах объект будет разный
+
+
+   Новый способ передавать контекст компонента, не совсем понятно но вроде у компонента
+   вызывать метод Consumer в одном месте, и Provider в другом месте
+   сделано это вроде для того что бы не использовать props
+
+   Что такое хуки? - это набор функций которые расширяют возможности
+   функциональных компонентов.
+   useState useContext useEffect useRef useReducer... это и есть хуки
+
+
+   useEffect как я понял это аналог componentDidMount отрабатывает 1 раз как дерево дом обновилось
+*/
+/************************************************************************* */
 /*
 димыч добавлял в value={props.chat.message} просто напрямую обращался к объекту в state который передаётся
 через props.
@@ -98,25 +148,42 @@ export default class Chat extends Component {
 обновляющие state, что бы можно было ими так же воспользоваться на разных уровнях, тем более методы можно
 написать универсальными для нескольких действий.
 
+//#-!!! вариант с использованием отдельно setState как в компоненте, так и файле state - НЕ ИСПОЛЬЗУЕТСЯ !!!
 
-   Вариант 1. использовать один метод с setState в компоненте
-   Вариант 2. использовать один метод с setState в файле state
+   Вариант 1. использовать один метод с setState в компоненте. (На больших проектах не используют)
+   Вариант 2. использовать один метод с setState в файле state. (На больших проектах не используют)
    Вариант 3. использовать setState в файле state и ещё метод в компоненте передающий значения в файл state
+   Вариант 4. не использовать setState, а использовать props и строить свой reload и объект state.
 
-Использование методов из файла state которые хранятся в объекте принуждает привязывать контекст в
-файле компонента после чего могу использовать метод. По идее мы имеем в props эти методы обновляющие state, но
-для использования их в нужных компонентах придётся привязывать контекст, но это не влияет на общие изменения
-props, таким образом сам класс зарастает копиями методов получившихся после bind.
 
-Как же избавится от использования bind?
-До этого мы использовали методы по одиночке или создавали в компоненте или создавали в state и для использования
-методов из state привязывали контекст через bind в нашем компоненте после чего могли использовать метод.
-Есть 3й вариант создавать метод в как в state так и в компоненте и каждый будет отвечать за свои действия
-метод в файле state будет вызываться методом находящимся в компоненте, после чего будет передаваться данные,
-но что бы контекст в файле state не терялся придётся передавать через call() как контекст так и значения.
+Использование классов и вынесение setState в отдельный файл state, принуждает передавать контекст компонента
+в файл state. 2й вариант требует использование bind, 3й имеет 2 способа: 1й. через методы компонента передавать
+контекст через call обращаясь к методам в файле state или 2й. передавать 2 аргумента методу файла state, это
+контекст и данные. Такой вариант даёт возможность работать в файле state 2мя контекстами, что упрощает и уменьшает длину
+обращений к свойствам при передачи данных.
+
+
+4й же вариант это отказ от использования setState и существующего объекта state.
+При этом придётся пользоваться объектом props и создавать там свой объект state так же обновлять
+ReactDOM самостоятельно, оборачивая его callback'ом передавая в файл state и при каждом чихе вызывать.
+Таким способом обычно пользуются при функциональном программировании. Используя такой способ, будет перезагружаться
+общий стек компонентов, а не одна затронутая часть компонента, всё зависит по какому адесу и сколько
+компонентов мы прослушиваем. Встаёт вопрос насколько это эффективно. Пока да полный список Хук не изучал, может там
+и есть альтернативы, но они для функциональных компонентов, а не для классов.
+
+
+
+
+
+ До этого мы использовали методы по одиночке или создавали в компоненте или создавали в state и для использования
+ методов из state привязывали контекст через bind в нашем компоненте после чего могли использовать метод.
+   // Есть 3й вариант создавать метод в как в state так и в компоненте и каждый будет отвечать за свои действия
+   // метод в файле state будет вызываться методом находящимся в компоненте, после чего будет передаваться данные,
+   // но что бы контекст в файле state не терялся придётся передавать через call() как контекст так и значения.
 
 Что это даёт, больше написанных методов
 
 
-Пробуем избавиться от setState
+
+
 */

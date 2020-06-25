@@ -4,8 +4,12 @@ import List from './List/List';
 
 export default class Products extends Component{
 
+   handleChange({ target }) {
+      
+      this.setState({ value: target.value });
+    }
    render = () => {
-console.dir(this);
+
       return (
          <main className="products">
             <List {...this.props}/>

@@ -12,10 +12,9 @@ const reducers = combineReducers({
    chat: chatReducer,
    info: infoReducer,
    contact: contactReducer,
-   images: imagesReducer
-
+   images: imagesReducer,
 })
 const storeRedux = createStore(reducers);
-console.dir(storeRedux);
+
 export { storeRedux };
 

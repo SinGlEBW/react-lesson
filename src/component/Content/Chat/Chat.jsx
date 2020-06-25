@@ -1,51 +1,39 @@
 import React, { Component, useEffect, useRef, useState } from 'react';
 import './Chat.css';
-import { inMessAction, sendAction } from '../../../redux/reducer/chat-reducer';
-
-
 
 export default class Chat extends Component {
    myRef = {
       refTextarea: React.createRef(),
-      rrr: (ref) => ref//можно и функцию отдать, получается что-то типа события onload
-       
+      rrr: (ref) => ref//можно и функцию отдать, получается что-то типа события onload   
    }
-  
+
    state = { value: '' }
-   
+
    responseMessage = () => {
       let id = 0;
-      return this.props.chat.message.map((message) => 
-                  <li key={id++} className='chat__list-message-item'>{message}</li>)
+      return this.props.chat.message.map((message) =>
+         <li key={id++} className='chat__list-message-item'>{message}</li>)
    }
 
-   inMess = ({ target }) => this.props.chat.inMess(this, target.value)
+   listensMessage = ({ target }) => this.props.changesTheMessage(target.value)
 
-   send = () => this.props.chat.send(this, this.refTextarea.current.value)
- 
-
-   /*
-      Удобно тем что при обращении у  методам state контекст в том объекте остаётся своим
-      и обращение через this можно проводить локально внутри объекта chat
-   */
-
+   sendMessage = () => this.props.toSend(this.myRef.refTextarea.current.value)
 
    render = () => {
-      
+
       console.dir(this);
       return (
          <main className="chat">
             <div className="container">
                <div className="chat__box">
-                  <textarea className="chat__input" value={this.state.value} onChange={this.inMess} ref={this.myRef.refTextarea} id="message" cols="30" rows="10"></textarea>
-                  <button className="chat__input--but" onClick={this.send}>Отправить</button>
+                  <textarea className="chat__input" value={this.props.chat.setText} onChange={this.listensMessage} ref={this.myRef.refTextarea} id="message" cols="30" rows="10"></textarea>
+                  <button className="chat__input--but" onClick={this.sendMessage}>Отправить</button>
                   <div className="chat__output">
                      <ul className='chat__list-message'>
                         {this.responseMessage()}
                      </ul>
                   </div>
                </div>
-               <MyComponent {...this.props}/>
             </div>
 
          </main>
@@ -53,45 +41,14 @@ export default class Chat extends Component {
    }
 };
 
-/* ************************************************************************ */
-let MyComponent = (props) => {
-   let refTextarea2 = useRef(null);
-   // useEffect(()=>{console.dir(3);})
-   let [count, setCount] = useState(1)
+
+/*
+   Удобно тем что при обращении у  методам state контекст в том объекте остаётся своим
+   и обращение через this можно проводить локально внутри объекта chat
+*/
 
 
-   let async = () => {
-      setCount(count + 1)
-      setCount(count + 1)
-   }
-   let sync = () => {
-      setCount((count) => count + 1)
-      setCount((count) => count + 1)
-   }
 
-   let idMessage = 0;
-   let responseMessage = (id) => props.chat.message.map((message) => 
-            <li key={id++} className='chat__list-message-item'>{message}</li>)
-      
-   
-   let inMess = ({ target }) => props.dispatch(inMessAction(target.value))
-
-   let send = () => props.dispatch(sendAction(refTextarea2.current.value))
-
-   console.dir(props);
-   return (
-      <div className="chat__box">
-         <textarea className="chat__input" value={props.chat.setText} onChange={inMess} ref={refTextarea2} id="message" cols="30" rows="10"></textarea>
-         <button className="chat__input--but" onClick={send}>Отправить</button>
-         <div className="chat__output">
-            <ul className='chat__list-message'>
-               {responseMessage(idMessage)}
-            </ul>
-         </div>
-      </div>
-   )
-
-}
 /*
 Кстате говоря useState это тот же setState только предназначен для компонентов в виде
 функций и требует вызова в import. useState принимает начальное значение и возвращает

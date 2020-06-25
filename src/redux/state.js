@@ -65,9 +65,7 @@ let stateData = {
       { id: 3, src: "./../../image/20.jpg", alt: "бобр3" },
     ],
     add: (ev, image) => {
-      ev.preventDefault();
-
-      
+      ev.preventDefault(); 
     },
   },
   reload(reloadDOMfileIndex){
@@ -86,6 +84,8 @@ export default stateData; //вариант 1
 /*
  К какому методу я обращаюсь, контекст того места где этот метод лежит я и получаю, что логично.
  dispatch вроде бы лежит в _state, но обращение идёт через props поэтому и контекст получаю объекта props
+ this.props.chat.method в компоненте
+ this.method - здесь
 */
 
 

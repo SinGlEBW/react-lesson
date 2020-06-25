@@ -25,16 +25,6 @@ export default class Header extends Component {
 	}
 	
 
-	navigation = async (ev) => {
-		
-		//  this.setState({ 
-		// 	path: ev.target.pathname,
-		// 	pathLogin: (ev.target.pathname + this.state.pathLogin)
-
-		// })
-		
-		// await localStorage.setItem('path', ev.target.pathname)
-	}
 	formOnOff = async ({target}) => {
 		let toggle = await !this.state.formSwitch;
 		
@@ -58,7 +48,7 @@ export default class Header extends Component {
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="/" onClick={this.navigation}>Главная</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="products" onClick={this.navigation}>Товары</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="chat" onClick={this.navigation}>Чат</NavLink></li>
-							<li className="header__navItem"><NavLink className="header__navItemlink" to="contacts" onClick={this.navigation}>Контакты</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to="contact" onClick={this.navigation}>Контакты</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="info" onClick={this.navigation}>Информация</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="images" onClick={this.navigation}>Картинки</NavLink></li>
 						</ul>

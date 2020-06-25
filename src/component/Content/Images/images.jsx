@@ -12,7 +12,7 @@ export default class Images extends Component {
 console.dir(this);
       return(
          
-         <div className="image">
+         <main className="image">
             <div className="container">
                <div className="image__items">
                   {this.response()}
@@ -22,7 +22,7 @@ console.dir(this);
                   </form>
                </div>
             </div>
-         </div>   
+         </main>   
       )
    }
 };

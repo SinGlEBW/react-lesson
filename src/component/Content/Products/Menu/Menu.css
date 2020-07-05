@@ -1,0 +1,42 @@
+
+/*---Menu---*/
+.menu{
+   position: relative;
+   background-color: #fff;
+}
+.menu__root{
+   display: grid;
+   grid-template-columns: 60px 1fr;
+   height: 66px;
+   padding: 0 25px;
+   border-bottom: 1px solid #999;
+   background-color: #fff;
+   transition: all .1s;
+}
+.menu__root:first-child{
+   border-top: 1px solid #999;
+   margin-top: 10px;
+}
+.menu__root:hover{
+   background-color:#D3D3D3;
+}
+.menu__root-icon{
+   align-self: center;
+   width: 30px;
+}
+.menu__root-info{
+   align-self: center;
+   display: grid;
+   grid-template-rows: repeat(2, 1fr);
+}
+.menu__info-title-link{
+   font-weight: normal;
+}
+.menu__info-subtitles{
+   display: grid;
+   grid-template-columns: repeat(2, 1fr);
+   font-weight: normal;
+}
+.menu__info-subtitle-link{
+   
+}

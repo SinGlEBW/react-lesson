@@ -1,23 +1,35 @@
-
-.container{
+.container {
   margin: 0 auto;
   width: 1800px;
   border: 1px solid orangered;
   display: grid;
 }
 
-.App{
-  display: grid; 
+.App {
+  display: grid;
   height: 100%;
   grid-template-rows: 500px 1fr 100px;
   grid-gap: 20px;
 }
 
+.ui-link {
+  transition-duration: .3s;
+  transition-property: color;
+  text-decoration: none;
+  
+}
+.ui-link:hover{
+  color: red;
+}
+a{
+  cursor: pointer;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 @keyframes App-logo-spin {
   0% {
     color: red;

@@ -1,61 +1,47 @@
-import React, { Component } from 'react';
-import './List.css';
+import React from 'react';
+import './Phones.css';
 
-export default class List extends Component {
-   state = {
-      value: 'Xiaomi',
-      checkValue: localStorage.getItem('checked') || false,
-      rangeValue: 0,
+export const Phones = (props) => {
+   // checkValue: localStorage.getItem('checked') || false;
+   let evCheck = ({ target }) => {
+
+      // if (target.name === 'checkValue') {
+      //    localStorage.setItem('checked', target.checked);
+      //    this.setState({});
+      // } else {
+      //    this.setState({ [target.name]: target.value })
+      // }
    }
-
-   handleChange1 = ({ target }) => {
-      
-      this.props.products.phone.push({ id: 4, name: 'Huawei' })
-      
+   let handleChange = ({target}) => {
+      props.showProducts(target.value)
    }
+   let check = JSON.parse(localStorage.getItem('checked'));
+   let options = props.products.phone.map((item) => <option className="select__item" key={item.id} defaultValue={item.name} >{item.name}</option>)
+   let checkFilter = props.products.phoneFILTER[0].name;
+   
+   return (
+      <div></div>
+   )
+}
 
-   evCheck = ({ target }) => {
-
-      if (target.name === 'checkValue') {
-         localStorage.setItem('checked', target.checked);
-         this.setState({});
-      } else {
-         this.setState({ [target.name]: target.value })
-      }
-
-   }
-   render = () => {
-      let check = JSON.parse(localStorage.getItem('checked'));
-      let options = this.props.products.phone.map((item) => <option className="select__item" key={item.id} defaultValue={item.name} >{item.name}</option>)
-      console.dir(this);
-      return (
-         <section className="list-phone">
-            <div className="container">
-
-               <form className='list-phone__form'>
-                  <div className="list-phone__items-wrap">
-                     <select className="list-phone__select select" value={this.state.value} onChange={this.handleChange1} >
-                        {options}
-                     </select>
-                     <div className="block-info">{this.state.value}</div>
-                  </div>
-                  <div className="list-phone__items-wrap">
-                     <input className="list-phone__formItem" name="checkValue" type="checkbox" onChange={this.evCheck} defaultChecked={check} />
-                     <div className="block-info">{(check) ? 'Выбрано' : 'Не выбрано'}</div>
-                  </div>
-                  <div className="list-phone__items-wrap">
-                     <input className="list-phone__formItem" name="rangeValue" type="range" defaultValue={this.state.rangeValue} onChange={this.evCheck} />
-                     <div className="block-info">{this.state.rangeValue}</div>
-                  </div>
-               </form>
-
-            </div>
-         </section>
-      )
-   }
-};
-
-
+/*
+  <form className='phone__form'>
+               <div className="phone__items">
+                  <select className="phone__select select" value={checkFilter} onChange={handleChange} >
+                     {options}
+                  </select>
+                 
+               </div>
+               <div className="phone__items">
+                  <input className="phone__formItem" name="checkValue" type="checkbox" onChange={evCheck} defaultChecked={check} />
+                  <div className="block-info">{(check) ? 'Выбрано' : 'Не выбрано'}</div>
+               </div>
+               <div className="phone__items">
+                  <input className="phone__formItem" name="rangeValue" type="range" defaultValue={''} onChange={evCheck} />
+                  <div className="block-info">{''}</div>
+               </div>
+            </form>
+*/
 /*
 Для начала при ошибке TypeError: Cannot read property 'setState' of undefined
 проверить контекст.

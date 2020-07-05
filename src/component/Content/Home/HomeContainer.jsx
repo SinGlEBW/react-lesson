@@ -1,19 +1,26 @@
-import React, { Component } from 'react';
 import Home from './Home';
-import { stateContext } from '../../../stateContext';
+import { connect } from 'react-redux';
 
-export default class HomeContainer extends Component {
-   render = () => {
-      
-      return (
-         <stateContext.Consumer>
-            {/* Взял данные контекстом, не прокидывая через props */}
-            {(props,a) => {
-               console.dir(props);
-            return(<Home {...props}/>)}}
-         </stateContext.Consumer>
-      
-      )
-   }
-};
+const f1 = (store) => {
+   return {home: store.home}
+}
+const f2 = (dispatch) => {
+   return {}
+}
 
+const HomeContainer = connect(f1)(Home)
+
+export default HomeContainer;
+
+/*
+Данные распространяются только на jsx 
+stateContext.Consumer>   
+   {(props) => (<Home {...props}/>)}
+</stateContext.Consumer>
+
+Вынести данные за пределы метода render. Это передать данные экземпляра createContext в специальное свойство класса contextType
+static contextType = stateContext
+
+Есть вариант с react-redux создать контейнер для презентационной компоненты
+
+*/

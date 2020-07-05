@@ -1,4 +1,8 @@
 import React from 'react';
 const stateContext = React.createContext(null);
 
-export{ stateContext };
+let objectState = {
+   props: "",
+   state: ""
+}
+export{ stateContext, objectState };

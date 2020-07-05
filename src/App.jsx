@@ -11,12 +11,10 @@ import InfoContainer from './component/Content/Information/InfoContainer';
 import ImagesContainer from './component/Content/Images/ImagesContainer';
 import Footer from "./component/Footer/footer";
 
-
-
 class App extends Component {
   
   render(){
-    console.dir(this);
+    
    
     return (
       <BrowserRouter>
@@ -27,15 +25,15 @@ class App extends Component {
             
             <Route exact path='/' render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
            
-            <Route path='/products' render={(props) => <ProductsContainer products={this.props.products} />}/>
+            <Route path='/products' render={(props) => <ProductsContainer />}/>
             
-            <Route path='/chat' render={(props) => <ChatContainer chat={this.props.chat} dispatch={this.props.dispatch} />} />
+            <Route path='/chat' render={(props) => <ChatContainer />} />
           
-            <Route path='/contact' render={(props) => <ContactContainer contact={this.props.contact} />}/>
+            <Route path='/contact' render={(props) => <ContactContainer />}/>
             
-            <Route path='/info' render={(props) => <InfoContainer info={this.props.info} />}/>
+            <Route path='/info' render={(props) => <InfoContainer />}/>
             
-            <Route path='/images' render={(props) => <ImagesContainer images={this.props.images} />}/>
+            <Route path='/images' render={(props) => <ImagesContainer />}/>
             
           </Switch>
            {/* ------------------------------------------------*/}
@@ -50,7 +48,10 @@ class App extends Component {
 
 export default App;
 
-
+/*
+  Вариант передачи через props 
+  <ChatContainer chat={this.props.chat} dispatch={this.props.dispatch} />} />
+*/
 /*
   Условный рендеринг. Подразумевает собой что при определённом условии будет отображаться один из компонентов
   Строиться условие в компоненте который контролирует вывод других компонентов.
@@ -94,9 +95,16 @@ export default App;
 1. Что бы не было циклического подключения нам нужно создать контекст в другом файле и уже его импортировать 
     в файле где ходим взять данные, потом импортировать куда хотим положить данные
 2. т.к. MyContext.Provider принимает значения, а MyContext.Consumer компонент в который кладём callback 
-   и забираем 1м параметром эти данные, далее возвращаем jsx, но есть одно но.
-   Если данные нужны выше метода render, то тут проблема. Так что context хорош если данные нужно 
-   передать непосредственно в jsx.  
+   и забираем 1м параметром эти данные, далее возвращаем jsx
+   Пример. 
+   <MyContext.Consumer>
+      {(value) => <Component {...value}>}
+   </MyContext.Consumer>
+   но есть одно но.
+   Если данные нужны выше метода render, то тут проблема в таком варианте. Требуется не оборачивать 
+   компонент MyContext ом, а передать его в специальное свойство класса прописав
+   static contextType = MyContext. Тогда обращение в классе происходит к объекту content для получения 
+   передаваемых данных
 
 Кстате при большом желании можно передавать целые компоненты через пропс, а то и объект компонентов
 */

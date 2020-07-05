@@ -1,8 +1,8 @@
-.list-phone {
+.phone {
    display: grid;
 
 }
-.list-phone__form{
+.phone__form{
    width: 200px;
    
    display: grid;
@@ -11,17 +11,17 @@
    border: 1px solid #000;
 }
 
-.list-phone__items-wrap{
+.phone__items{
    display: grid;
    grid-gap: 10px;
    padding: 20px; 
 }
-.list-phone__items-wrap:nth-child(2)  {
+.phone__items:nth-child(2)  {
    display: grid;
    align-items: center;
    background-color: #fff;
 }
-.list-phone__items-wrap:nth-child(2) .block-info {
+.phone__items:nth-child(2) .block-info {
   grid-column: 2;
 }
 /* 

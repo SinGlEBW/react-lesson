@@ -23,7 +23,9 @@ export default class Header extends Component {
 		formSwitch: JSON.parse(localStorage.getItem('formSwitch')) || false,
 		pathLogin: localStorage.getItem('pathLogin') || 'login'//1й пар. пустота тоже не рассматривается
 	}
-	
+	pathHome = {
+		pathname: '/' || '/registration'
+	}
 
 	formOnOff = async ({target}) => {
 		let toggle = await !this.state.formSwitch;
@@ -37,16 +39,16 @@ export default class Header extends Component {
 		await localStorage.setItem('pathLogin', this.state.pathLogin)
 		
 	}
-	
-	render() {
 
+	render() {
+console.dir(this);
 		return (
 			<header className="header" >
 				<div className="container">
 					<div className="header__wrap">
 						<ul className="header__nav">
-							<li className="header__navItem"><NavLink className="header__navItemlink" to="/" onClick={this.navigation}>Главная</NavLink></li>
-							<li className="header__navItem"><NavLink className="header__navItemlink" to="products" onClick={this.navigation}>Товары</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to={this.pathHome} onClick={this.navigation}>Главная</NavLink></li>
+							<li className="header__navItem"><NavLink className="header__navItemlink" to='catalog' onClick={this.navigation}>Товары</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="chat" onClick={this.navigation}>Чат</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="contact" onClick={this.navigation}>Контакты</NavLink></li>
 							<li className="header__navItem"><NavLink className="header__navItemlink" to="info" onClick={this.navigation}>Информация</NavLink></li>
@@ -60,7 +62,7 @@ export default class Header extends Component {
 						</div>
 						<div className="header__loginIn">
 							<Switch>
-								<Route className="header__loginInItem" path={`${this.state.path}/login`} component={(props) => <LoginIn {...props} />} />
+								<Route className="header__loginInItem" path='/login' component={(props) => <LoginIn {...props} />} />
 								<Route className="header__loginInItem" path="/registration" component={(props) => <Registration {...props} />} />
 							</Switch>
 						</div>
@@ -70,6 +72,8 @@ export default class Header extends Component {
 		);
 	}
 }
+
+
 
 /*
 	NavLink определяет то что будет показывать в url, а Router определяет что должно быть обычным путём,

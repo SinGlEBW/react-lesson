@@ -3,6 +3,7 @@ import './Products.css';
 
 import { NavLink } from 'react-router-dom';
 import { Menu } from './Menu/Menu';
+import Axios from 'axios';
 
 
 const Products = (props) => {
@@ -14,7 +15,7 @@ const Products = (props) => {
    let showProducts = phone.map((item) => {
 
       return (
-         <NavLink className="products__item" key={item.id} to={`/products/phone/${item.name}`}>
+         <NavLink className="products__item" key={item.id} to={`/catalog/phone/${item.name}`}>
             <span className="products__item-title">{item.name}</span>
             <img className="products__item-image" src={item.src} alt={item.name} />
          </NavLink>
@@ -26,13 +27,15 @@ const Products = (props) => {
       return <Menu product={item} key={item.id} />
    })
 
-   let ajaxRequest = async(e) => {
+function ajaxRequest(e) {
       e.preventDefault();
-      fetch('http://127.0.0.1:4000/get-db')
-         .then(response => response.json())
-         .then(contents => console.log(contents))
-         .catch(() => console.log("Какая-то ошибка"))
-      
+      Axios.get('http://127.0.0.1:4000/catalog')
+         .then(response => console.dir(response.data))
+         
+         .catch(() => console.log("Какая-то ошибка"));
+      // let body = new FormData(e.target);
+      // Axios.get('http://127.0.0.1:4000/catalog/?name=')
+    
    }
 
 
@@ -64,7 +67,9 @@ export default Products;
 
 
 /*
-   О серверной части.Как я понимаю о многих случаях проект строиться 
+   О серверной части.
+   Можно посылать запрос на сервер взяв данные из get параметра, а можно самому собрать get
+   и отправить.
 */
 /*
 

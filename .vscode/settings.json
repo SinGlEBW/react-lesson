@@ -3,9 +3,11 @@
         "ananas",
         "apelsine",
         "asus",
+        "autorization",
         "c",
         "callback",
         "callback'",
+        "callback'a",
         "callback'ами",
         "callback'ом",
         "component",
@@ -46,8 +48,10 @@
         "вдуплять",
         "вообщем",
         "выравниет",
+        "деструктуризация",
         "димыч",
         "димычем",
+        "дособирается",
         "ебала",
         "ивента",
         "ивентов",
@@ -57,6 +61,7 @@
         "кстате",
         "методав",
         "минифицированный",
+        "объебался",
         "отрендерится",
         "отрисовки",
         "отрисовкой",
@@ -69,6 +74,9 @@
         "поднапрячся",
         "рендер",
         "рендеринг",
+        "роутами",
+        "сервак",
+        "токен",
         "флешки",
         "целсия",
         "шаблонизаторами",
@@ -87,7 +95,9 @@
     "ecsstractor_port.destination": "tab",
     "editor.fontLigatures": null,
     "editor.fontWeight": "100",
-    "editor.fontSize": 14
-    
-
+    "window.zoomLevel": 1,
+    "editor.fontSize": 16.5,
+    "terminal.integrated.fontSize": 15,
+    "debug.node.autoAttach": "on",
+    "debug.console.fontSize": 12, //Что бы не запускать debugger в ручную  
 }

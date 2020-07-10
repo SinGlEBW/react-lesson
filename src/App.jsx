@@ -12,7 +12,9 @@ import ImagesContainer from './component/Content/Images/ImagesContainer';
 import Footer from "./component/Footer/footer";
 
 class App extends Component {
-  
+  home = {
+		pathname: '/' || '/registration'
+	}
   render(){
     
    
@@ -23,9 +25,9 @@ class App extends Component {
           {/* *****Content****** */}
           <Switch>
             
-            <Route exact path='/' render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
+            <Route exact path={['/','/registration', '/login']} render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
            
-            <Route path='/products' render={(props) => <ProductsContainer />}/>
+            <Route path={['/catalog','/registration/catalog', '/login/catalog']} render={(props) => <ProductsContainer />}/>
             
             <Route path='/chat' render={(props) => <ChatContainer />} />
           
@@ -49,8 +51,11 @@ class App extends Component {
 export default App;
 
 /*
-  Вариант передачи через props 
+  Вариант передачи через props сработает если в app что-то передано.
   <ChatContainer chat={this.props.chat} dispatch={this.props.dispatch} />} />
+
+  При использовании Provider от Redux передача данных осуществляется до 
+  контейнера не через props, а через функцию content
 */
 /*
   Условный рендеринг. Подразумевает собой что при определённом условии будет отображаться один из компонентов

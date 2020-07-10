@@ -1,14 +1,13 @@
  import React, { Component } from 'react';
  import LoginIn from './Authorization/loginIn';
+ 
  export default class Account extends Component {
-   constructor(props){
-      super(props)
-      this.state = {check: false,
+      state = {check: false,
         checked: false,
         mess: 'Login In',
         toggle: 'Вход'
       }
-    }
+    
     eventClickOn = () => {
       this.setState({check: true})
     }
@@ -26,6 +25,7 @@
     }
   
     render = () => {
+      console.dir(this);
        return (
           <section className="LoginIn">
             {//условный рендер
@@ -48,3 +48,8 @@
  }
 
 }
+
+/*
+  Варианты использования state для кнопок. Можно изменяя state подкидывать компонент другой кнопки, а можно
+  изменить саму кнопку поменяв значения
+*/

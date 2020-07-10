@@ -12,25 +12,24 @@ let pool = mysql.createPool({//много соединений
 });
 
 function resultBD (action) {
-   
+  
    pool.getConnection(async(err, connection) => {
       switch(action.type){
          case GET_DATA: 
-         await connection.query("SELECT * FROM user",  (err, result) => action.getData(result || err)); break;
+         await connection.query("SELECT * FROM user",  (err, result) => action.getData(result)); break;
          case SET_DATA: 
          await connection.query(`INSERT INTO ${action.nameTable}` ,  (err, result) => action.setData(result)); break;
          default: return -1
       }
 
-         
-         
          connection.release();
    })
 
-   return 
+   
 }
 
-module.exports = {resultBD};
+
+module.exports = { resultBD };
 
 
 

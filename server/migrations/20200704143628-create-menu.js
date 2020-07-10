@@ -3,7 +3,7 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('menus', {
       id: {
-        allowNull: false,
+        allowNull: false,//допускает ли поле отсутствие значение.
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
@@ -15,7 +15,14 @@ module.exports = {
         type: Sequelize.STRING
       },
       submenu: {
-        type: Sequelize.JSON
+        type: Sequelize.JSON,
+        references: {//можно передать как-то ссылку на модель
+          model: {
+            tableName: 'users',
+            schema: 'schema'
+          },
+          key: 'id'
+        },
       },
       createdAt: {
         allowNull: false,

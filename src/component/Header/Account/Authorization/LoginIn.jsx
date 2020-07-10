@@ -4,6 +4,7 @@ export default class LoginIn extends Component {
    state = {loginIn: localStorage.getItem(LoginIn) || false}
    
    render = () => {
+      console.dir(this);
       return (
          <div className='loginIn'>
             <h3 className="loginIn__title">Авторизация</h3>

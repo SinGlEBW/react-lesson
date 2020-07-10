@@ -3,6 +3,8 @@ import './Menu.css';
 import { NavLink } from 'react-router-dom';
 import { Submenu } from './Submenu/Submenu';
 import { useRef } from 'react';
+import { useEffect } from 'react';
+import Axios from 'axios';
 //React.lazy(() => import('./OtherComponent')); -динамический import 
 /*
    Когда собирается конечный проект весь код как я понимаю собирается в один файл который может быть очень 
@@ -24,6 +26,12 @@ export const Menu = (props) => {
    let menu = props.product;
    let subMenuRef = useRef(null);
    let menuRoot = useRef(null)
+   useEffect(() => {
+      // window.onload = () => {
+      //    Axios.get('http://127.0.0.1:4000/get-db')
+      //    console.dir(1);
+      // }
+   })
    
    /*######---Events---###### */
    function evMouseEnter(e) {
@@ -46,6 +54,13 @@ export const Menu = (props) => {
       // console.dir(e.relatedTarget);//куда перешёл
      
    }
+
+   function ajaxRequest(e) {
+      e.preventDefault();
+      let body = new FormData(e.target);
+      // 
+      
+   }
 /*
    При наведении на родителя и на его дочерние элементы на submenu должен находиться класс submenu--active
    При отслеживании события onMouseEnter мы отслеживаем мышь только на родителе
@@ -54,7 +69,7 @@ export const Menu = (props) => {
       <div className="menu__root" ref={menuRoot} onMouseEnter={evMouseEnter} onMouseLeave={evMouseLeave}>{/* */}
          <img className="menu__root-icon" src={menu.src} alt={Object.values(menu.name)}></img>
          <div className="menu__root-info info">
-            <NavLink className="menu__info-title-link ui-link" to={`/products/${Object.keys(menu.name)}`}>
+            <NavLink className="menu__info-title-link ui-link" to={`/catalog/${Object.keys(menu.name)}`}>
                {Object.values(menu.name)}
             </NavLink>
             <div className="menu__info-subtitles">

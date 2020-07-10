@@ -1,35 +1,64 @@
+require('module-alias/register');
 const express = require('express');
 const app = express();
-let mySQL = require('./mySql');
-let {body, validationResult} = require('express-validator/check');
+let { resultBD } = require('./mySql');
 
-app.use(express.json());//Указывается для приходящих данных, в какой формат их переводить
-console.dir(body);
+
+const { userValid, loginValid} = require('@services/validator');
+const { createUser, login } = require('@controllers/user-controller');
+const { create, find } = require('@controllers/menu-controller');
+
+/*
+   Можно непосредственно модель кинуть сюда, а можно разбить логику, вот например
+   контролер
+*/
+//express.json() устанавливает объект body и в какой формат приходящие данные переводить
+app.use(express.json());//тот же body-parser
 
 app.listen(4000);
 
-app.get('/db', (req, res) =>{
-   // let body = JSON.stringify(module.exports.dataBD);
-   // res.send(body)
+app.get('/catalog', find)
 
-   res.setHeader("Access-Control-Allow-Origin", "*");
+app.get('/add', (req, res) =>{
+   resultBD(getAC());
+    
    
    res.status(200);
    res.json(module.exports.dataBD)
   
 })
+
 //настройка валидации для регистрации
-app.post('/app/reg', [
-   body('email').trim().isEmail().normalizeEmail(),
-   body('password').trim().not().isEmpty().isLength({min: 5})
-   .withMessage('Минимальный ввод 5 символов')
-], (req, res, next) => {
-   let errors = validationResult(req);
-   if(!errors.isEmpty()){
-      
-      res.status(422).json({errors: errors.array()})
-   }
-})
+ app.post('/app/reg', userValid, createUser);
+ app.post('/app/login', loginValid, login);
+
+function getAC() {
+
+   return (
+      {
+         type: "GET_DATA",
+         getData: (data)=>module.exports = data
+      }
+   ) 
+}
+function getData (data) {
+   module.mysql = {dataBD: data}
+}
+// getAC()
+
+/*
+   Как я понимаю идея создания сервисов и контролеров это разделение полномочий.
+   контролеры отвечают за callback который находиться в запросах get,post
+   сервисами же могут пользоваться как запросы, так и сами callback
+*/
+
+/*
+Как отрабатывает код валидации.
+app.use отрабатывает 1й. в неё помещаем express.json для того что бы другие
+middleware функции знали про объект body. Далее мы передаём в middleware некоторые
+параметры которые он передаёт внутрь и обрабатывает данные внутри, после чего
+отрабатывает middleware callback
+ */
 /*
    isEmail() - является ли email'ом
    normalizeEmail() - приводит к единому регистру, очищает от мусора и пробелов
@@ -39,43 +68,10 @@ app.post('/app/reg', [
    isLength({min: 5}) - длина строки
    withMessage() - принимает сообщение для вывода
    matches() - принимает регулярное выражение если нужно что-то выполнить
-
+   escape() - удаляет символы HTML которые могут использоваться в атаках
    Кстате request это объект "запроса", который приходит от клиента, а response это объект
-   "ответа" который мы отсыалем клиенту
+   "ответа" который мы отсылем клиенту
 */
-app.get('/get-db', (req, res) =>{
-   let getData = (data) => {
-      return data
-   }
-   let getData1 = mySQL.resultBD(mySQL.getData)
-    console.dir(getData1);
-   res.setHeader("Access-Control-Allow-Origin", "*");
-   
-   res.status(200);
-   res.json(module.exports.dataBD)
-  
-})
-app.get('/add', (req, res) =>{
-   // let body = JSON.stringify(module.exports.dataBD);
-   // res.send(body)
-   
-   res.setHeader("Access-Control-Allow-Origin", "*");
-   
-   res.status(200);
-   res.json(module.exports.dataBD)
-  
-})
-
-function exp (data) {
-   module.exports = {dataBD: data}
-}
-
-
-function getDataAC (data) {
-   return data
-}
-
-mySQL.resultBD(exp)
 // app.use(express.static(filePath));
 /*
    Для работы с sequelize не в голом виде,лучше устанавливать дополнительно 
@@ -88,14 +84,37 @@ mySQL.resultBD(exp)
    SQL, а будем использовать JS и представлять что эта модель одна из
    нужных нам таблиц. 
    Есть смысл называть модель с большой буквы т.к. это будет класс
+
    npx sequelize model:generate --name название --attributes название столбцов бд
    добавляя при этом через :тип. после типа пробелов не должно быть. 
    создастся так же файл миграции который описывает таблицу. Можно редактировать.
-   Что бы началась связь с бд нужно запускать миграцию предварительно установив 
-   mysql2. Запуск миграции
-   npx sequelize db:migrate 
-*/
 
+   Папка migrations отвечает за создание таблиц в бд
+   Что бы началась связь с бд нужно запускать миграцию предварительно установив
+   mysql2. 
+   Отдельно создать файл миграции команда
+   npx sequelize-cli migration:generate --name migration-skeleton
+
+   Запуск миграции создаёт первоначально таблицу, далее изменения производиться через модель
+   npx sequelize db:migrate 
+   npx sequelize db:migrate:undo - вернуть к предыдущему состоянию в бд
+   npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js - отменить все изменения в данной таблице
+
+   Папка seeders отвечает за заполнение таблиц.
+   Добавив команду в консоль
+   npx sequelize-cli seed:generate --name demo-user в папке появится 2 функции которые можно отредактировать
+   под нужды добавления элементов в таблицу
+
+   непосредственное добавление происходит после указания в консоли команды
+   npx sequelize-cli db:seed:all 
+   npx sequelize-cli db:seed:undo --seed name отменить конкретную строку 
+   . Всё конечно прикольно, но это не автоматический режим
+*/
+/*
+   Функции up, down содержат 2 параметра 
+   queryInterface объект для управления БД, Sequelize Объект для указания типов 
+   Так же функции возвращают Promise
+*/
 /* Выключить CORS. Почитать надо что за что отвечает
    res.setHeader('Access-Control-Allow-Origin', '*');
    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');

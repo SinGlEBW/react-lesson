@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { inProductsAction, showProductsAction, setProductMenu } from '../../../redux/reducer/products-reducer';
 import Products from './Products';
 
-let f1 = (store) => {//хранится store и пустой объект
-   return { products: store.products }
+let f1 = (state) => {//хранится state и пустой объект
+   return { products: state.products }
 }
 let f2 = (dispatch) => {//хранится dispatch и пустой объект
-   let productionAdd = (phone) => {
-      dispatch(inProductsAction(phone))
+   let productionAdd = (item) => {
+      dispatch(inProductsAction(item))
    }
-   let showProducts = (phone) => {
-      dispatch(showProductsAction(phone))
+   let showProducts = (item) => {
+      dispatch(showProductsAction(item))
    }
    let setMenu = (name, data) => {
       dispatch(setProductMenu(name, data))

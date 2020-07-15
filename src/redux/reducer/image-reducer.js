@@ -1,4 +1,5 @@
 const ADD_IMAGE = 'ADD_IMAGE';
+const SHOW_IMAGES = 'SHOW_IMAGES';
 
 let images = {
        animal: [
@@ -11,11 +12,12 @@ let images = {
 export const imagesReducer = (stateImages = images, action) => {
    
    switch(action.type){
-      case ADD_IMAGE: stateImages.setText = action.text; return stateImages;
-      
+      case ADD_IMAGE: return {...stateImages, ...action.image} 
+      case SHOW_IMAGES: return {...stateImages, ...action.images}
       default: return stateImages; 
       
     }
 }
 
-export const inImagesAction = (text) => ({type: ADD_IMAGE, text})
+export const addImagesAction = (text) => ({type: ADD_IMAGE, text})
+export const showImagesAction = (images) => ({type: SHOW_IMAGES, images})

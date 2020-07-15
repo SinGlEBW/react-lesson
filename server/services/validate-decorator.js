@@ -1,18 +1,17 @@
 const { validationResult } = require('express-validator');
 
-//интересный способ из массива создать объект
-let validateDecorator = (action = {}) => (
-   Object.keys(action).reduce((result, actionName) => {
-     
+let validateDecorator = (action) => (
+   Object.keys(action).reduce((result, key) => {
+     //интересный способ из массива создать объект
       return {
          ...result,
-         [actionName] (req, res, next) {
+         [key] (req, res, next) {
            
             let errors = validationResult(req);
             if (!errors.isEmpty()) {
               return res.status(422).json({ errors: errors.array() });
             }
-            action[actionName](req, res, next)//запускается и передаётся
+            action[key](req, res, next)//запускается и передаётся
          },
       }
    }, {} )

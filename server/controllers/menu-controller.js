@@ -1,9 +1,18 @@
-const { Menu } = require('@models');//по ум в папке берёт index
+const { Menu,sequelize } = require('@models');//по ум в папке берёт index
 let { validationResult } = require('express-validator');
 
 /*
    Концепция схожа с отдельными роутами. 
 */
+
+
+async function crea(){
+   // let a = await Menu.count()
+   // let b = sequelize.fn('COUNT', sequelize.col('name'), 'new' )
+   // console.dir(b);
+   
+}
+
 function create (req, res, next) {
  
       let errors = validationResult(req);
@@ -54,24 +63,13 @@ module.exports = {
    create,
    find
 }
-/*
- Menu.create({заполнить поля колонок})
- .then((res) => console.dir(res);получаем сразу же)
- .catch((err) => console.dir(err))
-*/
 
 
-
-/* 
-raw: true показывает только данные бд
-where принимает объект ключ значение
-findAll({where:{id: userid}, raw: true}}) - поиск всех элементов
-findByPk(2) - возвращает один эл. по ключу
-findOne({where: {name: "Bob"}) - по критериям как и findAll
-update({ age: 36 }, {where: {name: "Bob"}) - указывается 1й объект что изменить, потом ищем где
-destroy({where: {name: "Bob"}) - удаляет все найденные элементы
-*/
 
 /*
-   Это в get я должен передавать ?name=phone ?
+###***объект sequelize имеет методы которые иногда используются в сочетании с моделью и таблицей 
+   col() - принимает название колонки. Это нужно что бы sequelize принимал колонку за колонку, а не как строку
+   fn('COUNT', sequelize.col('name'), 'ne') - это функция которая передаёт все аргументы той функции
+                                              которую мы указали 1м аргументом 
+   
 */

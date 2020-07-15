@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-
-import { inMessAction, sendAction } from '../../../redux/reducer/chat-reducer';
-import Chat from './Chat';
 import { connect } from 'react-redux';
+import Chat from './Chat';
+
+
 
 let mapStateToProps = (state) => {
-   return { chat: state.chat}
+   return { chat: state.chat }
 }
 let mapDispatchToProps = (dispatch) => {
    return {
@@ -15,6 +14,7 @@ let mapDispatchToProps = (dispatch) => {
 
 let ChatContainer = connect(mapStateToProps, mapDispatchToProps)(Chat);
 export default ChatContainer;
+
 
 /*
    Контейнер для компонента требуется что бы не засорять сам компонент методами redux 

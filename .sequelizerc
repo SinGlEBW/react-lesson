@@ -1,0 +1,13 @@
+const path = require('path');
+/* 
+   специальный файл описанный в документации.
+   Ключи не вымышлены. Т.к. sequelize ожидает что файлы в корне проекта, а мы не желаем его там
+   видеть, нам нужно редактировать пути. Редактирование указывается относительно этого
+   файла, а он в корне проекта. Так же можно переименовать файл конфигурации
+*/
+module.exports = {
+   'config': path.resolve('server', 'config', 'database.json'),
+   'models-path': path.resolve('server', 'models'),
+   'migrations-path': path.resolve('server','db', 'migrations'),
+   'seeders-path': path.resolve('server','db', 'seeders')
+}

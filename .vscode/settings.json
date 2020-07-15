@@ -23,6 +23,7 @@
         "header nav itemlink",
         "href",
         "index",
+        "item'a",
         "itemlink",
         "mfile",
         "mfor",
@@ -34,6 +35,7 @@
         "redmi",
         "reload",
         "reload do mfile index",
+        "sequelize",
         "set",
         "set react do mfor state",
         "state",
@@ -68,10 +70,13 @@
         "отрисовку",
         "отрисовывает",
         "отрисовывать",
+        "партачить",
         "перезатираем",
         "перезатирая",
         "перерендер",
         "поднапрячся",
+        "промис",
+        "промисами",
         "рендер",
         "рендеринг",
         "роутами",
@@ -98,6 +103,10 @@
     "window.zoomLevel": 1,
     "editor.fontSize": 16.5,
     "terminal.integrated.fontSize": 15,
-    "debug.node.autoAttach": "on",
-    "debug.console.fontSize": 12, //Что бы не запускать debugger в ручную  
+    "debug.node.autoAttach": "on",//Что бы не запускать debugger в ручную  
+    "debug.console.fontSize": 12,
+    "editor.suggest.localityBonus": true,
+    "editor.suggestSelection": "recentlyUsedByPrefix",//IntelliSense при нажатии на tab Выберите элементы на основе предыдущих префиксов
+    "explorer.autoReveal": false, //autoReveal не даёт файлам в проводнике раскрываться при фокусировке на файле
+   
 }

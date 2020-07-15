@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './Contact.css';
 import Temperature, { Temperature1, TemperatureInput } from './Temperature/Temperature';
-import { Provider } from 'react-redux';
 
 export default class Contact extends Component {
    deg = [

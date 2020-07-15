@@ -1,10 +1,7 @@
-import React from 'react';
-import './Menu.css';
+import React, { useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import './Menu.css';
 import { Submenu } from './Submenu/Submenu';
-import { useRef } from 'react';
-import { useEffect } from 'react';
-import Axios from 'axios';
 //React.lazy(() => import('./OtherComponent')); -динамический import 
 /*
    Когда собирается конечный проект весь код как я понимаю собирается в один файл который может быть очень 

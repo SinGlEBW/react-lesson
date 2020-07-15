@@ -2,30 +2,25 @@ const jwt = require('jsonwebtoken');
 const config = require('@config-server/config');
 
 function createToken (userFromDB){
-   const token = jwt.sign({id: userFromDB.dataValues.id}, config.secret, {expiresIn: 86400});
-   return token;
+   return jwt.sign({id: userFromDB.id, role: userFromDB.role}, config.secret, {expiresIn: 86400});
 }
 
 function verifyToken (req, res, next){
-   let token;
-   if(req.headers['autorization']) 
-      token = req.headers['autorization'];
-   if(token){
-      token = token.replace(/bearer|jwt\s+ /i)
    
+   if(req.headers['authorization'] && req.headers['authorization'].length){
+      const token = req.headers['authorization'].replace(/(bearer|jwt)\s+/i, ''); 
       jwt.verify(token, config.secret, (err, decoded) => {
-         if(err) {
-            res.status(401).json({error: err})
-            return;
-         }
+         if(err) 
+            return next({err, statusCode: 401});  
          //в объект запроса запишем раскодированные данные и передадим дальше. Всё равно на сервере
-         req.userId = decoded.id;
+         req.infoUser = {id: decoded.id, role: decoded.role}
          next();
-
+//если в next что-то передать, то сгенерируется ошибка и управление передастся в ближайший обработчик ошибок  
       });
-   }else
-      res.status(401).json({error: 'Неправильный Token'})
-      
+   }else{
+      req.infoUser = {role: 'guest'};
+      next()
+   }     
 }
 
 

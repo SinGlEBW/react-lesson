@@ -275,31 +275,26 @@ export const productReducer = (stateProducts = products, action) => {
   let searchProducts = (nameProducts) => {
     return {
       ...stateProducts,
-      phoneFILTER: stateProducts.phone.map((item) => {
-        if (item.name === nameProducts) return { ...item };
-      }),
+      phoneFILTER: stateProducts.phone.map((item) => ((item.name === nameProducts)?{ ...item }: null)),
     };
   };
   switch (action.type) {
-    case ADD_PRODUCT:
-      stateProducts.setText = action.text;
-      return stateProducts;
+    case ADD_PRODUCT: stateProducts.setText = action.text; return stateProducts;
 
-    case SHOW_PRODUCT:
-      return searchProducts(action.name);
-    case SET_PRODUCT_MENU:
-      return {
-        ...stateProducts, [action.menuList]: action.menuList
-      };
-
-    default:
-      return stateProducts;
+    case SHOW_PRODUCT: return searchProducts(action.name);
+    case SET_PRODUCT_MENU: return {...stateProducts,[action.menuList]: action.menuList};  
+    default:return stateProducts;
+      
   }
 };
 
 export const inProductsAction = (text) => ({ type: ADD_PRODUCT, text });
 export const showProductsAction = (text) => ({ type: SHOW_PRODUCT, text });
-export const setProductMenu = (name, data) => ({ type: SET_PRODUCT_MENU, name, data });
+export const setProductMenu = (name, data) => ({
+  type: SET_PRODUCT_MENU,
+  name,
+  data,
+});
 
 /*
   Reducer - это чистая функция которая принимает старый state и action, если надо модифицирует работая 

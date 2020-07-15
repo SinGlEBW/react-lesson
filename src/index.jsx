@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { storeRedux } from './redux/reduxStore';
+// eslint-disable-next-line
 import { stateContext, objectState } from './stateContext';
 import { Provider } from 'react-redux';
 

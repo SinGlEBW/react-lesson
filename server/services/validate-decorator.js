@@ -12,12 +12,13 @@ let validateDecorator = (action) => (
               return res.status(422).json({ errors: errors.array() });
             }
             action[key](req, res, next)//запускается и передаётся
-         },
+         }
       }
    }, {} )
 )
 
 module.exports = validateDecorator;
+
 /*
 Что тут вообще происходит и зачем это надо? 
 Что бы в каждой функции не писать руками один и тот же код, существует понятие 

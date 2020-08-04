@@ -59,7 +59,7 @@ export default class Test extends Component {
   }
 
   render() {
-console.dir(this);
+
     return (
       <section className='test-block'>
         <div className='container'>

@@ -2,20 +2,21 @@ const jwt = require('jsonwebtoken');
 const config = require('@config-server/config');
 
 function createToken (userFromDB){
-   return jwt.sign({id: userFromDB.id, role: userFromDB.role}, config.secret, {expiresIn: 86400});
+   console.dir(userFromDB);
+   return jwt.sign({id: userFromDB.id, role: userFromDB.role}, config.secret, {expiresIn: 3600});
 }
 
 function verifyToken (req, res, next){
-   
+   console.dir(req.headers);
    if(req.headers['authorization'] && req.headers['authorization'].length){
-      const token = req.headers['authorization'].replace(/(bearer|jwt)\s+/i, ''); 
+      const token = req.headers['authorization'];//.replace(/(bearer|jwt)\s+/i, ''); 
       jwt.verify(token, config.secret, (err, decoded) => {
          if(err) 
             return next({err, statusCode: 401});  
-         //в объект запроса запишем раскодированные данные и передадим дальше. Всё равно на сервере
+        
          req.infoUser = {id: decoded.id, role: decoded.role}
          next();
-//если в next что-то передать, то сгенерируется ошибка и управление передастся в ближайший обработчик ошибок  
+
       });
    }else{
       req.infoUser = {role: 'guest'};
@@ -30,10 +31,16 @@ module.exports = {
 }
 
 /*
-   sign() 
+   jwt.sign() 
    1й - это данные пользователя которые хотим засунуть в token() объект payload
    2й - ключ которые замешиваем
    3й - это опции. expiresIn - время жизни
+
+   jwt.verify()
+   1й - token
+   2й - секретный ключ
+   3й - или option или callback который декодирует token 
+   4й - если 3й option 4й callback
 */
 
 

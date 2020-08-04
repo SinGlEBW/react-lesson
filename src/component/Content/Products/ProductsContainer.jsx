@@ -1,33 +1,61 @@
-// import React, { Component } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { inProductsAction, showProductsAction, setProductMenu } from '../../../redux/reducer/products-reducer';
+import { showProdAC, addProdAC, setMenuAC } from '../../../redux/reducer/Content/products-reducer';
 import Products from './Products';
+import { NavLink } from 'react-router-dom';
+import { Menu } from './Menu/Menu';
+import Axios from 'axios';
 
-let f1 = (state) => {//хранится state и пустой объект
-   return { products: state.products }
+class ProductsContainer extends Component {
+
+   showProducts = () => this.props.products.phone.map((item) => {
+      
+      return (
+         <NavLink className="products__item" key={item.id} to={`/catalog/phone/${item.name}`}>
+            <span className="products__item-title">{item.name}</span>
+            <img className="products__item-image" src={item.src} alt={item.name} />
+         </NavLink>
+      )
+   })
+
+   menuList = () => this.props.products.menu.map((item) => {
+      
+      return <Menu product={item} key={item.id} />
+   })
+   componentDidMount = () => {
+
+   }
+   ajaxRequest = (e) => {
+      e.preventDefault();
+      Axios.get('http://127.0.0.1:4000/catalog')
+         .then(response => console.dir(response.data))
+
+         .catch(() => console.log("Какая-то ошибка"));
+      // let body = new FormData(e.target);
+      // Axios.get('http://127.0.0.1:4000/catalog/?name=')
+
+   }
+   render = () => {
+      
+      return <Products menuList={this.menuList} 
+                       showProducts={this.showProducts}
+                       ajaxRequest={this.ajaxRequest}
+            />//странно не передаётся {...this.методы класса}
+   }
 }
-let f2 = (dispatch) => {//хранится dispatch и пустой объект
-   let productionAdd = (item) => {
-      dispatch(inProductsAction(item))
-   }
-   let showProducts = (item) => {
-      dispatch(showProductsAction(item))
-   }
-   let setMenu = (name, data) => {
-      dispatch(setProductMenu(name, data))
-   }
-   return { 
-      productionAdd,
-      showProducts,
-      setMenu
-   }
-}
-let ProductsContainer = connect(f1, f2)(Products)
 
 
-export default ProductsContainer
+let mapStateToProps = (state) => ({ products: state.products })
 
+export default connect(mapStateToProps, {
+   showProdAC,
+   addProdAC,
+   setMenuAC
+})(ProductsContainer)
 
+/*
+   
+*/
 /*
    В App мы передавали через props state и отдельно метод dispatch, выглядело это так
   <ProductsContainer product={this.props.products} dispatch={this.props.dispatch}/>

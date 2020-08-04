@@ -8,7 +8,7 @@ import Tests from './Tests/Tests';
 
 export default class Home extends Component {
    render = () => {
-console.dir(this);
+
       return (
        
          <main className="home">

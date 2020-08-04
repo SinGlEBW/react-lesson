@@ -1,46 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Chat.css';
 
-export default class Chat extends Component {
-   myRef = {
-      refTextarea: React.createRef(),
-      rrr: (ref) => ref//можно и функцию отдать, получается что-то типа события onload   
-   }
+let User = (props) => {
+	
+	return (
+		<main className="chat">
+			<div className="container">
+				<div className="chat__box">
+					<textarea className="chat__input" value={props.chat.setTxt} onChange={props.listensMessage} ref={props.myRef} id="message" cols="30" rows="10"></textarea>
+					<button className="chat__input--but" onClick={props.sendMessage}>Отправить</button>
+					<div className="chat__output">
+						<ul className='chat__list'>
+							{props.responseMessage()}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</main>
+	)
+}
 
-   state = { value: '' }
-
-   responseMessage = () => {
-      let id = 0;
-      return this.props.chat.message.map((message) =>
-         <li key={id++} className='chat__list-message-item'>{message}</li>)
-   }
-
-   listensMessage = ({ target }) => this.props.changesTheMessage(target.value)
-
-   sendMessage = () => this.props.toSend(this.myRef.refTextarea.current.value)
-
-   render = () => {
-
-      console.dir(this);
-      return (
-         <main className="chat">
-            <div className="container">
-               <div className="chat__box">
-                  <textarea className="chat__input" value={this.props.chat.setText} onChange={this.listensMessage} ref={this.myRef.refTextarea} id="message" cols="30" rows="10"></textarea>
-                  <button className="chat__input--but" onClick={this.sendMessage}>Отправить</button>
-                  <div className="chat__output">
-                     <ul className='chat__list-message'>
-                        {this.responseMessage()}
-                     </ul>
-                  </div>
-               </div>
-            </div>
-
-         </main>
-      )
-   }
-};
-
+export default User;
 
 /*
    Удобно тем что при обращении у  методам state контекст в том объекте остаётся своим

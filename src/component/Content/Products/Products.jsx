@@ -1,59 +1,23 @@
 import React from 'react';
 import './Products.css';
 
-import { NavLink } from 'react-router-dom';
-import { Menu } from './Menu/Menu';
-import Axios from 'axios';
-
-
-const Products = (props) => {
-
-   let phone = props.products.phone;
-   let menu = props.products.menu;
-   let checkFilter = props.products.phoneFILTER[0].name;
-
-   let showProducts = phone.map((item) => {
-
-      return (
-         <NavLink className="products__item" key={item.id} to={`/catalog/phone/${item.name}`}>
-            <span className="products__item-title">{item.name}</span>
-            <img className="products__item-image" src={item.src} alt={item.name} />
-         </NavLink>
-      )
-   })
-
-   let menuList = menu.map((item) => {
-
-      return <Menu product={item} key={item.id} />
-   })
-
-function ajaxRequest(e) {
-      e.preventDefault();
-      Axios.get('http://127.0.0.1:4000/catalog')
-         .then(response => console.dir(response.data))
-         
-         .catch(() => console.log("Какая-то ошибка"));
-      // let body = new FormData(e.target);
-      // Axios.get('http://127.0.0.1:4000/catalog/?name=')
-    
-   }
-
+let Products = (props) => {
 
    return (
       <main className="products">
          <div className="container">
             <div className="products-wrap">
                <div className="products__menu menu">
-                  {menuList}
-                  <form onSubmit={ajaxRequest}>
+                  {props.menuList()}
+                  <form onSubmit={props.ajaxRequest}>
                      <input type="text" name="menuProduct" />
                      <input type="submit" name="ok" />
                   </form>
                </div>
                <div className="products__show">
-                  <span className="products__title">{checkFilter}</span>
+                  <span className="products__title">Пока ничего</span>
                   <div className="products__items">
-                     {showProducts}
+                     {props.showProducts()}
                   </div>
                </div>
             </div>

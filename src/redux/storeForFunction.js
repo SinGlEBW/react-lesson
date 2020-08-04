@@ -1,5 +1,5 @@
 import arrTexts from "./text";
-import { chatReducer } from "./reducer/chat-reducer";
+import { chatReducer } from "./reducer/Content/chat-reducer";
 
 let store = {
   _state: {

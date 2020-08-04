@@ -1,15 +1,21 @@
 {
 	"version": "2.0.0",
 	"tasks": [
-		{//переопределение Ctrl + Shift + B на Dev запуск а не Build
+		{
+			"label": "NPM: DEV",
 			"type": "npm",
 			"script": "dev",
 			"problemMatcher": [],
-			"label": "npm: dev",
 			"detail": "run-p server start",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+        "reveal": "never"
+      },
 			"group": {
 				"kind": "build",
-				"isDefault": true
+				"isDefault": true,
 			}
 		}
 	]

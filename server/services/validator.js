@@ -5,10 +5,11 @@ let validator = {
       body('login').trim().notEmpty(),
       body('email').trim().isEmail().normalizeEmail(),
       body('phone').trim().isMobilePhone().notEmpty(),
+      
       body('password').trim().not().isEmpty().isLength({min: 5})
       .withMessage('Минимальный ввод 5 символов')
    ],
-   loginValid: [
+   logInValid: [
       body('email').trim().isEmail().normalizeEmail(),
       body('password').trim().not().isEmpty().isLength({min: 5})
       .withMessage('Минимальный ввод 5 символов')
@@ -16,6 +17,7 @@ let validator = {
 }
 
 module.exports = validator;
+
 /*
    isEmail() - является ли email'ом
    normalizeEmail() - приводит к единому регистру, очищает от мусора и пробелов

@@ -12,10 +12,11 @@ module.exports = {
       login: { type: Sequelize.STRING, unique: true},
       name: Sequelize.STRING, 
       email: { type: Sequelize.STRING, unique: true},
-      password: Sequelize.INTEGER,
+      password: Sequelize.STRING,
       avatar: Sequelize.STRING,
-      age: Sequelize.INTEGER,
+      age: Sequelize.DATE,
       role: Sequelize.STRING,
+      phone: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

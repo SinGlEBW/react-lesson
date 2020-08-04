@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { storeRedux } from './redux/reduxStore';
+import { reduxStore } from './redux/reduxStore';
 // eslint-disable-next-line
-import { stateContext, objectState } from './stateContext';
 import { Provider } from 'react-redux';
 
 
@@ -16,7 +15,7 @@ import { Provider } from 'react-redux';
 
    ReactDOM.render(
       <React.StrictMode>
-            <Provider store={storeRedux}>{/* Вариант 4 */}
+            <Provider store={reduxStore}>{/* Вариант 4 */}
                <App  />
             </Provider>
       </React.StrictMode>,

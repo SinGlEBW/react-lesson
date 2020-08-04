@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
 import Info from './Info';
+import { connect } from 'react-redux';
 
 
-export default class InfoContainer extends Component {
+let mapStateToProps = (state) => ({info: state.info});
+let mapDispatchToProps = (dispatch) => {
 
-   render() {
+   return {}
+};
 
-      return <Info {...this.props}/>
-   }
-}
+let InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);
+
+export default InfoContainer;

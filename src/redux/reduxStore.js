@@ -1,20 +1,29 @@
-import { combineReducers, createStore } from 'redux';
-import { chatReducer } from './reducer/chat-reducer';
-import { contactReducer } from './reducer/contacts-reducer';
-import { contentReducer } from './reducer/home-reducer';
-import { imagesReducer } from './reducer/image-reducer';
-import { infoReducer } from './reducer/info-reducer';
-import { productReducer } from './reducer/products-reducer';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import { headerReducer } from './reducer/Header/header-reducer';
+import { authReducer } from './reducer/Header/auth-reducer';
+import { productReducer } from './reducer/Content/products-reducer';
+import { chatReducer } from './reducer/Content/chat-reducer';
+import { contactReducer } from './reducer/Content/contacts-reducer';
+import { homeReducer } from './reducer/Content/home-reducer';
+import { imagesReducer } from './reducer/Content/image-reducer';
+import { infoReducer } from './reducer/Content/info-reducer';
+
+import { footerReducer } from './reducer/Footer/footer-reducer';
+import thunk from 'redux-thunk';
 
 const reducers = combineReducers({
-   home: contentReducer,
+   auth: authReducer,
+   header: headerReducer,
+   home: homeReducer,
    products: productReducer,
    chat: chatReducer,
    info: infoReducer,
    contact: contactReducer,
    images: imagesReducer,
+   footer: footerReducer
 })
-const storeRedux = createStore(reducers);
+const reduxStore = createStore(reducers, applyMiddleware(thunk));
 
-export { storeRedux };
+window.state = reduxStore;
+export { reduxStore };
 

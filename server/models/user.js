@@ -1,16 +1,14 @@
 'use strict';
 const { Model } = require('sequelize');
-
+const { hash } = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     //тут можем описать свои методы 
-    static loginFromModels = (user) => {
-      console.dir(11);
+    static checkLogin_Mod = async (login, pass) => {
+        
     }
-    static associate(models) {
-      // define association here
-    }
+   
   };
 
   User.init({
@@ -19,17 +17,22 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
-    phone: DataTypes.DECIMAL,
-    age: DataTypes.INTEGER,
-    role: DataTypes.STRING,
+    phone: DataTypes.STRING(11),
+    age: DataTypes.DATEONLY,
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'user',
+    },
   }, {
     sequelize,
     modelName: 'User',
     
-  });
+  })//.sync({ alter: true })
   
   return User;
 };
+
+
 
 /*
   Модель описывается Функция содержащая класс модели и возвращающая его, инициализацию модели с 2мя объектами
@@ -42,6 +45,18 @@ module.exports = (sequelize, DataTypes) => {
   типы данных
     DataTypes.INTEGER.UNSIGNED - без знака
     DataTypes.STRING(100) - точное указание значения
+  Интересная вещь, можно добавить setters и getters
+  Пример:
+
+password: {
+  type: DataTypes.STRING,
+  set(value){
+     this.setDataValue('password', hash(value));
+  }
+},
+прежде чем попасть в бд пароль автоматом придёт в set. setDataValue это встроенный метод
+принимает ключ ( по которому обращаться и значение.) Так же работает get вариант
+
 
   Во 2м объекте находятся настройки таблиц.
   freezeTableName: true - имя таблицы меняться не будет

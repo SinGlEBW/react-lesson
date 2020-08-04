@@ -10,7 +10,7 @@ export default class Info extends Component {
          date: new Date().toLocaleTimeString()//влияет только на первоначальную загрузку страницы
       }
    }
-   componentDidMount() {//запускается как отрендерится. типa события windows.onload
+   componentDidMount() {//запускается как отрендерится. ти пa события windows.onload
       this.timerID = setInterval(() => this.tick(), 1000)
    }
    componentWillUnmount() {
@@ -30,7 +30,7 @@ export default class Info extends Component {
       })
    }
    render() {
-console.dir(this);
+
       return (
          <main className='info'>
             <div className='container'>

@@ -16,9 +16,14 @@
    overflow-x: hidden;
    height: 52px;
 }
-/*
- .chat__list-message-item{
+
+.chat__list{
   
 } 
-*/
+.chat__item-name{
+   font-weight: 700;
+}
+.chat__item-message{
+
+}
 

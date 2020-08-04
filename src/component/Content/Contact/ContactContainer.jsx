@@ -1,13 +1,15 @@
-import React, { Component } from 'react';
-
 import Contact from './Contact';
+import { connect } from 'react-redux';
 
-export default class ContactContainer extends Component {
-   render = () => {
-console.dir(this);
-      return (
-         <Contact {...this.props}/>
-      )
-   }
-};
 
+
+let mapStateToProps = (state) => ({contact: state.contact});
+let mapDispatchToProps = (dispatch) => {
+
+   return {}
+}
+
+
+let ContactContainer = connect(mapStateToProps, mapDispatchToProps)(Contact)
+
+export default ContactContainer

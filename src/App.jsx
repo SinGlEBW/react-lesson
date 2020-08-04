@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import "./App.css";
 
-import Header from "./component/Header/Header";
+import HeaderContainer from './component/Header/HeaderContainer';
 import HomeContainer from './component/Content/Home/HomeContainer';
 import ProductsContainer from './component/Content/Products/ProductsContainer';
 import ChatContainer from './component/Content/Chat/ChatContainer';
@@ -11,32 +11,31 @@ import InfoContainer from './component/Content/Information/InfoContainer';
 import ImagesContainer from './component/Content/Images/ImagesContainer';
 import Footer from "./component/Footer/footer";
 
+
+
 class App extends Component {
   home = {
 		pathname: '/' || '/registration'
 	}
   render(){
     
-   
     return (
       <BrowserRouter>
-      
-          <Header />
-          {/* *****Content****** */}
+     
+         <HeaderContainer />
           <Switch>
-            
-            <Route exact path={['/','/registration', '/login']} render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
+            {/* *****Content****** */}
+            <Route  path='/home' render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
            
-            <Route path={['/catalog','/registration/catalog', '/login/catalog']} render={(props) => <ProductsContainer />}/>
+            <Route path={['/catalog', '/catalog/autorization']} render={(props) => <ProductsContainer />}/>
             
-            <Route path='/chat' render={(props) => <ChatContainer />} />
-          
-            <Route path='/contact' render={(props) => <ContactContainer />}/>
+            <Route path={['/chat', '/chat/autorization', '/chat/registration']} render={(props) => <ChatContainer {...props}/>} />
+    
+            <Route path={['/contacts', '/contacts/autorization', '/contacts/registration']} render={(props) => <ContactContainer {...props}/>}/>
             
-            <Route path='/info' render={(props) => <InfoContainer />}/>
-            
-            <Route path='/images' render={(props) => <ImagesContainer />}/>
-            
+            <Route path={['/info', '/info/autorization', '/info/registration']} render={(props) => <InfoContainer {...props}/>}/>
+         
+            <Route path='/images' render={(props) => <ImagesContainer {...props}/>}/>
           </Switch>
            {/* ------------------------------------------------*/}
           
@@ -48,8 +47,30 @@ class App extends Component {
  
 }
 
-export default App;
+export default App
+/*
+Домен - http://localhost:3000
+Путь - Это всё что с доменом вместе
+Route - та шляпа которая следит за адресом, NavLink указывает этот адрес. Как Route так и в Route нужно путь указывать с 
+начальным слэшом иначе React неадекватно работает и при работе с вложенностью пути начинает неугомонно клеить то что надо и не надо.
 
+  Как я понял Switch та же логика ИЛИ. подключение только одного компонента в пачке Switch по указанному адресу адресам.
+  Если нам нужно склеить адреса и компоненты, то 
+  /images - родитель, /images/item-1 - дочерний на той же странице и т.д 
+
+
+  Exact - указывает, что строка запроса должна в точности соответствовать шаблону маршрута
+  path="/about/"
+  соответствует 
+  http://localhost:3000/about
+  http://localhost:3000/about/
+  без exact <Route >  загрузит компонент about даже если путь 
+  http://localhost:3000/about/2
+
+  Strict - этот маршрут будет соответствовать только одному запросу 
+  path="/about/
+  http://localhost:3000/about/
+*/
 /*
   Вариант передачи через props сработает если в app что-то передано.
   <ChatContainer chat={this.props.chat} dispatch={this.props.dispatch} />} />

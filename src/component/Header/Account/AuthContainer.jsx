@@ -1,42 +1,87 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { checkAuth } from 'src/redux/reducer/Header/auth-reducer';
-import { setAuthT, editLinksT } from 'src/redux/reducer/Header/header-reducer';
-import  Auth from './Auth';
+import { checkAuth, authT, changeInput } from 'src/redux/reducer/Header/auth-reducer';
+import Auth from './Auth';
+
 class AuthContainer extends React.Component {
+  refLogin = React.createRef();
+  refRegister = React.createRef();
 
-  logIn = () => {
-
-  }
-
-  toggleAuth = ({ target }) => {
-		let tgt = {
-			name: target.name,
-			pathname: target.pathname,
-			links: this.props.header.links,
-			isTogBtn: this.props.header.checkButton[target.name]
-		}
-		this.props.editLinksT(tgt);
-  }
+  componentDidMount = () => {
   
-  render = () => {
-    console.dir(this);
-    return <Auth pathname={this.props.header.pathname} toggleAuth={this.toggleAuth}/>
+    // let err = Object.entries(this.props.auth.errors).find((item) => item[1])
+
+    // let formRef = [this.refLogin, this.refRegister].find((item, inx) => {
+    //   let forma = (!item.current)? false : item.current.name;
+    //   return err[0] === forma
+    // })
+
+    // if(err && formRef)
+    //   this.errors(err, formRef)
   }
+  errors = (err, formRef) => {
+    console.dir(formRef);
+  }
+  stepBelow = (e, numInp) => {
+
+    let count = 0;
+    if (e.key === 'Enter') {
+      for (let i of e.currentTarget) {
+        count++;
+        if (i.name === e.target.name) {
+          if (count < numInp) break;
+          else count = 0;
+        }
+      }
+      e.currentTarget[count].focus()
+    }
+  }
+
+  phoneMask = (dataInputTel) => {
+    return (dataInputTel.match(/\D/)) ? false : dataInputTel
+  }
+  changeInp = ({ target }) => {
+
+    let value = (target.name === 'phone') ? this.phoneMask(target.value) : target.value;
+
+    if (typeof value === 'string') {//обрабатываю пустоту
+      this.props.changeInput(target.name, value);
+    } else {
+      console.dir('Требуется ввод цифр');
+    }
+    // 
+  }
+  send = (e) => {
+    e.preventDefault();
+    const formName = e.target.parentNode.name;
+    const data = new FormData(e.target.parentNode);
+    this.props.authT(formName, data);
+  }
+
+  render = () => (
+    console.dir(this),
+    <Auth stepBelow={this.stepBelow}
+      send={this.send}
+      changeInp={this.changeInp}
+      auth={this.props.auth}
+      refLogin={this.refLogin}
+      refRegister={this.refRegister}
+      errors={this.errors}
+    />
+  )
 
 }
 
-let mapStateToProps = (state) => ({
-  auth: state.auth,
-  header: state.header
-})
+let mapStateToProps = (state) => ({ auth: state.auth })
+
 export default connect(mapStateToProps, {
-  //auth-reducer
+  changeInput,
   checkAuth,
-  //header-reducer
-  editLinksT,
-  setAuthT
+  authT
+
 })(AuthContainer);
+
+
 
 /*
   Если случилась такая ситуация когда требуется передавать значения state и функционал

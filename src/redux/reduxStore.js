@@ -1,5 +1,6 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import { headerReducer } from './reducer/Header/header-reducer';
+import { profileReducer } from './reducer/Header/profileReducer';
 import { authReducer } from './reducer/Header/auth-reducer';
 import { productReducer } from './reducer/Content/products-reducer';
 import { chatReducer } from './reducer/Content/chat-reducer';
@@ -14,13 +15,15 @@ import thunk from 'redux-thunk';
 const reducers = combineReducers({
    auth: authReducer,
    header: headerReducer,
+   profile: profileReducer,
    home: homeReducer,
    products: productReducer,
    chat: chatReducer,
    info: infoReducer,
    contact: contactReducer,
    images: imagesReducer,
-   footer: footerReducer
+   footer: footerReducer,
+   
 })
 const reduxStore = createStore(reducers, applyMiddleware(thunk));
 

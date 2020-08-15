@@ -2,7 +2,39 @@ import React from 'react';
 import './Chat.css';
 
 let User = (props) => {
+
+
+
+
+	let met = (text) => `log ${text}`;
+
+	let fp = new Proxy(met, {
+		apply(target, thisArgs, argsArr) {
+			console.dir(target);
+			console.dir(thisArgs);//переданный контекст
+			console.dir(argsArr);
+			console.dir(this);//здесь он своего объекта 
+			return target(argsArr)
+		},
+	});
+
 	
+	console.dir(fp.apply({name: 'вася'},['tex',11]));
+// или по старинке всё в одной функции
+
+function method1 (...text) {
+	console.dir(method1);
+	console.dir(this);
+	console.dir(text);
+	return `log ${text}`
+}
+
+console.dir(method1.apply({name: 'вася'}, [14, 'st']));
+/*
+	Разница в том что использовав инструмент apply через proxy мы имеем как бы промежуточный функционал
+	который связывает переданные данные и переданный таргет. Таким способом стрелочную функцию можно снабдить
+	контекстом
+*/
 	return (
 		<main className="chat">
 			<div className="container">

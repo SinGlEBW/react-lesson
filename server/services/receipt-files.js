@@ -1,27 +1,38 @@
 const multer = require("multer");
-const { errHelperDecorator } = require("./err-helper-decorator");
-
+const validate_Mtr_ExpV = require('./validate-decorator');
+//userValid
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images");
+     
+     console.dir(2);
+     (req.url === '/app/register')? cb(null, "public/avatars") : cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-
+   
+     console.dir(3);
     let ext = [".jpeg", ".jpg", ".png", ".bmp"];
-    let message =
-      'The file does not match the file extension: ".jpeg", ".jpg", ".png", ".bmp"';
+    let msg =
+      'Поддерживаемое расширение: ".jpeg", ".jpg", ".png", ".bmp"';
 
     ext = ext.find((item) => file.originalname.endsWith(item));
    
     !!ext
-      ? cb(null, file.fieldname + Math.round(Math.random() * 1e10) + ext)
-      : cb(new Error(message));
+      ? cb({cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext})//req.saveFile = {cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext}//
+      : cb(new Error(msg));
   },
 });
 
-const upload = multer({ storage }).array("images", 10);
+//пока эти функции не будут запущены или в ручную или запросами, свойства тела body не будут заполнятся 
+const uploadImages = multer({ storage }).array("images", 10);
+const uploadUser = multer({ storage, limits: { fieldSize: 2097152} }).single("avatar");
 
-module.exports = errHelperDecorator({ upload });
+
+module.exports = { 
+   uploadImages
+}
+
+
+ module.exports.upload_Validate = validate_Mtr_ExpV(uploadUser)
 
 /*
    Если в Функции middleware есть вызов другая middleware, то вызов next во 2й функции ни к чему как я понимаю не приводит

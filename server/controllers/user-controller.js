@@ -1,75 +1,72 @@
 const { User } = require("@models"); //по ум в папке берёт index
 const bcryptjs = require("bcryptjs");
-const validateDecorator = require("@services/validate-decorator");
 const { createToken } = require("@services/auth-service");
 const { Op } = require('sequelize');
 
-/*
-   Концепция схожа с отдельными роутами.
-*/
-
-async function crea() {
-  let a = await User.drop();
-}
-
 function createUser(req, res, next) {
+
+  console.dir('функция создание пользователя');
+  
   const { email, login } = req.body;
   //Что бы не писать каждой функции проверку, функция прогоняется через декоратор
   User.findOne({ where: { [Op.or]: [{ email }, { login }] } })
     .then((user) => {
-      
+      console.dir(user);
       const client = user && [user.email, user.login].find((item) => (email === item || login === item));// && обрабатывает null
       
       if (client) {
         
-        return Promise.reject({
-          statusCode: 422,
-          message: `${client} уже занят`,
-        });
+        return Promise.reject([{ msg:`${client} уже занят`, param: 'login' }]);
       } else {
+       
+        let { login, name, email, pass, age, phone } = req.body;
+
+        req.saveFile.cb(null, req.saveFile.fieldname)
+
+        let avatar = "/avatars/" + req.saveFile.fieldname;
+        let salt = bcryptjs.genSaltSync(10);
+        let passwordHash = bcryptjs.hashSync(pass, salt);
         
-        const { login, name, email, password, avatar, age, role, phone } = req.body;
-        const salt = bcryptjs.genSaltSync(10);
-        const passwordHash = bcryptjs.hashSync(password, salt);
-        return User.create({ login, name, email, password: passwordHash, avatar, age, role, phone });
+        return User.create({ login, name, email, password: passwordHash, avatar, age, phone });
       }
     })
-    .then((data) => (res.status(200).json(data))) //отправлять всё не нужно
-    .catch((err) => res.status(404).json({ err: err.message }));
+    .then((data) => {
+      console.dir(data);
+      res.status(200).json({ msg: 'Пользователь зарегистрирован', isRegister: true })
+    })
+    .catch((err) => res.status(404).json({ err }));
 }
 
 function logIn(req, res, next) {
-  const { email, password } = req.body;
-  console.dir(req.body);
-
-  User.findOne({where: { email }})
+  const { login, pass } = req.body;
+  console.dir('функция Login');
+  User.findOne({where: { login }})
     .then((user) => {
       if(user){
-        if(bcryptjs.compareSync(password, user.password)){
+        if(bcryptjs.compareSync(pass, user.password)){
           return user
         }else{
-          return Promise.reject({statusCode: 401, message: 'Пароли не совпадают'});
+          return Promise.reject([{ msg: 'Пароли не совпадают', param: 'pass'}]);
         }
       }else{
-        return Promise.reject({statusCode: 404, message: 'Пользователь не найден'});
+        return Promise.reject([{ msg: 'Пользователь не найден', param: ['login, pass'] }]);
       }
     })
     .then(createToken)
     .then((token) => {
-      console.dir(token);
-      res.status(200).json({ token });
+      
+      res.status(200).json({msg: 'Вход выполнен', isAuth: true, token});
       
     })
     .catch((err) => {
-      console.dir(err);
-      res.status(err.statusCode).json({ err: err.message })
+      res.status(404).json({ err })
     });
 }
 
-module.exports = validateDecorator({
+module.exports = {
   createUser,
-  logIn,
-});
+  logIn
+}
 
 /*
   Сначала пользователь проверяется в БД после чего выдаётся токен

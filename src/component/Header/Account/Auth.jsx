@@ -1,33 +1,18 @@
 import React, { Fragment } from 'react';
 
-import { Button } from "@material-ui/core";//тож есть Switch
-import { styled } from "@material-ui/core/styles";
-import { NavLink, Route } from 'react-router-dom';
-import LoginIn from './Authorization/LoginIn';
-import Registration from './Registration/Registration';
+import { Route } from 'react-router-dom';
+import LogIn from './Authorization/LogIn';
+import Register from './Registration/Register';
 
-
-const MyButton = styled(Button)({
-  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-  border: 0,
-  borderRadius: 4,
-  boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-  color: "white",
-  height: 'max-content'
-});
 
 let Auth = (props) => {
-  let path = props.pathname;
-  console.dir(props);
+  
   return (
-    <Fragment >
-
-      <MyButton><NavLink className='header__auth-btn' name='autorization' to='/autorization'>Авторизация</NavLink></MyButton>
-      <MyButton><NavLink className='header__auth-btn' name='registration' to='/registration'>Регистрация</NavLink></MyButton>
-
-      <Route path='/autorization' render={() => <LoginIn /> }/>
-      <Route path='/registration' render={() => <Registration />}/>
+    <Fragment>
+      <Route path='/autorization' render={() => <LogIn {...props}/>} />
+      <Route path='/registration' render={() => <Register {...props} />} />
     </Fragment>
+
   )
 }
 

@@ -23,22 +23,22 @@ class App extends Component {
       <BrowserRouter>
      
          <HeaderContainer />
-          <Switch>
+          
             {/* *****Content****** */}
-            <Route  path='/home' render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
+            <Route exact path='/' render={(props) => <HomeContainer />}/>{/* Использовал контекст для передачи */}
            
-            <Route path={['/catalog', '/catalog/autorization']} render={(props) => <ProductsContainer />}/>
+            <Route path='/catalog' render={(props) => <ProductsContainer />}/>
             
-            <Route path={['/chat', '/chat/autorization', '/chat/registration']} render={(props) => <ChatContainer {...props}/>} />
+            <Route path='/chat' render={(props) => <ChatContainer {...props}/>} />
     
-            <Route path={['/contacts', '/contacts/autorization', '/contacts/registration']} render={(props) => <ContactContainer {...props}/>}/>
+            <Route path='/contacts' render={(props) => <ContactContainer {...props}/>}/>
             
-            <Route path={['/info', '/info/autorization', '/info/registration']} render={(props) => <InfoContainer {...props}/>}/>
+            <Route path='/info' render={(props) => <InfoContainer {...props}/>}/>
          
             <Route path='/images' render={(props) => <ImagesContainer {...props}/>}/>
-          </Switch>
+         
            {/* ------------------------------------------------*/}
-          
+           
           <Footer email="sbw@mail.ru" tel="417555" /> 
         
       </BrowserRouter>
@@ -51,9 +51,13 @@ export default App
 /*
 Домен - http://localhost:3000
 Путь - Это всё что с доменом вместе
+http://localhost:3000/products/Huawei - путь
+
 Route - та шляпа которая следит за адресом, NavLink указывает этот адрес. Как Route так и в Route нужно путь указывать с 
 начальным слэшом иначе React неадекватно работает и при работе с вложенностью пути начинает неугомонно клеить то что надо и не надо.
+<Router path='/products/:model'>
 
+В param будем иметь {model: Huawei}
   Как я понял Switch та же логика ИЛИ. подключение только одного компонента в пачке Switch по указанному адресу адресам.
   Если нам нужно склеить адреса и компоненты, то 
   /images - родитель, /images/item-1 - дочерний на той же странице и т.д 
@@ -64,12 +68,20 @@ Route - та шляпа которая следит за адресом, NavLink
   соответствует 
   http://localhost:3000/about
   http://localhost:3000/about/
-  без exact <Route >  загрузит компонент about даже если путь 
+  без exact <Route > загрузит компонент about даже если путь 
   http://localhost:3000/about/2
 
   Strict - этот маршрут будет соответствовать только одному запросу 
   path="/about/
   http://localhost:3000/about/
+*/
+
+/*
+  Какую роль играет Switch.
+
+  Без Switch имея 2 компонента home и catalog и если построить такой путь /home/catalog
+  то загрузятся два компонента. В моём случае 1й будет перекрывать 2й. То что мне нужно что бы 
+  разместить компоненты по нужным позициям. Если установить Switch, то будет происходить переключение компонентов
 */
 /*
   Вариант передачи через props сработает если в app что-то передано.
@@ -99,17 +111,11 @@ Route - та шляпа которая следит за адресом, NavLink
   {(this.state.checked) ? <Info check={true}/> : <Info check={false}/>} построив логику в info
   показать один текст или другой, а можно разные компоненты передавать
 
-  Switch требуется для включения определения параметров в url
   
 */
 
 /*
-  О Context в React. Все методы и свойства передаются через props сверху вниз. Иногда требуется
-  делиться значениями с нижних уровней компонентов к верхним, для этого приходиться 
-  передавать callback функции по props и в итоге props зарастает мусором.
-  Что бы этого избежать придумали context который оборачивается главный родительский
-  компонент после чего имеют доступ к данным другие компоненты напрямую.
-  Такой способ на самом деле хранит данные глобально, что не всегда хорошо.
+
   
 Про пропсы. 
 Предположим что на верхнем уровне мы имеем кучу методов. Мы будем передавать через пропс таким

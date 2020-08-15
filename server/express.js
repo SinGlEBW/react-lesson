@@ -2,15 +2,36 @@ require('module-alias/register');
 const express = require('express');
 const app = express();
 
-const { userValid, logInValid } = require('@services/validator');
+// const { registerValid, loginValid } = require('@services/validator');
+
 const { verifyToken } = require('@services/auth-service');
-const { upload } = require('@services/receipt-files');
+const { uploadImages, upload_Validate  } = require('@services/receipt-files');
 
 const { createUser, logIn } = require('@controllers/user-controller');
 const { create, find } = require('@controllers/menu-controller');
 const { addImages, showImages, delImages } = require('@controllers/images-controller');
 
 const { errorHandler } = require('@services/err-helper-decorator');
+const { showMessage, addMessage, delMessage } = require('@controllers/chat-controller');
+
+const WebSocket = require('ws');
+
+const server = app.listen(4000)
+
+const ws = new WebSocket.Server({server})
+
+ws.on('connection', (socket) =>{
+   socket.send('CONNECT')
+})
+ws.on('close', (socket) =>{
+   socket.send('DISCONNECT')
+})
+ws.on('error', (socket) =>{
+   socket.send('ERROR')
+})
+
+
+
 
 app.use(express.json(), (req, res, next) => {
    res.append('Access-Control-Allow-Origin', '*');
@@ -19,21 +40,32 @@ app.use(express.json(), (req, res, next) => {
    next();
 });//аналогия установки body-parser. Чтоб было тело body
 
-app.listen(4000);
+
 
 //app.use('/app/*', verifyToken)//на любой запрос проверять токен
 
 //настройка валидации для регистрации
- app.post('/app/register', userValid, createUser);
- app.post('/app/login', logInValid, logIn);
 
+/*----------------------------------------------------------------------------*/
+ app.post('/app/register', upload_Validate, createUser)//registerValid,
+ app.post('/app/login', upload_Validate, logIn);//loginValid
+/*----------------------------------------------------------------------------*/
  app.post('/app/catalog', find)
-
+/*----------------------------------------------------------------------------*/
  app.get('/app/images-show', showImages)
- app.post('/app/images-add', upload, addImages)
+ app.post('/app/images-add', uploadImages, addImages)
  app.delete('/app/images-delete/:id?', delImages)
+/*----------------------------------------------------------------------------*/
+app.get('/app/chat/message-show', showMessage)
+app.post('/app/chat/message-add', addMessage)
+app.delete('/app/chat/message-delete/:id?', delMessage)
+
+/*----------------------------------------------------------------------------*/
 
 app.use(errorHandler)
+
+
+
 
 /*
    Запрос DELETE не принимает в body данных. body для post запросов.

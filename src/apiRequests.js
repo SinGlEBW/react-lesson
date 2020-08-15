@@ -5,10 +5,22 @@ let instance = Axios.create({
 })
 
 export const imagesDAL = {
-  show: () => instance.post('images-show'),
+  show: () => instance.get('images-show'),
+  add: (files) => instance.post('images-add', files),
   del: (id) => instance.delete(`images-delete/${id}`),
-  add: (files) => instance.post('images-add', files)
 }
+export const userDAL = {
+  register: (data) => instance.post('register', data),
+  entrance: (data) => instance.post('login', data),
+}
+export const chatDAL = {
+  show: () => instance.get('chat/message-show'),
+  add: (message) => instance.post('chat/message-add', message),
+  del: (id) => instance.delete('chat/chat/message-delete/' + id),
+}
+
+
+
 /*
   В params можно отправлять как через url так и в config params
 */

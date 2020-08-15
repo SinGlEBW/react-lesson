@@ -2,19 +2,10 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { editLinks, setPathT, editLinksT } from 'src/redux/reducer/Header/header-reducer';
 import Header from './Header';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 class HeaderContainer extends Component {
 
-	links = () => {
-		let id = 0;
-
-		return this.props.header.links.map((item) => (
-			<li className="header__navItem" key={id++}>
-				<NavLink className="header__navItem-link" to={item[0]} onClick={this.pressLink}>{item[1]}</NavLink>
-			</li>
-		))
-	}
 
 	pressLink = ({ target }) => {
 		
@@ -25,12 +16,12 @@ class HeaderContainer extends Component {
 
 	render = () => {
 	
-		return <Header {...this.props} links={this.links} />
+		return <Header {...this.props} links={this.links} pressLink={this.pressLink}/>
 	}
 }
 
 let HeaderContainerWR = withRouter(HeaderContainer);//withRouter нужен тогда когда нет нужды оборачивать в Router и указывать путь
-let mapStateToProps = (props) => ({ header: props.header })
+let mapStateToProps = (props) => ({ header: props.header, auth: props.auth.isAuth })//данные из AuthReducer
 
 
 export default connect(mapStateToProps, {	

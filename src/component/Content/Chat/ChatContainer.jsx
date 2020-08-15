@@ -6,7 +6,6 @@ import { withRouter } from 'react-router-dom';
 
 
 
-
 class ChatContainer extends Component {
 	myRef = React.createRef()
 
@@ -27,7 +26,6 @@ class ChatContainer extends Component {
 		
 	}
 	render = () => {
-	
 		return (
 			<Chat chat={this.props.chat}
 						listensMessage={this.listensMessage}

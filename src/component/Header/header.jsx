@@ -1,28 +1,41 @@
-import React from "react";
-import "./Header.css";
-
+import React, { Fragment } from "react";
+import c from './Header.module.css';
+import { NavLink } from 'react-router-dom';
 import ProfileContainer from './Profile/ProfileContainer';
+import AuthButtons from './Account/Auth-btn';
 import AuthContainer from './Account/AuthContainer';
 
-let Header = (props) => {
 
+let Header = (props) => {
+console.dir(props);
+	let links = () => {
+		let id = 0;
+
+		return props.header.links.map((item) => (
+			<li className={c.item} key={id++}>
+				<NavLink className={c.link} to={item[0]} onClick={props.pressLink}>{item[1]}</NavLink>
+			</li>
+		))
+	}
+	
 	return (
-		<header className="header" >
-			<div className="container">
-				<div className="header__wrap">
-					<ul className="header__nav">
-						{props.links()}
-					</ul>
-					<div className="header__auth">
+		<Fragment >
+			<header className={c.header} >
+				<div className="container">
+					<div className={c.wrap}>
+						<ul className={c.nav}>
+							{links()}
+						</ul>
 						{
-							(props.header.isAuth)
+							(props.auth)
 								? <ProfileContainer />
-								: <AuthContainer />
+								: <AuthButtons />
 						}
 					</div>
 				</div>
-			</div>
-		</header>
+			</header>
+			<AuthContainer />
+		</Fragment>
 	);
 }
 

@@ -11,8 +11,6 @@ import InfoContainer from './component/Content/Information/InfoContainer';
 import ImagesContainer from './component/Content/Images/ImagesContainer';
 import Footer from "./component/Footer/footer";
 
-
-
 class App extends Component {
   home = {
 		pathname: '/' || '/registration'

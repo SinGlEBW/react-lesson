@@ -12,7 +12,7 @@ function showImages(req, res, next) {
 }
 
  async function addImages(req, res, next) {
-  console.dir(req.files);
+  console.dir(5);
    let id = [];
   try {
     for(let item of req.files){

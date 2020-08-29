@@ -1,21 +1,16 @@
-import React, { Component } from "react";
-import './footer.css';
-export default class Footer extends Component {
-  render() {
-    return (
-      <footer className="footer">
-        <div className="container">
-          <div className="footer__wraps">
-            <div className="footer__contact">Какой-то адрес</div>
-            <a className="footer__contact" href="/">
-              Email: {this.props.email}
-            </a>
-            <a className="footer__contact" href="/">
-              Тел: {this.props.tel}
-            </a>
-          </div>
+import React, { useState } from "react";
+import c from './footer.module.css';
+
+const Footer = (props) => {
+  return (
+    <footer className={c.footer}>
+      <div className="container">
+        <div className={c.wrap} >
+          <a className={c.link} href="/">Email: {props.email}</a>
+          <a className={c.link} href="/">Тел: {props.tel}</a>
         </div>
-      </footer>
-    );
-  }
+      </div>
+    </footer>
+  );
 }
+export default Footer

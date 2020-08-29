@@ -1,0 +1,63 @@
+/*
+  1.Что бы конвертировать scss в css нужен пакет node-sass
+    и указать npx node-sass файл.scss --watch сохранить файл.css 
+  2.Что бы старые браузеры понимали нужен postcss-cli
+    npx postcss считывающий-файл.css --use postcss-custom-properties --no-map --watch --output записать в файл.css
+   
+*/
+//переменные в scss и css
+$card-color: black;
+/*так же можно обявлять не глобально а локально где-то в классах */
+:root {
+  --card-color: red
+}
+
+.page {
+  display: grid;
+  background-color: $card-color; //scss
+  color: var(--card-color); //css
+  color: var(--card-color, red);//запасной вариант. Если переменная null, 2й параметр
+}
+
+/*
+  структура HTML
+<section class='card-set--white'>
+  <div class='card'>Карточка 1</div> 
+</section>
+<section class='card-set--blue'>
+  <div class='card'>Карточка 2</div> 
+</section>
+<section class='card-set--red'>
+  <div class='card'>Карточка 3</div> 
+</section>
+*/
+
+.card-set--white{
+  --cardFill: show; 
+}
+.card-set--blue{
+  --cardFill: #0047A0; 
+  --cardFill2: #9047A0; 
+  
+}
+
+.card{
+  //background-color: var(--cardFill,--cardFill2, green);//так не выйдет. 2 аргумента
+  background-color: var(--cardFill, crimson);
+ 
+}
+
+
+/* 
+  1. Переменные объявленные в родителе имеют доступность ниже по структуре 
+  2. var имеет только 2 аргумента, используется или 1й или 2й. 
+  3. Можно использовать одну и ту же переменную просто переопределять в родителе
+  В старых браузерах где var не работает цвет отвалиться. Или Autoprefixer или postcss
+*/
+
+/*
+  Некоторая информация
+  1. display: none; фокусировка табом не будет работать на таком селекторе. Блок не рендерится
+     appearance: none; решает проблему и требует префиксы              
+*/
+

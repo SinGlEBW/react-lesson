@@ -6,10 +6,8 @@
 }
 
 .App {
-  display: grid;
   height: 100%;
-  grid-template-rows: 500px 1fr 100px;
-  grid-gap: 20px;
+  padding-bottom: 120px;/*100px footer + 20px отступ*/
 }
 
 .ui-link {
@@ -23,23 +21,4 @@
 }
 a{
   cursor: pointer;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  0% {
-    color: red;
-    transform: rotate(0deg)
-  }
-
-  100% {
-    color: red;
-
-    transform: rotateX(360deg)
-  }
-
 }

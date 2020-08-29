@@ -3,13 +3,13 @@ const validate_Mtr_ExpV = require('./validate-decorator');
 //userValid
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-     
-     console.dir(2);
+   console.dir(file);
+   //   console.dir(2);
      (req.url === '/app/register')? cb(null, "public/avatars") : cb(null, "public/images");
   },
   filename: (req, file, cb) => {
-   
-     console.dir(3);
+ 
+   //   console.dir(3);
     let ext = [".jpeg", ".jpg", ".png", ".bmp"];
     let msg =
       'Поддерживаемое расширение: ".jpeg", ".jpg", ".png", ".bmp"';
@@ -17,8 +17,11 @@ let storage = multer.diskStorage({
     ext = ext.find((item) => file.originalname.endsWith(item));
    
     !!ext
-      ? cb({cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext})//req.saveFile = {cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext}//
-      : cb(new Error(msg));
+			? (req.url === '/app/images-add') 
+					? cb(null, file.fieldname + Math.round(Math.random() * 1e10) + ext)
+					//бросаю данные в ошибку и нужно обработать данные в validate-decorator
+					: cb({cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext})
+      : cb(new Error(msg));//просто ошибку
   },
 });
 
@@ -30,7 +33,6 @@ const uploadUser = multer({ storage, limits: { fieldSize: 2097152} }).single("av
 module.exports = { 
    uploadImages
 }
-
 
  module.exports.upload_Validate = validate_Mtr_ExpV(uploadUser)
 

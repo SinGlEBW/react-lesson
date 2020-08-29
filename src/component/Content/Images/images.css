@@ -1,6 +1,5 @@
 .image{
    display: grid;
-   height: inherit;
    border: 1px solid green;
    
 }

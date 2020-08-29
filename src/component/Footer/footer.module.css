@@ -1,15 +1,16 @@
 .footer {
   
-  background-color: wheat;
-  display: grid;
+  background-color :#1F2020;
+  display: flex;
   width: 100%;
   position: absolute;
   height: 100px;
+  
   bottom: 0;
-  border: 2px solid green
+  box-shadow: 0 0 20px 10px rgb(32, 32, 32);
 }
 
-.footer__wraps {
+.wrap {
   display: grid;
   grid-template-columns: repeat(3, 300px);
   justify-content: center;
@@ -21,7 +22,7 @@
 
 }
 
-.footer__contact {
+.link {
 
   border: 4px solid #00F;
 }

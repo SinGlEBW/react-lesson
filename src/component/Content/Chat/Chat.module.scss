@@ -1,29 +1,32 @@
 .chat{
    display: grid; 
 }
-.chat__box{
+.wrap{
    display: grid;
    grid-template-columns: 400px 1fr; 
    margin-bottom: 20px;
 }
-.chat__input--but{
+.btn{
    grid-row: 2;
    height: 50px;
 }
-.chat__output{
+.tarea{
+   
+}
+.output{
    border: 1px solid red;
    overflow: scroll;
    overflow-x: hidden;
    height: 52px;
 }
 
-.chat__list{
+.list{
   
 } 
-.chat__item-name{
+.item-name{
    font-weight: 700;
 }
-.chat__item-message{
+.item-message{
 
 }
 

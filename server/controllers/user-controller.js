@@ -1,17 +1,16 @@
 const { User } = require("@models"); //по ум в папке берёт index
 const bcryptjs = require("bcryptjs");
-const { createToken } = require("@services/auth-service");
+const { createTokenPair } = require("@services/auth-service");
 const { Op } = require('sequelize');
+const fs = require('fs');
 
 function createUser(req, res, next) {
-
   console.dir('функция создание пользователя');
   
   const { email, login } = req.body;
   //Что бы не писать каждой функции проверку, функция прогоняется через декоратор
   User.findOne({ where: { [Op.or]: [{ email }, { login }] } })
     .then((user) => {
-      console.dir(user);
       const client = user && [user.email, user.login].find((item) => (email === item || login === item));// && обрабатывает null
       
       if (client) {
@@ -31,41 +30,66 @@ function createUser(req, res, next) {
       }
     })
     .then((data) => {
-      console.dir(data);
-      res.status(200).json({ msg: 'Пользователь зарегистрирован', isRegister: true })
+      res.status(201).json({ msg: 'Пользователь зарегистрирован', isRegister: true })
     })
-    .catch((err) => res.status(404).json({ err }));
+    .catch((err) => res.status(409).json({ err }));
 }
 
 function logIn(req, res, next) {
-  const { login, pass } = req.body;
   console.dir('функция Login');
+  
+  const { login, pass } = req.body;
   User.findOne({where: { login }})
     .then((user) => {
       if(user){
-        if(bcryptjs.compareSync(pass, user.password)){
+        if(bcryptjs.compareSync(pass, user.password))
           return user
-        }else{
-          return Promise.reject([{ msg: 'Пароли не совпадают', param: 'pass'}]);
-        }
-      }else{
-        return Promise.reject([{ msg: 'Пользователь не найден', param: ['login, pass'] }]);
+        return Promise.reject([{ code:401, msg: 'Пароли не совпадают', param: 'pass'}]);
+        
       }
-    })
-    .then(createToken)
-    .then((token) => {
+      return Promise.reject([{ code:404, msg: 'Пользователь не найден', param: ['login, pass'] }]);
       
-      res.status(200).json({msg: 'Вход выполнен', isAuth: true, token});
+    })
+    //передаётся в createToken данные пользователя
+    .then(createTokenPair)
+    .then(({token, refreshToken}) => {
+      //вроде как нужно ещё рефреш токен возвращать в виде уникального id (uuid)
+      //так же можно попробовать отправлять токен в header Authorization 
+      let a = fs.appendFile(__dirname+'token.key', refreshToken, {flag: 'a+'});
+      console.dir(a);
+      res.cookie('refresh', refreshToken, { httpOnly: true,  })
+      res.status(200).json({
+        msg: 'Вход выполнен',
+        isAuth: true,
+        token: `Bearer ${token}`,
+        ...req.infoUser
+      });
       
     })
     .catch((err) => {
-      res.status(404).json({ err })
+      console.dir(err);
+      res.status(err[0].code).json({ err })
     });
+}
+
+//при logOut refresh токен удаляется из бд с id пользователем
+function logOut(req, res, next) {
+
+  res.status(200).json({isAuth: false})
+}
+//при refresh удаляем из бд, создаём новый, добавляем в бд, возвращаем пользователю пару
+function issueTokenPair(req, res, next) {
+  if(req.body.refresh){
+    
+  }
+  
 }
 
 module.exports = {
   createUser,
-  logIn
+  logIn,
+  logOut,
+  issueTokenPair
 }
 
 /*

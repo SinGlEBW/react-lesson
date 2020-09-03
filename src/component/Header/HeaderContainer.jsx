@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { editLinks, setPathT, editLinksT } from 'src/redux/reducer/Header/header-reducer';
+import { setPathT, editLinksT } from 'src/redux/reducer/Header/header-reducer';
 import Header from './Header';
 import { withRouter } from 'react-router-dom';
 
 class HeaderContainer extends Component {
 
-
 	pressLink = ({ target }) => {
-		
 		let path = target.pathname.replace(/\b\/[\w\D]*/g, '');
+
 		this.props.setPathT(path)		
-		
 	}
 
 	render = () => {
@@ -25,7 +23,6 @@ let mapStateToProps = (props) => ({ header: props.header, auth: props.auth.isAut
 
 
 export default connect(mapStateToProps, {	
-	editLinks,
 	setPathT,
 	editLinksT
 })(HeaderContainerWR);

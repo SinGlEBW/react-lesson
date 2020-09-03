@@ -1,7 +1,7 @@
 import React, { Component, lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { delImagesT, addImagesT, showImagesT } from 'src/redux/reducer/Content/image-reducer';
-import Axios from 'axios';
+
 import Preloader from 'src/component/Preloader';
 
 

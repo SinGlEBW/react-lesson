@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import Chat, { SignupForm } from './Chat';
 import { showMessAC, changesTheMessAC, sendMessAC, delMessAC } from 'src/redux/reducer/Content/chat-reducer';
-import { withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+
+
 //HOC - High Order Component. Принимает компонент контейнер и возвращает его с новым поведением
 //ChatContainer - тоже компонента принимающая пропс и возвращающая jsx,но грязная и уровнем выше чистой
 class ChatContainer extends Component {
@@ -23,7 +25,9 @@ class ChatContainer extends Component {
 
 	sendMessage = () => this.props.sendMessAC(this.myRef.current.value)
 
-	componentDidMount = () => {}
+	componentDidMount = () => {
+		
+	}
 
 	validate = (values) => {
 		
@@ -47,6 +51,10 @@ class ChatContainer extends Component {
 	}
 
 	render = () => {
+		
+		if(false)
+			return	<Redirect to="/registration"/>
+		else
 		return (
 			<Fragment>
 			
@@ -56,28 +64,49 @@ class ChatContainer extends Component {
 							sendMessage={this.sendMessage}
 							myRef={this.myRef} />
 			
-				<SignupForm />
+				{/* <SignupForm /> */}
 
-			
 			</Fragment>
 		)
 	}
 };
 
-/*----------REDUX---------@@@@@@@>>>>>>>>>>>>>---------------*/
+
+/*#####----<{ HOC }>----##### */
+let WithRedirectAuth = (props) => {
+	 console.dir(props);
+	if(true)
+		return <Redirect to='/registration' />
+	return <ChatContainer {...props}/>
+}
+
+/*#####----<{ REDUX }>----##### */
 let mapStateToProps = (state) => ({ chat: state.chat })
 
  //let wrChatContainer = withRouter(ChatContainer)
-
-export default connect(mapStateToProps, {
+let con = connect(mapStateToProps, {
 	showMessAC,
 	changesTheMessAC,
 	sendMessAC,
 	delMessAC
 })(ChatContainer);
 
-export {default as React} from 'react'
-export {default as React1} from 'react'
+export default con
+
+
+// let WithRedirectAuth = (props) => {
+// 	console.dir(props);
+// if(true)
+// 	return <Redirect to='/registration' />
+// return <ChatContainer {...props}/>
+// }
+
+
+
+/*
+	При использовании Redirect очевидно мы попадаем в Container компоненту загружая код который нам по 
+	факту не нежен в данный момент
+*/
 /*
    Что бы не создавать однообразные dispatch, есть возможность сократить запись до объекта,
 	 Вместо:  let sendMess = (o_Message) => dispatch(sendMessAction(o_Message)); и функции

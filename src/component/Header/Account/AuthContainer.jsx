@@ -8,7 +8,7 @@ class AuthContainer extends React.Component {
   refRegister = React.createRef();
 
   componentDidMount = () => {
-  
+
     // let err = Object.entries(this.props.auth.errors).find((item) => item[1])
 
     // let formRef = [this.refLogin, this.refRegister].find((item, inx) => {
@@ -55,24 +55,24 @@ class AuthContainer extends React.Component {
     e.preventDefault();
     const formName = e.target.parentNode.name;
     const data = new FormData(e.target.parentNode);
-    this.props.authT(formName, data);
+    let a = this.props.authT(formName, data);
+
   }
 
-  render = () => (
-    console.dir(this),
-    <Auth stepBelow={this.stepBelow}
-      send={this.send}
-      changeInp={this.changeInp}
-      auth={this.props.auth}
-      refLogin={this.refLogin}
-      refRegister={this.refRegister}
-      errors={this.errors}
-    />
-  )
-
+  render = () => {
+    
+    return <Auth stepBelow={this.stepBelow}
+    send={this.send}
+    changeInp={this.changeInp}
+    auth={this.props.auth}
+    refLogin={this.refLogin}
+    refRegister={this.refRegister}
+    errors={this.errors}
+  />
+  }
 }
 
-let mapStateToProps = (state) => ({ auth: state.auth })
+let mapStateToProps = (props) => ({ auth: props.auth })
 
 export default connect(mapStateToProps, {
   changeInput,

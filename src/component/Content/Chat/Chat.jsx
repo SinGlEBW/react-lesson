@@ -1,10 +1,9 @@
 import React from 'react';
 import c from './Chat.module.scss';
-import { Formik, Form, isString } from 'formik';
+import { Formik, Form } from 'formik';
 import { authChatSchema } from './validationYup';
 import { Input } from './componentMod/Input';
-import * as yup from 'yup'
-import _ from 'lodash';
+
 
 //Chat - компонент принимающий пропс и возвращает jsx. Чистая
 let Chat = (props) => {
@@ -32,6 +31,9 @@ let Chat = (props) => {
 }
 
 export default Chat;
+
+
+
 
 export const SignupForm = (props) => {
 
@@ -74,19 +76,8 @@ export const SignupForm = (props) => {
 }
 
 
-let arr1 = [2, 3, 4, {a: 1, c: 4}, 's'];
-let arr2 = [2, 3, 5, {a: 1, b: 2}, 's'];
-let users = [
-  { 'user': 'barney',  'active': true },
-  { 'user': 'fred',    'active': false },
-  { 'user': 'pebbles', 'active': true },
-];
-let array = [2, 6, 3, 5, 4, 1]
-let array1 = [1, 2, 3, 4, 5, 6]
-let a = _.sortedIndex(array, 6);
 
-console.dir(a);
-console.dir(array);
+
 
 
 /*----Бинарный поиск и с чем его едят.

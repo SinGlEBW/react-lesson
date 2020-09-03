@@ -16,11 +16,9 @@ const MyButton = styled(Button)({
 let AuthButtons = (props) => {
   
   return (
-    <div className={c.auth}>
-      
+    <div className={c['auth-btn']}>
       <MyButton><NavLink className={c.btn} name='autorization' to='/autorization'>Авторизация</NavLink></MyButton>
       <MyButton><NavLink className={c.btn} name='registration' to='/registration'>Регистрация</NavLink></MyButton>
-
     </div>
   )
 }

@@ -1,70 +1,32 @@
-require('module-alias/register');
-const express = require('express');
+require("module-alias/register");
+const express = require("express");
 const app = express();
 
-// const { registerValid, loginValid } = require('@services/validator');
+const { verifyToken } = require("@services/auth-service");
+const { errorHandler } = require("@services/err-helper");
+const passport = require('passport');
 
-const { verifyToken } = require('@services/auth-service');
-const { uploadImages, upload_Validate  } = require('@services/receipt-files');
+const userRouter = require("@routes/user");
+const chatRouter = require("@routes/chat");
+const menuRouter = require("@routes/menu");
+const imagesRouter = require("@routes/images");
 
-const { createUser, logIn } = require('@controllers/user-controller');
-const { create, find } = require('@controllers/menu-controller');
-const { addImages, showImages, delImages } = require('@controllers/images-controller');
+const server = app.listen(4000);
 
-const { errorHandler } = require('@services/err-helper-decorator');
-const { showMessage, addMessage, delMessage } = require('@controllers/chat-controller');
-
-const WebSocket = require('ws');
-
-const server = app.listen(4000)
-
-const ws = new WebSocket.Server({server})
-
-ws.on('connection', (socket) =>{
-   socket.send('CONNECT')
-})
-ws.on('close', (socket) =>{
-   socket.send('DISCONNECT')
-})
-ws.on('error', (socket) =>{
-   socket.send('ERROR')
-})
-
-
-
-
-app.use(express.json(), (req, res, next) => {
-   res.append('Access-Control-Allow-Origin', '*');
-   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-   res.append('Access-Control-Allow-Headers', 'Content-Type');
-   next();
-});//аналогия установки body-parser. Чтоб было тело body
-
-
+app.use(require('passport').initialize());
+app.use(express.json(), require('cors')());
 
 //app.use('/app/*', verifyToken)//на любой запрос проверять токен
 
-//настройка валидации для регистрации
-
-/*----------------------------------------------------------------------------*/
- app.post('/app/register', upload_Validate, createUser)//registerValid,
- app.post('/app/login', upload_Validate, logIn);//loginValid
-/*----------------------------------------------------------------------------*/
- app.post('/app/catalog', find)
-/*----------------------------------------------------------------------------*/
- app.get('/app/images-show', showImages)
- app.post('/app/images-add', uploadImages, addImages)
- app.delete('/app/images-delete/:id?', delImages)
-/*----------------------------------------------------------------------------*/
-app.get('/app/chat/message-show', showMessage)
-app.post('/app/chat/message-add', addMessage)
-app.delete('/app/chat/message-delete/:id?', delMessage)
-
-/*----------------------------------------------------------------------------*/
-
-app.use(errorHandler)
+app.use('/app', userRouter);
+app.use('/app', chatRouter);
+app.use('/app', menuRouter);
+app.use('/app', imagesRouter, (req, res) => {
+   res.cookie('refresh', '', {httpOnly: true, expires: new Date(Date.now() + 300000)})
+});
 
 
+app.use(errorHandler);
 
 
 /*
@@ -89,11 +51,15 @@ app.use(errorHandler)
 */
 
 /* Выключить CORS. Почитать надо что за что отвечает
+вместо кучи заголовков можно поставить require('cors')()
    res.setHeader('Access-Control-Allow-Origin', '*');
    res.setHeader('Access-Control-Allow-Headers', 'origin, content-type, accept');
    res.setHeader('Access-Control-Allow-Credentials', 'true');
-*/
 
+   res.append("Access-Control-Allow-Origin", "*");
+   res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+   res.append("Access-Control-Allow-Headers", "Content-Type");
+*/
 
 /*
    Если next передать что-то, то функции middleware определяют что это сгенерирована ошибка
@@ -106,4 +72,3 @@ app.use(errorHandler)
    Что бы узнать приложение у нас в каком состоянии в "разработке" или "продакшн" есть команда
    app.get('env') значение указывается в NODE_ENV. Если её нет по по умолчанию development
 */
-

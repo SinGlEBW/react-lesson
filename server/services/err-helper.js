@@ -1,6 +1,7 @@
 const { MulterError } = require("multer");
 const { ConnectionError, BaseError, ConnectionRefusedError} = require("sequelize");
-  
+const { JsonWebTokenError, TokenExpiredError } = require('jsonwebtoken');
+
 let errorHandler = (err, req, res, next) => {
   console.dir(err);
   err = typeof err === "string" ? new Error(err) : err;
@@ -10,10 +11,11 @@ let errorHandler = (err, req, res, next) => {
     case MulterError: console.dir("case 2"); break; 
     case ConnectionError: console.dir("case 3"); break; 
     case BaseError: console.dir("case 4"); break; 
+    case JsonWebTokenError: res.status(401).json({err: err.message}); break; 
+    case TokenExpiredError: res.status(401).json({err: err.message}); break; 
     case ConnectionRefusedError: console.dir("Связь с БД потеряна"); break;
     default:
-      console.dir("switch не подходит");
-      res.status(300).json({ message: "Ошибка" });
+      res.status(300).json({ message: "Ошибка по умолчанию в errHelper" });
   }
 };
 

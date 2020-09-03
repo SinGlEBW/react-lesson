@@ -8,7 +8,6 @@ import { reduxStore } from './redux/reduxStore';
 import { Provider } from 'react-redux';
 
 
-
 // let reloadDOMfileIndex = (storeData) => {
 
 //    objectState.state = storeData.getState();//3 вариант

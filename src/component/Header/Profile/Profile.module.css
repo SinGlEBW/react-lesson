@@ -1,0 +1,12 @@
+.profile{
+  display: grid;
+  height: 70px;
+}
+.title{
+  font-size: 20px;
+  font-weight: 900;
+
+}
+.btn{
+  width: 100px;
+}

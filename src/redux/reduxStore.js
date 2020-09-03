@@ -25,6 +25,7 @@ const reducers = combineReducers({
    footer: footerReducer,
    
 })
+
 const reduxStore = createStore(reducers, applyMiddleware(thunk));
 
 window.state = reduxStore;

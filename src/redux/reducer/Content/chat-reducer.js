@@ -52,18 +52,18 @@ export const showMessAC = () => ({ type: SHOW_MESS });
 export const sendMessAC = (message) => ({ type: SEND_MESS, message });
 export const delMessAC = (id) => ({ type: DEL_MESS, id });
 
-let ws = new WebSocket('ws://localhost:4000/')
+// let ws = new WebSocket('ws://localhost:4000/')
 		
 
-ws.onopen = (ev) => {
-  console.dir(ev);
-}
-ws.onclose = (ev) => {
-  console.dir(ev);
-}
-ws.onmessage = (ev) => {
-  console.dir(ev);
-}
+// ws.onopen = (ev) => {
+//   console.dir(ev);
+// }
+// ws.onclose = (ev) => {
+//   console.dir(ev);
+// }
+// ws.onmessage = (ev) => {
+//   console.dir(ev);
+// }
 
 
 

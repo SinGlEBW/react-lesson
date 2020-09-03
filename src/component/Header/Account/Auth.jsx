@@ -1,18 +1,20 @@
-import React, { Fragment } from 'react';
-
+import React from 'react';
+import c from './Auth.module.css';
 import { Route } from 'react-router-dom';
 import LogIn from './Authorization/LogIn';
 import Register from './Registration/Register';
-
+import AuthButtons from './Auth-btn';
 
 let Auth = (props) => {
-  
+ 
   return (
-    <Fragment>
-      <Route path='/autorization' render={() => <LogIn {...props}/>} />
-      <Route path='/registration' render={() => <Register {...props} />} />
-    </Fragment>
-
+    <section className={c.auth}>
+		 	<div className='container'>
+        <AuthButtons />
+        <Route path='/autorization' render={() => <LogIn {...props}/>} />
+        <Route path='/registration' render={() => <Register {...props} />} />
+      </div>
+    </section>
   )
 }
 

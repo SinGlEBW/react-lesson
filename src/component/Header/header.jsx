@@ -2,18 +2,16 @@ import React, { Fragment } from "react";
 import c from './Header.module.css';
 import { NavLink } from 'react-router-dom';
 import ProfileContainer from './Profile/ProfileContainer';
-import AuthButtons from './Account/Auth-btn';
 import AuthContainer from './Account/AuthContainer';
 
-
 let Header = (props) => {
-console.dir(props);
+
 	let links = () => {
 		let id = 0;
-
+	
 		return props.header.links.map((item) => (
 			<li className={c.item} key={id++}>
-				<NavLink className={c.link} to={item[0]} onClick={props.pressLink}>{item[1]}</NavLink>
+					<NavLink className={c.link} to={item[0]} onClick={props.pressLink}>{item[1]}</NavLink>
 			</li>
 		))
 	}
@@ -26,15 +24,14 @@ console.dir(props);
 						<ul className={c.nav}>
 							{links()}
 						</ul>
-						{
-							(props.auth)
-								? <ProfileContainer />
-								: <AuthButtons />
-						}
 					</div>
 				</div>
 			</header>
-			<AuthContainer />
+			{
+				(props.auth)
+					? <ProfileContainer />
+					: <AuthContainer />
+			}
 		</Fragment>
 	);
 }
@@ -42,9 +39,9 @@ console.dir(props);
 export default Header;
 
 
+
 /*
-	NavLink определяет то что будет показывать в url, а Router определяет что должно быть обычным путём,
-	а что параметром
+	NavLink определяет то что будет показывать в url, а Router определяет что должно отобразить под этим url
 */
 
 /*

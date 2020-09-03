@@ -1,13 +1,12 @@
-const { Images } = require("@models"); //по ум в папке берёт index
-const validateDecorator = require("@services/validate-decorator");
+const { Images,  } = require("@models"); //по ум в папке берёт index
 const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
 function showImages(req, res, next) {
-  
+ 
   Images.findAll()
-    .then((files) => res.status(200).json(files))
+    .then((files) => res.status(200).json({files, ...req.infoUser}))
     .catch((err) => next(err));   
 }
 
@@ -24,7 +23,8 @@ function showImages(req, res, next) {
     await Images.findAll({where: {id: {[Op.between]: [id[0], id[id.length - 1]]}}, raw: true})
       .then(files => res.status(200).json({
         message: 'Файлы загружены',
-        files
+        files,
+        ...req.infoUser
       }))
   
   } catch (err) { next(err) }
@@ -42,7 +42,7 @@ async function delImages (req, res, next){
   })
   .then(item => {
     item.destroy()
-    res.status(200).json({message: 'Файл удалён'})
+    res.status(200).json({ message: 'Файл удалён', ...req.infoUser })
   })
   .catch(err => next(err))
 }
@@ -52,6 +52,9 @@ module.exports = {
   addImages,
   delImages
 };
+
+
+
 
 async function idDestroy (operator, numFirst, numSecond){
   numFirst = Array.isArray(numFirst) ? [...numFirst] : [numFirst];

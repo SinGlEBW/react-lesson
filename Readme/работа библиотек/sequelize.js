@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const { Model } = require('sequelize');
-//обычный способ подключения 
+//Подключение к бд + настройка
 const sequelize = new Sequelize("users", "root", "123456", {
    dialect: "mysql",
    host: "localhost",

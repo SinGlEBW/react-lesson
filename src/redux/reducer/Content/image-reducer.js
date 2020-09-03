@@ -20,13 +20,16 @@ export const delImagesAC = (id) => ({type: DEL_IMAGES, id})
 
 export const showImagesT = () => (dispatch) =>{
    imagesDAL.show()
-   .then(({ data }) => dispatch(showImagesAC(data)))
+   .then(({ data }) => {
+      console.dir(data);
+      dispatch(showImagesAC(data.files))
+   })
    .catch(console.error);
 }
 export const addImagesT = (files) => (dispatch) =>{
    imagesDAL.add(files)
    .then(({ data }) => (data.files) ? dispatch(addImagesAC(data.files)) : console.dir(data))
-   .catch(console.error)
+   .catch(console.dir)
 }
 export const delImagesT = (id) => (dispatch) =>{
    imagesDAL.del(id)

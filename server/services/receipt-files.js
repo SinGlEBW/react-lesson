@@ -1,15 +1,14 @@
 const multer = require("multer");
 const validate_Mtr_ExpV = require('./validate-decorator');
-//userValid
+//возможно при использовании router url уже не /app/register а /register
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-   console.dir(file);
-   //   console.dir(2);
-     (req.url === '/app/register')? cb(null, "public/avatars") : cb(null, "public/images");
+     //console.dir(2);
+     (req.url === '/app/register') ? cb(null, "public/avatars") : cb(null, "public/images");
   },
   filename: (req, file, cb) => {
- 
-   //   console.dir(3);
+
+    //console.dir(3);
     let ext = [".jpeg", ".jpg", ".png", ".bmp"];
     let msg =
       'Поддерживаемое расширение: ".jpeg", ".jpg", ".png", ".bmp"';
@@ -17,7 +16,7 @@ let storage = multer.diskStorage({
     ext = ext.find((item) => file.originalname.endsWith(item));
    
     !!ext
-			? (req.url === '/app/images-add') 
+			? (req.url === '/add-img') 
 					? cb(null, file.fieldname + Math.round(Math.random() * 1e10) + ext)
 					//бросаю данные в ошибку и нужно обработать данные в validate-decorator
 					: cb({cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext})
@@ -27,7 +26,7 @@ let storage = multer.diskStorage({
 
 //пока эти функции не будут запущены или в ручную или запросами, свойства тела body не будут заполнятся 
 const uploadImages = multer({ storage }).array("images", 10);
-const uploadUser = multer({ storage, limits: { fieldSize: 2097152} }).single("avatar");
+const uploadUser = multer({ storage, limits: { fieldSize: 2097152 } }).single("avatar");
 
 
 module.exports = { 

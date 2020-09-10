@@ -12,6 +12,7 @@ let Profile = (props) => {
         {/* <img src={props.user.avatar.path} alt={props.user.avatar.alt} /> */}
         {/* <span>Привет {props.user.name}</span> */}
         <button className={c.btn} onClick={props.logOut}>Выход</button>
+        <button className={c.btn} onClick={props.issueTokenPair}>Обновить токен</button>
       </div>
     </section>
   )

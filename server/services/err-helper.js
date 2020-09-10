@@ -13,7 +13,7 @@ let errorHandler = (err, req, res, next) => {
     case BaseError: console.dir("case 4"); break; 
     case JsonWebTokenError: res.status(401).json({err: err.message}); break; 
     case TokenExpiredError: res.status(401).json({err: err.message}); break; 
-    case ConnectionRefusedError: console.dir("Связь с БД потеряна"); break;
+    case ConnectionRefusedError: res.status(522).json({err: 'Связь с БД потеряна'}); break;
     default:
       res.status(300).json({ message: "Ошибка по умолчанию в errHelper" });
   }

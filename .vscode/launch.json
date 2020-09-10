@@ -2,9 +2,18 @@
    "configurations": [
       {
          "type": "node-terminal",
-         "name": "Run Script: dev",
+         "name": "Run: dev",
          "request": "launch",
          "command": "npm run dev",
+         "cwd": "${workspaceFolder}",
+         "autoAttachChildProcesses": true,
+         "console": "integratedTerminal"
+      },
+      {
+         "type": "node-terminal",
+         "name": "Run: server",
+         "request": "launch",
+         "command": "npm run server",
          "cwd": "${workspaceFolder}",
          "autoAttachChildProcesses": true,
          "console": "integratedTerminal"

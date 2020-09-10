@@ -3,12 +3,12 @@ const validate_Mtr_ExpV = require('./validate-decorator');
 //возможно при использовании router url уже не /app/register а /register
 let storage = multer.diskStorage({
   destination: (req, file, cb) => {
-     //console.dir(2);
+     console.dir(2);
      (req.url === '/app/register') ? cb(null, "public/avatars") : cb(null, "public/images");
   },
   filename: (req, file, cb) => {
 
-    //console.dir(3);
+    console.dir(3);
     let ext = [".jpeg", ".jpg", ".png", ".bmp"];
     let msg =
       'Поддерживаемое расширение: ".jpeg", ".jpg", ".png", ".bmp"';

@@ -16,14 +16,12 @@ const server = app.listen(4000);
 app.use(require('passport').initialize());
 app.use(express.json(), require('cors')());
 
-//app.use('/app/*', verifyToken)//на любой запрос проверять токен
+app.use('/app/*', verifyToken)//на любой запрос проверять токен
 
 app.use('/app', userRouter);
 app.use('/app', chatRouter);
 app.use('/app', menuRouter);
-app.use('/app', imagesRouter, (req, res) => {
-   res.cookie('refresh', '', {httpOnly: true, expires: new Date(Date.now() + 300000)})
-});
+app.use('/app', imagesRouter);
 
 
 app.use(errorHandler);

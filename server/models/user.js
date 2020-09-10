@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     //тут можем описать свои методы 
-    static checkLogin_Mod = async (login, pass) => {
+    static checkLogin_Mod = (login, pass) => {
         
     }
    
@@ -13,18 +13,27 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     login: DataTypes.STRING,
     name: DataTypes.STRING,
-    email: DataTypes.STRING,
+    email:{
+      type: DataTypes.STRING,
+      // unique: true
+    },
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
     phone: DataTypes.STRING(11),
     age: DataTypes.DATEONLY,
+    
+    
     role: {
       type: DataTypes.STRING,
       defaultValue: 'user',
+    
     },
+    
   }, {
     sequelize,
     modelName: 'User',
+    timestamps: false
+    
     
   })//.sync({ alter: true })
   

@@ -1,28 +1,33 @@
 const jwt = require("jsonwebtoken");
-const config = require("@config-server/config");
+const { secret } = require("@config-server/config");
 const uuid = require('uuid').v4;
+const { SessionTokens } = require('@models');
 
-function createTokenPair(userFromDB) {
-  //можно передать объект refresh и access токена
+/*----------------------------------------------------------------------------------------*/
+async function createTokenPair({id, login, avatar, role}) {
 
+  const refreshToken = uuid();
+  try {
+    await SessionTokens.create({ userId: id, refreshToken })
+  } catch (err) {
+    return { code: 409, ...err }
+  }
+ 
   return {
-    token: jwt.sign({
-        id: userFromDB.id, login: userFromDB.login,
-        avatar: userFromDB.avatar, role: userFromDB.role
-      },
-      config.secret,
-      { expiresIn: '1m' }),
-    refreshToken: uuid()
+    token: jwt.sign({ id, login, avatar, role }, secret, { expiresIn: '15m' }),
+    refreshToken//времени нет
    }
 }
 
+/*----------------------------------------------------------------------------------------*/
+
 function verifyToken(req, res, next) {
-  
+ 
   if (req.headers["authorization"] && req.headers["authorization"].length) {
-   
+    
     const token = req.headers["authorization"].replace(/(bearer|jwt)\s+/i, '');
     
-    jwt.verify(token, config.secret, (err, decoded) => {
+    jwt.verify(token, secret, (err, decoded) => {
       if (err) return next(err);
       
       req.infoUser = {
@@ -38,16 +43,13 @@ function verifyToken(req, res, next) {
     next();
   }
 }
-function refreshToken(refresh) {
-  if(refresh){
 
-  }
-}
+/*----------------------------------------------------------------------------------------*/
+
 
 module.exports = {
   createTokenPair,
   verifyToken,
-  refreshToken,
 };
 
 /*

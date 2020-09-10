@@ -2,7 +2,7 @@ import Axios from 'axios';
 
 let instance = Axios.create({
   baseURL: 'http://localhost:4000/app',
-  headers: {'Authorization': JSON.parse(localStorage.getItem('token')) || ''}
+  
 })
 
 export const imagesDAL = {
@@ -13,7 +13,8 @@ export const imagesDAL = {
 export const userDAL = {
   register: (data) => instance.post('register', data),
   entrance: (data) => instance.post('login', data),
-  logOut: () => instance.get('logOut')
+  logOut: () => instance.get('logOut', {headers: {'Authorization': JSON.parse(localStorage.getItem('token')) || ''}}),
+  refresh: (refreshToken) => instance.post('refresh', { refreshToken }, {headers: {'Authorization': JSON.parse(localStorage.getItem('token')) || ''}})
 }
 export const chatDAL = {
   show: () => instance.get('chat/show-message'),

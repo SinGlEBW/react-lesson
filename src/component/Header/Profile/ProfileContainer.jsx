@@ -8,12 +8,12 @@ class ProfileContainer extends React.Component {
   componentDidMount = () => {
     
   }
-  logOut = (e) => this.props.logOutT()
-  issueTokenPair = (e) => this.props.refreshTokensT()
+
 
   render = () => {
     console.dir(this.props);
-    return <Profile logOut={this.logOut}/>
+    return <Profile logOut={this.props.logOutT} 
+                    issueTokenPair={this.props.refreshTokensT}/>
   }
 }
 

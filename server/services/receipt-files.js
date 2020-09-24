@@ -16,7 +16,7 @@ let storage = multer.diskStorage({
     ext = ext.find((item) => file.originalname.endsWith(item));
    
     !!ext
-			? (req.url === '/add-img') 
+			? (req.url === '/add-img')//картинками манипулирую или регистрация или компонент images
 					? cb(null, file.fieldname + Math.round(Math.random() * 1e10) + ext)
 					//бросаю данные в ошибку и нужно обработать данные в validate-decorator
 					: cb({cb, fieldname: file.fieldname + Math.round(Math.random() * 1e10) + ext})
@@ -33,7 +33,7 @@ module.exports = {
    uploadImages
 }
 
- module.exports.upload_Validate = validate_Mtr_ExpV(uploadUser)
+ module.exports.upload_Validate = validate_Mtr_ExpV(uploadUser)//uploadUser бросаю в замыкание
 
 /*
    Если в Функции middleware есть вызов другая middleware, то вызов next во 2й функции ни к чему как я понимаю не приводит

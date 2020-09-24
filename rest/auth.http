@@ -1,0 +1,26 @@
+POST http://127.0.0.1:4000/app/login
+Content-Type: application/json
+Origin: http://localhost:3000
+
+{
+  "login": "admin",
+  "pass": "admin"
+}
+###
+
+POST http://127.0.0.1:4000/app/logout
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImxvZ2luIjoiYWRtaW4iLCJhdmF0YXIiOiIvYXZhdGFycy9hdmF0YXI2MDM1MDM4MDE3LnBuZyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTk5OTY3NDE2LCJleHAiOjE1OTk5NzEwMTZ9.tgbXoNCB1sspYhbZLF-VOyN2bW79a3n-Ld_Qwr41W8o; Max-Age=3; Path=/; Expires=Sun, 13 Sep 2020 03:23:40 GMT
+Content-Type: application/json
+
+{
+  "refreshToken": "ebff7660-b4c7-4e18-b400-280e370600a1"
+}
+###
+
+POST http://127.0.0.1:4000/app/refresh
+Cookie: access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjQsImxvZ2luIjoiYWRtaW4iLCJhdmF0YXIiOiIvYXZhdGFycy9hdmF0YXI2MDM1MDM4MDE3LnBuZyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNTk5OTU1ODk2LCJleHAiOjE1OTk5NTk0OTZ9.ihzUkueGxizqsFPGMTn5OiQaDgCBJvL62tAYeh_HckE; Max-Age=3; Path=/; Expires=Sun, 13 Sep 2020 00:11:39 GMT
+Content-Type: application/json
+
+{
+  "refreshToken": "6a3f574b-3473-48e8-8ad4-5043f5f356f1"
+}

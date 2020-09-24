@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
-import Chat, { SignupForm } from './Chat';
+
+import Chat from './Chat';
 import { showMessAC, changesTheMessAC, sendMessAC, delMessAC } from 'src/redux/reducer/Content/chat-reducer';
-import { Redirect } from 'react-router-dom';
+import { withRedirectAuth } from 'src/component/hoc/withRedirectAuth';
 
 
-//HOC - High Order Component. Принимает компонент контейнер и возвращает его с новым поведением
-//ChatContainer - тоже компонента принимающая пропс и возвращающая jsx,но грязная и уровнем выше чистой
 class ChatContainer extends Component {
 	myRef = React.createRef()
 	responseMessage = () => {
@@ -42,8 +42,7 @@ class ChatContainer extends Component {
 	}
 
 	formButtonBehavior = (values, { setSubmitting }) => {
-		console.dir(values);
-		console.dir(setSubmitting);
+	
 			setTimeout(() => {
 				alert(JSON.stringify(values, null, 2));
 				setSubmitting(false);
@@ -52,61 +51,38 @@ class ChatContainer extends Component {
 
 	render = () => {
 		
-		if(false)
-			return	<Redirect to="/registration"/>
-		else
 		return (
-			<Fragment>
+			<>
 			
 				<Chat chat={this.props.chat}
 							listensMessage={this.listensMessage}
 							responseMessage={this.responseMessage}
 							sendMessage={this.sendMessage}
 							myRef={this.myRef} />
-			
-				{/* <SignupForm /> */}
 
-			</Fragment>
+			</>
 		)
 	}
 };
 
 
-/*#####----<{ HOC }>----##### */
-let WithRedirectAuth = (props) => {
-	 console.dir(props);
-	if(true)
-		return <Redirect to='/registration' />
-	return <ChatContainer {...props}/>
-}
 
-/*#####----<{ REDUX }>----##### */
 let mapStateToProps = (state) => ({ chat: state.chat })
 
- //let wrChatContainer = withRouter(ChatContainer)
-let con = connect(mapStateToProps, {
-	showMessAC,
-	changesTheMessAC,
-	sendMessAC,
-	delMessAC
-})(ChatContainer);
-
-export default con
-
-
-// let WithRedirectAuth = (props) => {
-// 	console.dir(props);
-// if(true)
-// 	return <Redirect to='/registration' />
-// return <ChatContainer {...props}/>
-// }
+export default compose(
+	withRedirectAuth,
+	connect(mapStateToProps, {
+		showMessAC,
+		changesTheMessAC,
+		sendMessAC,
+		delMessAC })
+)(ChatContainer)
 
 
 
-/*
-	При использовании Redirect очевидно мы попадаем в Container компоненту загружая код который нам по 
-	факту не нежен в данный момент
-*/
+
+
+
 /*
    Что бы не создавать однообразные dispatch, есть возможность сократить запись до объекта,
 	 Вместо:  let sendMess = (o_Message) => dispatch(sendMessAction(o_Message)); и функции

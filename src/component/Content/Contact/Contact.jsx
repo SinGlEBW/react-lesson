@@ -17,7 +17,8 @@ export default class Contact extends Component {
       temperature: ''
    }
 
-   evChangeTemperature = (target) => {//Ориентируюсь на ключ в target, только после обновляем state
+   evChangeTemperature = ({target}) => {//Ориентируюсь на ключ в target, только после обновляем state
+      
       if (target.name === "Celsius") {
          let f = (target.value !== '') ? (9 / 5 * target.value) + 32 : '';
          this.setState({

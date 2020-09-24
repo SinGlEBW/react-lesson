@@ -1,8 +1,5 @@
 import React from 'react';
 import c from './Chat.module.scss';
-import { Formik, Form } from 'formik';
-import { authChatSchema } from './validationYup';
-import { Input } from './componentMod/Input';
 
 
 //Chat - компонент принимающий пропс и возвращает jsx. Чистая
@@ -20,12 +17,8 @@ let Chat = (props) => {
 						</ul>
 					</div>
 				</div>
-				<label>
-					<input type="checkbox" style={{appearance: 'none'}}/>
-					Первый
-				</label>
 			</div>
-		
+			
 		</main>
 	)
 }
@@ -35,61 +28,9 @@ export default Chat;
 
 
 
-export const SignupForm = (props) => {
-
-	return (
-		<div>
-			<div className='container'>
-				<h2>Форма 2</h2>
-				<Formik initialValues={{ login: '', password: '', age: '', field: '' }}
-					validationSchema={authChatSchema}
-					onSubmit={(values, { setSubmitting }) => {
-
-						let data = Object.entries(values).reduce((pValue, arrKeyVal) => (
-							{
-								...pValue,
-								[arrKeyVal[0]]: arrKeyVal[1].trim()
-							}), {})
-
-						setTimeout(() => {
-							alert(JSON.stringify(data, null, 2));
-							setSubmitting(false);
-						}, 400);
-					}} >
-					{(formik) => {
-						// console.dir(formik);
-						return (
-							<Form>
-								<Input type='text' name='login' label='Логин' />
-								<Input type='password' name='password' label='Пароль' />
-								<Input name='age' label='Возраст' />
-								<Input name='field' label='Поле' />
-
-								<button type="submit" >Submit</button>{/*disabled={!formik.isValid || !formik.dirty || formik.isSubmitting} */}
-							</Form>
-						)
-					}}
-				</Formik>
-			</div>
-		</div>
-	)
-}
 
 
 
-
-
-
-/*----Бинарный поиск и с чем его едят.
-При каком либо поиске определённых значений в некоторых данных, происходит итерация. 
-Например поиск какого-то числа в массиве. Любые методы совершающие итерации проверяют каждое значение
-и при успехе делают какой-то следующий шаг с этим числом. Или возвращают его или продолжают искать по пути складывая 
-значения в массив. Такая операция занимает n- кол-во времени которое зависит от объёма данных в которых происходит поиск. 
-
-Был придумал другой более быстрый алгоритм, который не перебирает каждый элемент, а делит массив пополам
-снова и снова до
-
-*/
 
 /*
 Кстате говоря useState это тот же setState только предназначен для компонентов в виде

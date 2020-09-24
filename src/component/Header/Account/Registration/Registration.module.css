@@ -34,11 +34,12 @@
    padding-left: 10px; 
    font-size: 20px;  
 }
-.item:nth-child(1){
+.item:nth-of-type(1){
    margin-top: 0px;
 }
-.item:nth-child(7){
-   font-size: 14px;
+.file{
+   padding-top: 7px;
+   font-size: 16px;
    background-color: transparent;
    box-shadow: none;
    border: none;

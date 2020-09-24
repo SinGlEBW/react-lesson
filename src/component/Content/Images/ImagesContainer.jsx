@@ -62,23 +62,13 @@ class ImagesContainer extends Component {
 
 let mapStateToProps = (state) => ({ images: state.images });
 
-//для наглядности. Ключи это не action, это функция которая свяжется с dispatch 
+
 export default connect(mapStateToProps, {
    showImagesT,
    addImagesT,
    delImagesT
 })(ImagesContainer); 
 
-/*
-Старый способ dispatch
-let mapDispatchToProps = (dispatch) => {
 
-   let showImages = (id) => {
-      return dispatch(showImagesAC(id))
-   }
 
-   return {
-      showImages
-   }
-}
-*/
+

@@ -31,7 +31,7 @@ class App extends Component {
     
             <Route path='/contacts' render={(props) => <ContactContainer {...props}/>}/>
             
-            <Route path='/info' render={(props) => <InfoContainer {...props}/>}/>
+            <Route path='/info' render={(props) => <InfoContainer />}/>
          
             <Route path='/images' render={(props) => <ImagesContainer {...props}/>}/>
          

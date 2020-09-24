@@ -8,6 +8,7 @@ import { contactReducer } from './reducer/Content/contacts-reducer';
 import { homeReducer } from './reducer/Content/home-reducer';
 import { imagesReducer } from './reducer/Content/image-reducer';
 import { infoReducer } from './reducer/Content/info-reducer';
+import { reducer as formReducer } from 'redux-form'
 
 import { footerReducer } from './reducer/Footer/footer-reducer';
 import thunk from 'redux-thunk';
@@ -23,6 +24,7 @@ const reducers = combineReducers({
    contact: contactReducer,
    images: imagesReducer,
    footer: footerReducer,
+   form: formReducer
    
 })
 
@@ -30,4 +32,3 @@ const reduxStore = createStore(reducers, applyMiddleware(thunk));
 
 window.state = reduxStore;
 export { reduxStore };
-

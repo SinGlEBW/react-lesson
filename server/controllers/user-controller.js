@@ -3,12 +3,12 @@ const bcryptjs = require("bcryptjs");
 const { createTokenPair } = require("@services/auth-service");
 const { Op } = require('sequelize');
 
-SessionTokens.belongsTo(User, {onDelete: 'CASCADE'})
-// SessionTokens.sync({alter: true})
+User.hasOne(SessionTokens, {onDelete: 'CASCADE'})
+SessionTokens.belongsTo(User)
+ //sequelize.sync({alter: true})
 /*----------------------------------------------------------------------------------------*/
 
 function register(req, res, next) {
-  console.dir(1);
   
   const { email, login } = req.body;
  
@@ -16,10 +16,10 @@ function register(req, res, next) {
   User.findOne({ where: { [Op.or]: [{ email }, { login }] } })
     .then((user) => {
       const client = user && [user.email, user.login].find((item) => (email === item || login === item));// && обрабатывает null
-      
+    
       if (client) {
-        
-        return Promise.reject({ msg:`${client} уже занят`, param: 'login' });
+        let param = Object.keys(req.body).find(key => req.body[key] === client);//ключ по значению
+        return Promise.reject([{ msg:`${client} уже занят`, param }]);
       } else {
        
         let { login, name, email, pass, age, phone } = req.body;
@@ -36,7 +36,7 @@ function register(req, res, next) {
     .then((data) => {
       res.status(201).json({ msg: 'Пользователь зарегистрирован', isRegister: true })
     })
-    .catch((err) => res.status(409).json(err));
+    .catch((err) => res.status(409).json({err}));
 }
 
 /*----------------------------------------------------------------------------------------*/
@@ -49,19 +49,26 @@ function logIn(req, res, next) {
   User.findOne({where: { login }})
     .then((user) => {
       if(user){
-        if(bcryptjs.compareSync(pass, user.password))
+        if(bcryptjs.compareSync(pass, user.password)){
+          req.infoUser = {
+            id: user.id, 
+            login: user.login, 
+            avatar: user.avatar, 
+            role: user.role
+          }
           return user
+        }
         return Promise.reject({ msg: 'Пароли не совпадают', param: 'pass'});
-        
       }
-      return Promise.reject({ msg: 'Пользователь не найден', param: ['login', 'pass'] });
-      
+      return Promise.reject({ msg: 'Пользователь не найден', param: 'login' });
     })
-    //передаётся в createToken user
+    //передаётся в createTokenPair user
     .then(createTokenPair)
     .then(({ token, refreshToken }) => {
-
-      res.status(200).json({
+      //, httpOnly: true, secure: true
+      
+      res.cookie('access_token', token, {maxAge: 3600,})
+      .status(200).json({
         msg: 'Вход выполнен',
         isAuth: true,
         token: `Bearer ${ token }`,
@@ -76,29 +83,44 @@ function logIn(req, res, next) {
 /*----------------------------------------------------------------------------------------*/
 
 function logOut(req, res, next) {
+  console.dir('функция logOut');
   const { refreshToken } = req.body; 
   if(refreshToken){
-     SessionTokens.findOne({where: { refreshToken }})
-      .then((data) => res.status(200).json({isAuth: false}))
-      .catch(next)
-  }
-  res.status(409).json({err: 'Не верный refreshToken'})
-  
-}
-
-/*----------------------------------------------------------------------------------------*/
-
-async function refresh(req, res, next) {
-  let { refreshToken } = req.body;
-  if(refreshToken){
-    SessionTokens.findOne({where: { refreshToken }, include: User, raw: true, nest: true})
-    .then(({ User }) => {
-      createTokenPair(User)
+    SessionTokens.findOne({where: { refreshToken }})
+    .then(session => {
+      session.destroy()
+      res.status(200).json({isAuth: false})
     })
     .catch(next)
   }else
     res.status(404).json({err: 'refreshToken не был передан'})
-  
+
+}
+
+
+/*----------------------------------------------------------------------------------------*/
+
+async function refresh(req, res, next) {
+  console.dir('функция refresh');
+
+  let { refreshToken } = req.body;
+
+  if(refreshToken){
+    SessionTokens.findOne({where: { refreshToken }, include: User, nest: true})
+    .then(createTokenPair)
+    .then(({token, refreshToken}) => {
+      console.dir(token);
+      res.cookie('access_token', token, {maxAge: 3600,})
+      .status(200).json({
+        msg: 'Токены обновлены',
+        token: `Bearer ${ token }`,
+        refreshToken,
+        ...req.infoUser
+      });
+    })
+    .catch(next)
+  }else
+    res.status(404).json({err: 'refreshToken не был передан'})
 }
 
 module.exports = {

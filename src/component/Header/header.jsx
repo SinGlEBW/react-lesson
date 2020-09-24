@@ -3,7 +3,6 @@ import c from './Header.module.css';
 import { NavLink } from 'react-router-dom';
 import ProfileContainer from './Profile/ProfileContainer';
 import AuthContainer from './Account/AuthContainer';
-import PropTypes from 'prop-types';
 
 let Header = (props) => {
 
@@ -37,12 +36,6 @@ let Header = (props) => {
 	);
 }
 
-// Header.propTypes = {
-// 	link: PropTypes.string
-// }
-// Header.defaultProps  = {
-// 	link: 'ссылка'
-// }
 
 export default Header;
 

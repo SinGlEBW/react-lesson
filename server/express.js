@@ -1,10 +1,11 @@
 require("module-alias/register");
 const express = require("express");
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
 const app = express();
 
 const { verifyToken } = require("@services/auth-service");
-const { errorHandler } = require("@services/err-helper");
-const passport = require('passport');
+const { errorHelper } = require("@services/err-helper");
 
 const userRouter = require("@routes/user");
 const chatRouter = require("@routes/chat");
@@ -13,8 +14,27 @@ const imagesRouter = require("@routes/images");
 
 const server = app.listen(4000);
 
+app.use((req,res,next) => { 
+   console.dir(req.method);
+   
+   res.set({
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Access-Control-Allow-Method": "GET",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Headers": "origin, content-type, accept"
+   })
+   next()
+   
+})
+app.use(require('cors')({
+   origin: true,
+   allowedHeaders: ''
+}));
+
+app.use(express.json(), cookieParser());
 app.use(require('passport').initialize());
-app.use(express.json(), require('cors')());
+
+
 
 app.use('/app/*', verifyToken)//на любой запрос проверять токен
 
@@ -24,7 +44,7 @@ app.use('/app', menuRouter);
 app.use('/app', imagesRouter);
 
 
-app.use(errorHandler);
+app.use(errorHelper);
 
 
 /*

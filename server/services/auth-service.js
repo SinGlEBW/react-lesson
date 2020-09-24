@@ -1,57 +1,95 @@
 const jwt = require("jsonwebtoken");
 const { secret } = require("@config-server/config");
 const uuid = require('uuid').v4;
-const { SessionTokens } = require('@models');
-
+/* JWT требуется для авторизации а не аутентификации. Авторизация гарантирует что 
+пользователь на месте */
 /*----------------------------------------------------------------------------------------*/
-async function createTokenPair({id, login, avatar, role}) {
+async function createTokenPair(data) {
 
   const refreshToken = uuid();
-  try {
-    await SessionTokens.create({ userId: id, refreshToken })
-  } catch (err) {
-    return { code: 409, ...err }
-  }
+  let { id, login, avatar, role } = (data.User) ? data.User : data
  
-  return {
-    token: jwt.sign({ id, login, avatar, role }, secret, { expiresIn: '15m' }),
-    refreshToken//времени нет
-   }
-}
+  if(data.get('refreshToken')){//Если нет refreshToken значит это login обращаюсь
+    data.set('refreshToken', refreshToken)
+    data.save()
 
+  }else
+    data.createSessionToken({ UserId: id, refreshToken })
+    
+  return {
+    token: jwt.sign({ id, login, avatar, role }, secret, { expiresIn: '1h' }),
+    refreshToken//времени нет
+  }
+}
+/*
+  При refresh найти запись refresh и пользователя. создать refresh, обновить 
+  запись в бд на данный refresh, вернуть новый refresh и новый токен.
+  При регистрации создать refresh, по
+  запись в бд на данный refresh, вернуть новый refresh и новый токен.
+
+*/
 /*----------------------------------------------------------------------------------------*/
 
 function verifyToken(req, res, next) {
- 
-  if (req.headers["authorization"] && req.headers["authorization"].length) {
-    
-    const token = req.headers["authorization"].replace(/(bearer|jwt)\s+/i, '');
-    
-    jwt.verify(token, secret, (err, decoded) => {
-      if (err) return next(err);
-      
-      req.infoUser = {
-        id: decoded.id,
-        login: decoded.login,
-        avatar: decoded.avatar,
-        role: decoded.role,
-      };
-      next();
-    });
+  console.dir('функция verifyToken');
+  let { access_token } = req.cookies;
+  console.dir(req.cookies);
+   if (access_token) {
+    let { id, login, avatar, role } = jwt.verify(access_token, secret);
+    console.dir(1);//
+    //ошибка не обрабатывается т.к. err.helper ловит ошибку сразу
+    req.infoUser = { id, login, avatar, role };
+    next();
+   
   } else {
     req.infoUser = { role: "guest" };
     next();
+    
   }
+  
 }
 
 /*----------------------------------------------------------------------------------------*/
-
 
 module.exports = {
   createTokenPair,
   verifyToken,
 };
+/*
+  При каждом обращении к серверу, сервер должен понимать кто к нему обращается
+  и какие права он имеет на доступ к тому или иному выложенному ресурсу. Для
+  этого обычно создаются сессии на сервере. Это то что по сути должно записать 
+  себе в блокнот информацию о пользователе (в память сессии на сервере)и ожидать его какое-то время.
+  Конечно можно обращаться к БД каждый раз, но это не продуктивно Если одновременных запросов.
+  будет куча БД не вывезет. JWT реализован таким образом что бы хранить эту информацию
+  о пользователе и выдавать ему бэйджик и потом ориентироваться по нему всякий раз
+  когда пользователь обращается. Любые изменения этого бейджика на стороне клиента,
+  не будет совпадать на стороне сервера и пользователь не сможет от сервера получить
+  то что нему не следует. Так же токен можно хранить на нескольких серверах, а сессия
+  как на одном сервере. С сессиями придётся при переходе с сайта на сайт повторно проходить регистрацию,
+  что бы 2й сервер понимал кто будет обращаться и это не очень круто.  Что это даёт?
+  Например есть компания у которой есть 2 сервера под разные задачи. Условно есть Банковский
+  сайт и пенсионный. Есть возможность с сайта банка перейти на пенсионный для того что бы сделать
+  там вклад используя счёт банка. Что бы не делать повторную аутентификацию на пенсионном
+  сайте, нужно сделать автоматический вход на обоих сайтах. Делают обычно плавный переход 
+  что бы выглядело будто это одно приложение. На обоих сайтах делается один и тот же секретный
+  ключ для JWT и можем спокойно отсылать Token на 2й сайт и мы будет аутентифицированы. Работает 
+  это потому что храниться информация о клиенте на клиенте, на сервере же просто проверяется
+  через JWT время этого ключа, если оно не истекло то расшифровывается как я понял.
+  Ещё пример если у банка есть несколько серверов с одним и тем же сайтом. один сервер вдруг стал 
+  перегруженным или освободился поближе к клиенту тогда перенаправит на другой сервер и клиент 
+  даже не заметит и будет авторизирован так же. Потому что используется один и тот же ключ.
 
+
+  можно просто передать на другой сервер Token и указать что клиент может делать вклады
+
+  Такой ощущение что JWT получает информацию о пользователе и генерирует шифр
+  запуская setTimeout. Пока не истёк setTimeout он может вызывать метод который
+  генерирует этот шифр и сравнивать с полученным шифром от клиента,
+  по истечению он удаляет тот метод.
+
+
+*/
 /*
   Как я понял refresh токен это ещё один токен, который должен жить дольше, хранить его в бд.
   предположительно refresh токен от пользователя получаем через body (по всей видимости это uuid),
@@ -107,7 +145,8 @@ module.exports = {
    2й - секретный ключ
    3й - или [option] или [callback] который декодирует token 
    4й - если 3й [option] 4й [callback]
-
+   Без использования cb verify будет возвращать или декодированные данные или ошибку
+   
    payload так же имеет стандартные свойства
     iat: время вроде как жизни 
 
@@ -125,4 +164,30 @@ module.exports = {
                   у него к ресурсам сайта. Берётся token из localeStorage отсылается
                   на сервак и сопоставляется с пользователем. Может ли он имея этот
                   token что-нибудь редактировать
+*/
+
+
+
+
+
+/*
+function verifyToken(req, res, next) {
+  console.dir('функция verifyToken');
+  let { access_token } = req.cookies;
+  if (req.headers["authorization"] && req.headers["authorization"].length) {
+    
+    const token = req.headers["authorization"].replace(/(bearer|jwt)\s+/i, '');
+    
+    jwt.verify(token, secret, (err, {id, login, avatar, role}) => {//данные так лучше не забирать. В случае отсутствия вылезет обычный new Error
+      if (err) return next(err);
+      
+      req.infoUser = { id, login, avatar, role };
+      next();
+    });
+  } else {
+    req.infoUser = { role: "guest" };
+    next();
+  }
+}
+
 */

@@ -26,10 +26,10 @@ let schema = yup.object({
 })
 //Данные не обязательно должны придти все, главное сто бы проверка подразумевала нужный ключ
 //манипуляция данными и ошибками
-schema.validate(ob)//2й пар. option
+schema.validate(ob, options)
 .then((val) => console.dir(val))
 .catch((err) => console.dir(err))
-/*option*/
+/*options*/
 {//значения по умолчанию
   strict: boolean = false;//если true генерирует ошибку
   abortEarly: boolean = true;//вернуть после 1й ошибки
@@ -86,7 +86,7 @@ let schema3 = yup.object({
   }),
 });
 
-let arrSchema = yup.reach(schema3, 'nested.arr2');//получили
+let arrSchema = yup.reach(schema3, 'nested.arr2');//получил часть схемы
 arrSchema.isValid([1,2,3,3])
 .then((value) => console.dir(value))//проверили
 
@@ -99,7 +99,6 @@ arrSchema.isValid([1,2,3,3])
 */
 yup.addMethod(yup.string, 'myMethod', function (myMessage = ''){
 	return this.min(5).max(15).required()
-	
 })
 //избавляет от указывания одной и той же проверки
 const schema5 = yup.object({
@@ -113,7 +112,9 @@ const schema5 = yup.object({
 /* 
   Как я понял cast с валлидацией не работает, он просто передаёт данные и 
   выполняет только преобразование без всяких min, max...
-  
+  Вроде как cast это значения по умолчанию. Если передать в isValid значения то он будет сравнивать с 
+  cast значениями 
+
   Предположим я прогоняю данные через схему */
   let schema6 = yup.object({
     products: yup.array().of(yup.object({

@@ -10,8 +10,8 @@ let Images = (props) => {
         <div className="image__items">
           {props.allImages()}
           <form onSubmit={props.add}>
-            <input type="file" name="images" multiple />
-            <input type="submit" name="add" value="Добавить"/>
+            <input type="file" name="images" multiple accept="image/jpg"/>
+            <input type="submit" value="Добавить"/>
           </form>
         </div>
       </div>

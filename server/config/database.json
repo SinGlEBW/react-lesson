@@ -1,9 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "my-site",
-    "host": "127.0.0.1",
+    "password": "secret",
+    "database": "u66147_el-staff",
+    "host": "host.docker.internal",
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {

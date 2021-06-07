@@ -5,37 +5,38 @@ const REF_TOKENS = 'REF_TOKENS';
 const SET_AUTH_USER = 'SET_AUTH_USER';
 
 let stateAuth = {
-  isAuth: JSON.parse(localStorage.getItem('isAuth')),
+  isAuth:  JSON.parse(localStorage.getItem('isAuth')) || false,
   errors: {
     entrance: false,
     register: false
   },
-  
+  user: {},
   refreshToken: JSON.parse(localStorage.getItem('refreshToken')),
   role: JSON.parse(localStorage.getItem('role')),
   token: JSON.parse(localStorage.getItem('token'))
 };
 
 export const authReducer = (state = stateAuth, action) => {
- 
+
   switch(action.type){
-    case ERRORS: return {...state, errors: {...state.errors, [action.key]: action.value}}
+    case ERRORS: return {...state, errors: {...state.errors, [action.key]: action.err}}
     case REF_TOKENS: return {...state, ...action.tokens}
-    case SET_AUTH_USER: return {...state, ...action.user}
+    case SET_AUTH_USER: return {...state, isAuth: action.user.isAuth, user: action.user}
     default: return state
   }
 };
 /*------------<{ Action }>-----------------------------------------------------------------*/
 
-export const errors = (key, value) => ({type: ERRORS, key, value})
+export const errors = (key, err) => ({type: ERRORS, key, err})
 export const refreshTokens = (tokens) => ({type: REF_TOKENS, tokens})
 export const setAuthUser = (user) => ({type: SET_AUTH_USER, user})
 
 /*------------<{ Thunk }>------------------------------------------------------------------*/
 
 export const authT = (formName, formData) => (dispatch) => {
+  
   let resolve = (formName === 'entrance') ? userDAL.entrance(formData) : userDAL.register(formData);
-  resolve
+  return resolve
   .then(({data}) => {
     console.dir(data);
     if(data.isAuth){
@@ -50,13 +51,21 @@ export const authT = (formName, formData) => (dispatch) => {
     } 
   })
 
-  .catch((err) => { 
-    console.dir(err);
-    if(err){
-
-    }
-    // if(response.data.err)
-    //   dispatch(errors(formName, response.data.err))
+  .catch(({response}) => { 
+    
+    if(response){
+      if(response.data.err){
+        //в auth
+        console.dir(response.data.err);
+        dispatch(errors(formName, response.data.err))
+        //в form reducer
+        //dispatch({type: 'ERROR_SUBMIT_FIELD', err: response.data.err})
+        //в UI
+        return response.data.err
+      }
+        
+    }else
+      console.dir('Нет подключения к серверу');
       
   })
   
@@ -92,6 +101,10 @@ export const refreshTokensT = () => (dispatch) => {
   })
   .catch((err) => console.dir(err))
 }
+
+
+
+
 
 /*
   По refresh найти запись сессий и удалить, найти пользователя по id,

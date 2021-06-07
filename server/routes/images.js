@@ -1,11 +1,13 @@
 const express = require('express');
-const { uploadImages } = require("@services/receipt-files");
-const { addImages, showImages, delImages} = require("@controllers/images-controller");
 const router = express.Router();
 
-router.get("/show-img", showImages);
-router.post("/add-img", uploadImages, addImages);
-router.delete("/del-img/:id?", delImages);
+// const { uploadImages } = require("@services/receipt-files");
+// const { addImages, showImages, delImages} = require("@controllers/images-controller");
+
+
+// router.get("/show-img", showImages);
+// router.post("/add-img", uploadImages, addImages);
+// router.delete("/del-img/:id?", delImages);
 
 module.exports = router;
 

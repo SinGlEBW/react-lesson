@@ -1,0 +1,16 @@
+{
+  "db": {
+    "MYSQL_ROOT_PASSWORD": "secret",
+    "MYSQL_DATABASE": "u66147_el-staff",
+    "PORT": 3001,
+    "HOST": "172"
+  },
+  "nodeServer": {
+    "PORT": 3001,
+    "HOST": "localhost"
+  },
+  "reactServer": {
+    "PORT": 3000,
+    "HOST": "localhost"
+  }
+}

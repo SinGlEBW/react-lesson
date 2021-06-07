@@ -1,13 +1,24 @@
 {
    "configurations": [
       {
+         "name": "Server-node in Docker",
+         "type": "node",
+         "request": "attach",
+         "port": 9229,
+         "address": "localhost",
+         "restart": true,
+         "sourceMaps": false,
+         "localRoot": "${workspaceRoot}",
+         "remoteRoot": "/var/www/html"
+       },
+      {
          "type": "node-terminal",
          "name": "Run: dev",
          "request": "launch",
          "command": "npm run dev",
          "cwd": "${workspaceFolder}",
          "autoAttachChildProcesses": true,
-         "console": "integratedTerminal"
+         "console": "integratedTerminal",
       },
       {
          "type": "node-terminal",
@@ -16,7 +27,8 @@
          "command": "npm run server",
          "cwd": "${workspaceFolder}",
          "autoAttachChildProcesses": true,
-         "console": "integratedTerminal"
+         "console": "integratedTerminal",
+         "envFile": "${workspaceFolder}/.env"
       }
    ]
 }

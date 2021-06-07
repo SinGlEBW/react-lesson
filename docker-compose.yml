@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  server-node:
+    image: server-node:v1
+    env_file: 
+      - ./env/.env.development
+    volumes: 
+      - ./package.json:/var/www/html/package.json
+      - ./server:/var/www/html/server
+    ports:
+      - 3000:3000
+      - 9229:9229
+    command: npm run server
+    restart: always
+
+  db:
+    image: mysql
+    env_file: 
+      - ./env/.env.development
+    volumes: 
+      - ./config/database/save:/var/lib/mysql
+      - ./config/database/conf.d:/etc/mysql/conf.d
+      - ./config/database/setTable:/docker-entrypoint-initdb.d
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports: 
+      - 8080:80
+    volumes: 
+      - ./config/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+    environment:
+      TZ: Europe/Moscow;
+    depends_on: 
+      - db
+    restart: always

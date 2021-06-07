@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './normalize.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { reduxStore } from './redux/reduxStore';
 // eslint-disable-next-line
 import { Provider } from 'react-redux';
+import dotenv from 'dotenv/config';
 
+import CssBaseline from '@material-ui/core/CssBaseline';
 
+console.dir(process.env);
 // let reloadDOMfileIndex = (storeData) => {
 
 //    objectState.state = storeData.getState();//3 вариант
@@ -15,7 +19,9 @@ import { Provider } from 'react-redux';
    ReactDOM.render(
       <React.StrictMode>
             <Provider store={reduxStore}>{/* Вариант 4 */}
+         {/* <CssBaseline /> */}
                <App  />
+           
             </Provider>
       </React.StrictMode>,
       document.getElementById('root')

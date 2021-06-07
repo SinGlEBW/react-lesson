@@ -1,4 +1,4 @@
-const { Images,  } = require("@models"); //по ум в папке берёт index
+const { Images  } = require("@models"); //по ум в папке берёт index
 const { Op } = require('sequelize');
 const fs = require('fs');
 const path = require('path');

@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { formValueSelector, SubmissionError } from 'redux-form';
 
-import { authT } from 'src/redux/reducer/Header/auth-reducer';
+import { authT, setAuthUser } from 'src/redux/reducer/Header/auth-reducer';
 import Auth from './Auth';
+import LogIn from './Authentication/LogIn';
 
 class AuthContainer extends React.Component {
 
@@ -15,32 +17,41 @@ class AuthContainer extends React.Component {
         if (i.name === e.target.name) {
           if (count < numInp) break;
           else count = 0;
-      }}
+        }
+      }
       e.currentTarget[count].focus()
-  }}
-
-  componentDidMount = () => {
-
+    }
   }
-  valid = (val, rfOb) => {
-    console.dir(rfOb);
-  }
-  send = (val) => {
-    console.dir(1);
-    return true
+
+  // componentDidMount = () => {
+
+  // }
+
+  send = async (val, dispatch, rfOb) => {
+    let err = await this.props.authT(rfOb.form, val);
+    if(err)
+      throw new SubmissionError(err);
+      
+      
+    
   }
   render = () => {
-    console.dir(this.props);
-    return <Auth onSubmit={this.send} 
-                 stepBelow={this.stepBelow} {...this.props}
-                 />
+   
+    return <Auth onSubmit={this.send}
+                 stepBelow={this.stepBelow}
+                 {...this.props}
+    />
   }
 }
-
-let mapStateToProps = (props) => ({ auth: props.auth })
+const selector = formValueSelector('entrance');
+let mapStateToProps = (props) => ({
+  auth: props.auth,
+  val: selector(props, 'login','pass'),
+})
 
 export default connect(mapStateToProps, {
-  authT
+  setAuthUser,
+  authT//общение с DAL уровнем
 })(AuthContainer)
 
 
@@ -64,47 +75,47 @@ export default connect(mapStateToProps, {
 
 
 
-    /*
-      КАКИЕ-то проверки написанные мной
+/*
+  КАКИЕ-то проверки написанные мной
 
-        errors = (err, formRef) => {
-    console.dir(formRef);
-  }
-  stepBelow = (e, numInp) => {
+    errors = (err, formRef) => {
+console.dir(formRef);
+}
+stepBelow = (e, numInp) => {
 
-    let count = 0;
-    if (e.key === 'Enter') {
-      for (let i of e.currentTarget) {
-        count++;
-        if (i.name === e.target.name) {
-          if (count < numInp) break;
-          else count = 0;
-        }
-      }
-      e.currentTarget[count].focus()
+let count = 0;
+if (e.key === 'Enter') {
+  for (let i of e.currentTarget) {
+    count++;
+    if (i.name === e.target.name) {
+      if (count < numInp) break;
+      else count = 0;
     }
   }
+  e.currentTarget[count].focus()
+}
+}
 
-  phoneMask = (dataInputTel) => {
-    return (dataInputTel.match(/\D/)) ? false : dataInputTel
-  }
-  changeInp = ({ target }) => {
+phoneMask = (dataInputTel) => {
+return (dataInputTel.match(/\D/)) ? false : dataInputTel
+}
+changeInp = ({ target }) => {
 
-    let value = (target.name === 'phone') ? this.phoneMask(target.value) : target.value;
+let value = (target.name === 'phone') ? this.phoneMask(target.value) : target.value;
 
-    if (typeof value === 'string') {//обрабатываю пустоту
-      this.props.changeInput(target.name, value);
-    } else {
-      console.dir('Требуется ввод цифр');
-    }
-    // 
-  }
-  send = (e) => {
-    e.preventDefault();
-    const formName = e.target.parentNode.name;
-    const data = new FormData(e.target.parentNode);
-    this.props.authT(formName, data);
+if (typeof value === 'string') {//обрабатываю пустоту
+  this.props.changeInput(target.name, value);
+} else {
+  console.dir('Требуется ввод цифр');
+}
+//
+}
+send = (e) => {
+e.preventDefault();
+const formName = e.target.parentNode.name;
+const data = new FormData(e.target.parentNode);
+this.props.authT(formName, data);
 
-  }
+}
 
-    */
+*/

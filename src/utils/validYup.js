@@ -28,10 +28,10 @@ const phoneRegex = RegExp(
 
 export const schemaRegister = yup.object({
   login: yup.string().minMaxReq(6,15),
-  pass: yup.ref('login'),
-  name: yup.ref('login'),
+  pass: yup.string().minMaxReq(6,15),//почему-то ref не работает
+  name: yup.string().minMaxReq(6,15),
   email: yup.string().required().email(),
-  phone: yup.string().matches(phoneRegex, "Не верный телефон").required(),
+  phone: yup.string().matches(phoneRegex, "Не верный телефон").required(),//попробовать обработать через test
   avatar: yup.string()
 })
 

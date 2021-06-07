@@ -1,7 +1,10 @@
-const { User, SessionTokens, Sequelize, sequelize, } = require("@models"); //по ум в папке берёт index
+const { User, SessionTokens, Sequelize, sequelize } = require("@models"); //по ум в папке берёт index
+const { createTokenPair } = require('@services/auth-service');
 const bcryptjs = require("bcryptjs");
-const { createTokenPair } = require("@services/auth-service");
+
 const { Op } = require('sequelize');
+const packageName = require('sequelize');
+console.dir();
 
 User.hasOne(SessionTokens, {onDelete: 'CASCADE'})
 SessionTokens.belongsTo(User)
@@ -9,7 +12,7 @@ SessionTokens.belongsTo(User)
 /*----------------------------------------------------------------------------------------*/
 
 function register(req, res, next) {
-  
+  console.debug(111);
   const { email, login } = req.body;
  
   //Что бы не писать каждой функции проверку, функция прогоняется через декоратор
@@ -18,8 +21,8 @@ function register(req, res, next) {
       const client = user && [user.email, user.login].find((item) => (email === item || login === item));// && обрабатывает null
     
       if (client) {
-        let param = Object.keys(req.body).find(key => req.body[key] === client);//ключ по значению
-        return Promise.reject([{ msg:`${client} уже занят`, param }]);
+        let field = Object.keys(req.body).find(key => req.body[key] === client);//ключ по значению
+        return Promise.reject({ [field]: `${client} уже занят`  });
       } else {
        
         let { login, name, email, pass, age, phone } = req.body;
@@ -58,9 +61,9 @@ function logIn(req, res, next) {
           }
           return user
         }
-        return Promise.reject({ msg: 'Пароли не совпадают', param: 'pass'});
+        return Promise.reject({ pass: 'Пароли не совпадают' });
       }
-      return Promise.reject({ msg: 'Пользователь не найден', param: 'login' });
+      return Promise.reject({ login: 'Пользователь не найден' });
     })
     //передаётся в createTokenPair user
     .then(createTokenPair)

@@ -11,7 +11,7 @@ const config = require('@config-server/database.json')[env];
 let sequelize = (config.use_env_variable) 
 ?  new Sequelize(process.env[config.use_env_variable], config)
 :  new Sequelize(config.database, config.username, config.password, config);
-
+sequelize.sync()
 let db = fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -19,7 +19,7 @@ let db = fs
     return (file.indexOf('.') !== 0) && (file !== basename && file !== 'chat.js') && (file.slice(-3) === '.js');
   })
   .reduce((total, file) => {
-    const model = require(path.join(__dirname, file))(sequelize, DataTypes)
+    const model = require(path.join(__dirname, file))(sequelize, DataTypes);//Запуск моделей.
     
     return {
       ...total,

@@ -7,6 +7,8 @@ import c from './Auth.module.css';
 import LogIn from './Authentication/LogIn';
 import Register from './Registration/Register';
 
+
+/*--------------------------------------------------------------------------------------------------------------*/
 const MyButton = styled(Button)({
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
   border: 0,
@@ -15,20 +17,23 @@ const MyButton = styled(Button)({
   color: "white",
   height: 'max-content'
 });
+let ButLink = (props) => <MyButton><NavLink className={c.btn} {...props} children={props.children}/></MyButton>
 
+/*--------------------------------------------------------------------------------------------------------------*/
 
 let Auth = (props) => {
-console.dir(props);
+
   
   return (
     <section className={c.auth}>
       <div className='container'>
         <div className={c.btnWrap}>
-          <MyButton><NavLink className={c.btn} name='login' to='/login'>Авторизация</NavLink></MyButton>
-          <MyButton><NavLink className={c.btn} name='register' to='/register'>Регистрация</NavLink></MyButton>
+          <ButLink name='login' to='/login'>Авторизация</ButLink>
+          <ButLink name='register' to='/register'>Регистрация</ButLink>
         </div>
-        <Route path='/login' render={() => <LogIn {...props} />} />
-        <Route path='/register' render={() => <Register {...props} />} />
+
+        <Route path='/login' render={() => <LogIn    {...props} />} />
+        <Route path='/register' children={ <Register {...props} />} />
       </div>
     </section>
   )

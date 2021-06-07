@@ -1,50 +1,72 @@
 require("module-alias/register");
+
 const express = require("express");
-const passport = require('passport');
+const fs = require('fs');
+const path = require('path');
+// const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const app = express();
 
 const { verifyToken } = require("@services/auth-service");
-const { errorHelper } = require("@services/err-helper");
+const { errorHandler } = require("@services/err-handler");
+const { Sequelize } = require('sequelize');
+const { func } = require('prop-types');
 
-const userRouter = require("@routes/user");
-const chatRouter = require("@routes/chat");
-const menuRouter = require("@routes/menu");
-const imagesRouter = require("@routes/images");
 
-const server = app.listen(4000);
+// const dotenv = require('dotenv')
+// const config = require('config');
 
-app.use((req,res,next) => { 
-   console.dir(req.method);
-   
-   res.set({
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-      "Access-Control-Allow-Method": "GET",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Headers": "origin, content-type, accept"
-   })
-   next()
-   
-})
+// if(process.env.NODE_ENV){
+//    require('dotenv').config({ path:  path.resolve('env', `.env.${process.env.NODE_ENV}`) });
+// }else{
+//    require('dotenv').config({ path: path.resolve('env', '.env') });
+// }
+
+
+const { NODE_PORT, NODE_HOST } = process.env;
+console.dir(NODE_HOST);
+
+
+const server = app.listen(NODE_PORT, NODE_HOST);
+
+
+
+const sequelize = new Sequelize("u66147_el-staff", "root", "secret", {
+   dialect: "mysql",
+   host: "db",
+   port: 3306,
+   define: {
+     timestamps: false, //что бы не создавались createdAt updateAt
+     freezeTableName: true, //что бы в бд таблице не приписывалось "s"
+   },
+ });
+ 
+ sequelize.authenticate(); //тестирование подключения  SELECT 1+1 AS result
+
+
+ sequelize.query('SELECT * FROM black_work', {raw: true, type: sequelize.QueryTypes.SELECT})
+ .then((data) => {
+    console.dir(data);
+ })
+
+ 
 app.use(require('cors')({
    origin: true,
-   allowedHeaders: ''
+   allowedHeaders: '',
 }));
+
 
 app.use(express.json(), cookieParser());
 app.use(require('passport').initialize());
-
-
-
 app.use('/app/*', verifyToken)//на любой запрос проверять токен
 
-app.use('/app', userRouter);
-app.use('/app', chatRouter);
-app.use('/app', menuRouter);
-app.use('/app', imagesRouter);
+// fs.readdirSync(path.join(__dirname, 'routes'))
+// .forEach((file) => {
+//   app.use('/app', require(`./routes/${file}`));
+// });
 
 
-app.use(errorHelper);
+
 
 
 /*
@@ -77,6 +99,19 @@ app.use(errorHelper);
    res.append("Access-Control-Allow-Origin", "*");
    res.append("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
    res.append("Access-Control-Allow-Headers", "Content-Type");
+
+Пример:
+   app.use((req,res,next) => {  
+      res.set({
+         "Access-Control-Allow-Origin": "http://localhost:3000",
+         "Access-Control-Allow-Method": "GET",
+         "Access-Control-Allow-Credentials": "true",
+         "Access-Control-Allow-Headers": "origin, content-type, accept"
+      });
+      next();
+   })
+
+
 */
 
 /*
@@ -87,6 +122,6 @@ app.use(errorHelper);
 */
 
 /*
-   Что бы узнать приложение у нас в каком состоянии в "разработке" или "продакшн" есть команда
+   Можно сделать роут в котором будем указывать статус разработки "разработка" или "продакшн"
    app.get('env') значение указывается в NODE_ENV. Если её нет по по умолчанию development
 */

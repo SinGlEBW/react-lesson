@@ -2,7 +2,17 @@ import Axios from 'axios';
 
 let instance = Axios.create({
   baseURL: 'http://localhost:4000/app',
-  //withCredentials: true,
+  withCredentials: true,
+  // transformRequest: [function (data, headers) {
+  //   // Предварительная обработка на отправку
+  //   console.dir(data); 
+  //   return JSON.stringify(data);
+  // }],
+  // transformResponse: [function (data) {
+  //   // Обработка приходящих данных 
+    
+  //   return JSON.parse(data);
+  // }],
   
 })
 
@@ -13,7 +23,7 @@ export const imagesDAL = {
 }
 export const userDAL = {
   register: (data) => instance.post('register', data),
-  entrance: (data) => instance.post('login', data),
+  entrance: (data) => instance.post('entrance', data),
   logOut: (refreshToken) => instance.post('logout', { refreshToken }),
   refresh: (refreshToken) => instance.post('refresh', { refreshToken }, {headers: {'Authorization': JSON.parse(localStorage.getItem('token')) || ''}})
 }

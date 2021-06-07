@@ -13,6 +13,7 @@ import { reducer as formReducer } from 'redux-form'
 import { footerReducer } from './reducer/Footer/footer-reducer';
 import thunk from 'redux-thunk';
 
+
 const reducers = combineReducers({
    auth: authReducer,
    header: headerReducer,
@@ -24,7 +25,9 @@ const reducers = combineReducers({
    contact: contactReducer,
    images: imagesReducer,
    footer: footerReducer,
-   form: formReducer
+   form: formReducer.plugin({
+		entrance: formLoginReducer
+	})
    
 })
 
@@ -32,3 +35,20 @@ const reduxStore = createStore(reducers, applyMiddleware(thunk));
 
 window.state = reduxStore;
 export { reduxStore };
+
+
+
+function formLoginReducer (state, action){
+   // console.dir(state);
+   // console.dir(action);
+	switch (action.type) {
+			case "RESET_LOGIN": return {...state, 
+				values: { ...state.values, login: '' },
+				registeredFields: {  ...state.registeredFields, login: '' } 
+         }
+         case "ERROR_SUBMIT_FIELD": return { ...state, submitErrors: {...state.submitErrors, ...action.err}}
+			default: return state
+
+	}
+}
+

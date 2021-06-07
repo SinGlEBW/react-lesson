@@ -6,7 +6,7 @@ let info = {
 
 
 export const infoReducer = (stateInfo = info, action) => {
-   
+
    switch(action.type){
       case ADD_INFO: stateInfo.setText = action.text; return stateInfo;
       

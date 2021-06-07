@@ -1,12 +1,14 @@
 const express = require('express');
-const { upload_Validate } = require("@services/receipt-files");
-const { register, logIn, logOut, refresh } = require("@controllers/user-controller");
 const router = express.Router();
 
-router.post("/register", upload_Validate, register); //registerValid,
-router.post("/login", upload_Validate, logIn); //loginValid
-router.post("/logout", logOut);
-router.post("/refresh", refresh);
+// const { upload_Validate } = require("@services/receipt-files");
+// const { register, logIn, logOut, refresh } = require("@controllers/user-controller");
+
+
+// router.post("/register", upload_Validate, register); //registerValid,
+// router.post("/entrance", upload_Validate, logIn); //loginValid
+// router.post("/logout", logOut);
+// router.post("/refresh", refresh);
 
 
 module.exports = router;
